@@ -1,1 +1,34 @@
-<router-outlet></router-outlet>
+<div class="root" [class.is-mobile]="mobileQuery?.matches">
+  <mat-toolbar color="primary">
+    <div>
+      <button mat-icon-button (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h4 class="app-name">{{ appName }}</h4>
+    </div>
+    <button mat-icon-button>
+      <mat-icon>person</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav 
+      [mode]="mobileQuery?.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery?.matches" 
+      fixedTopGap="56"
+    >
+      <mat-nav-list>
+        <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
+
+
+

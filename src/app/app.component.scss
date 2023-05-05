@@ -1,0 +1,50 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    background: #4050b5;
+    color: #f5f5f5;
+
+    div {
+        display: flex;
+
+        .app-name {
+            margin: 0px 0px 0px 8px;
+            font-weight: bold;
+        }     
+    }
+    
+    mat-icon {
+        color: white;
+    }
+}
+  
+
+mat-sidenav-container {
+    flex: 1;
+
+    mat-sidenav {
+        border-right: 1px solid rgba(0,0,0,.12);
+        min-width: 235px;
+    }
+}
+
+.is-mobile  {
+    mat-toolbar {
+        position: fixed;
+        z-index: 2;
+    }
+
+    mat-sidenav-container {
+        margin-top: 56px;
+    }
+}
