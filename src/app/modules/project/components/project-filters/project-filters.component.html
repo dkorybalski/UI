@@ -1,0 +1,34 @@
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input [(ngModel)]="searchValue" matInput (keyup)="onFiltersChange()">
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Supervisor</mat-label>
+  <mat-select [(ngModel)]="supervisorIndexNumber" (selectionChange)="onFiltersChange()">
+    <mat-option *ngIf="supervisorIndexNumber !== undefined" [value]="undefined">---</mat-option>
+    <mat-option *ngFor="let supervisor of (supervisors$ | async)" [value]="supervisor.indexNumber">
+      {{ supervisor.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Acceptance status</mat-label>
+  <mat-select [(ngModel)]="acceptanceStatus" (selectionChange)="onFiltersChange()">
+    <mat-option *ngIf="acceptanceStatus !== undefined" [value]="undefined">---</mat-option>
+    <mat-option [value]="true">Accepted</mat-option>
+    <mat-option [value]="false">Not accepted</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field shouldLabelFloat="false">
+  <mat-select [(ngModel)]="displayedColumns" multiple (selectionChange)="onFiltersChange()">
+    <mat-select-trigger>
+      Selected columns: {{displayedColumns.length}}
+    </mat-select-trigger>
+    <mat-option *ngFor="let column of allColumns" [value]="column">{{column}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button *ngIf="isAnyFilterActive()" (click)="resetFilters()" mat-button>reset</button>

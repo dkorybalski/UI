@@ -1,0 +1,33 @@
+<div *ngIf="!loading">
+    <div class="title-and-add-project-button">
+        <h1>Project groups</h1>
+        <button *ngIf="showProjectButton()" (click)="openProjectForm()" mat-raised-button color="primary">
+            {{ projectButtonText }}
+        </button>
+    </div>
+    <div class="project-filters-container">
+        <project-filters [showExternalLinkColumns]="showExternalLinkColumns"></project-filters>
+    </div>
+    <div [class.whole-width]="projectListColumns.length >= 3" class="tables">   
+        <div class="project-list-container">
+            <project-list 
+                (openProjectDetailsEvent)="getProjectDetailsAndOpenModal($event)" 
+                [columns]="projectListColumns" 
+                [externalLinkColumnHeaders]="externalLinkColumnHeaders" 
+                [assignedProjects]="assignedProjects"
+                [acceptedProjects]="acceptedProjects"
+                [projects]="projects"></project-list>
+        </div>
+        <div class="supervisor-availability-list-container">
+            <supervisor-availability-list
+                [columns]="supervisorListColumns"
+                [supervisorAvailability]="supervisorAvailabilityDataSource"
+            ></supervisor-availability-list>
+            <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
+                Edit availability
+            </button>
+        </div>
+    </div>
+</div>
+<mat-spinner *ngIf="loading"></mat-spinner>
+

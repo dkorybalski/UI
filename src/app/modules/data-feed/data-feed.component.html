@@ -1,0 +1,31 @@
+<h2>Import</h2>
+<div class="file-inputs">
+  <input type="file" class="file-input" (change)="uploadStudents($event)" #studentsFileUpload>
+  <div class="file-upload">
+    <button mat-mini-fab color="primary" class="upload-btn"
+    (click)="studentsFileUpload.click()">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    {{studentsFileName || "Students"}}
+
+  </div>
+  
+  <input type="file" class="file-input" (change)="uploadSupervisors($event)" #supervisorsFileUpload>
+  <div class="file-upload">
+    <button mat-mini-fab color="primary" class="upload-btn"
+    (click)="supervisorsFileUpload.click()">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    {{supervisorsFileName || "Supervisors"}}
+
+  </div>  
+
+  <button (click)=uploadFiles() mat-raised-button color="primary">Submit</button>
+</div>
+
+<h2>Export</h2>
+<div class="file-inputs">
+  <button (click)=exportStudents() mat-raised-button color="primary">Export students</button>
+</div>
+
+   

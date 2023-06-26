@@ -1,0 +1,14 @@
+<ng-container *ngIf="externalLinks.length > 0">
+    <div *ngFor="let externalLink of externalLinks">
+        <div class="link">
+            <a target="_blank" 
+                [href]="externalLink.url" 
+                [class.hidden]="!externalLink.url" 
+                mat-icon-button>
+                <mat-icon>link</mat-icon>
+            </a>
+        </div>
+        <a target="_blank" [href]="externalLink.url">{{ externalLink.name }}</a>
+    </div>
+</ng-container>
+

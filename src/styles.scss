@@ -5,7 +5,7 @@ html, body { height: 100%; }
 body { 
     margin: 0; 
     font-family: Roboto, "Helvetica Neue", sans-serif; 
-    background: #f5f5f5;
+    background: #fafafa;
 }
 
 button[mat-icon-button] {
@@ -15,4 +15,9 @@ button[mat-icon-button] {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 35px;
 }
