@@ -1,0 +1,87 @@
+p {
+    //font-size: 14px;
+    text-align: justify;
+}
+
+::ng-deep .mat-mdc-standard-chip {
+    background-color: #dde2ff !important;
+}
+
+::ng-deep .mat-mdc-chip-action-label {
+    color: #4758b8 !important;
+}
+
+h3, h2 {
+    margin: 0px;
+}
+
+p {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.cellWithIcon {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    mat-icon{
+        color: #3f51b5;
+        height: 20px;
+        width: 20px;
+        font-size: 20px;
+    }
+}
+
+td {
+    white-space: nowrap; 
+
+
+}
+
+.table {
+    margin-top: 34px;
+}
+
+.chips {
+    margin: 22px 0px  10px 0px;
+}
+
+mat-dialog-content {
+    display: grid;
+    max-width: 800px;
+    grid-gap: 10px
+}
+
+.ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+}
+
+.ellipse.accepted {
+    background: #92e882;
+}
+
+:host {
+    display: flex;
+    column-gap: 50px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 15px;
+    margin-top: 20px;
+}

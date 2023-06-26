@@ -1,0 +1,17 @@
+.link {
+    display: flex;
+    justify-content: center;
+    a {    
+        mat-icon {
+            color: #4050b5;
+        }
+    }    
+}
+
+.link-header {
+    text-align: center;
+}
+
+th {
+    white-space: nowrap;
+}

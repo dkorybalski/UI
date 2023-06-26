@@ -1,0 +1,26 @@
+:host {
+    width: fit-content;
+    position: relative;
+    display: inline-block;
+    min-height: 80px;
+
+    mat-form-field {
+        margin-right: 18px;
+        margin-bottom: 18px;
+        display: block;
+        float: left;
+    }
+
+    button {
+        margin-top: 12px;
+        position: absolute;
+    }
+    
+    .hiddenLabel {
+        opacity: 0;
+    }
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }   
+}
