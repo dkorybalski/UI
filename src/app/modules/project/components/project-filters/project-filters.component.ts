@@ -35,7 +35,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
 
     this.store.select(getFilters).pipe(takeUntil(this.unsubscribe$)).subscribe(
       filters => {
-        console.log(filters)
         this.searchValue = filters.searchValue;
         this.supervisorIndexNumber = filters.supervisorIndexNumber;
         this.acceptanceStatus = filters.acceptanceStatus;
@@ -73,7 +72,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('hey')
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete()
   }

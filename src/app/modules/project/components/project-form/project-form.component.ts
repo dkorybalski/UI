@@ -84,8 +84,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     })
 
-   
-
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
       map((value: string | null) => this.filterStudents(value || ''))
@@ -167,6 +165,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     return ''
   }
 
+  navigateBack(): void {
+    this.router.navigate ([`projects/details/${this.projectDetails!.id}`]) 
+  }
+
   get acceptedMembers(): Student[]{
     if(this.projectDetails){
       return this.projectDetails.students.slice().filter(student => student.accepted)
@@ -219,13 +221,13 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.store.dispatch(addProject({project: projectDetails}))
         this.actions$.pipe(ofType(addProjectSuccess),takeUntil(this.unsubscribe$)).subscribe((project) => {
           this._snackbar.open('Project successfully created', 'close');
-          this.router.navigate ([`projects`]) 
+          this.router.navigate ([`projects/details/${this.projectDetails!.id}`]) 
         });
       } else {
         this.store.dispatch(updateProject({project: projectDetails}))
         this.actions$.pipe(ofType(updateProjectSuccess),takeUntil(this.unsubscribe$)).subscribe(() => {
           this._snackbar.open('Project successfully updated', 'close');
-          this.router.navigate ([`projects`]) 
+          this.router.navigate ([`projects/details/${this.projectDetails!.id}`]) 
         });
       }
 

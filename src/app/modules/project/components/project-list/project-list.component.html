@@ -33,9 +33,10 @@
   </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr style="cursor: pointer" (click)="openProjectDetailsEvent.emit(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>
+    <tr style="cursor: pointer" (click)="navigateToProjectDetails(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page">
   </mat-paginator>
 </div>
+<mat-spinner *ngIf="loading"></mat-spinner>

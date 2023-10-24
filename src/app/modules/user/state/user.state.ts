@@ -21,5 +21,6 @@ export const initialState: UserState = {
     projects: [],
     acceptedProjects: [],
     logged: false,
-    lang: 'pl'
+    lang: 'pl',
+    actualYear: '',
 }
