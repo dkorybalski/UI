@@ -6,4 +6,5 @@ export interface User {
     studyYears: string[];
     projects: number[];
     acceptedProjects: number[];
+    actualYear: string;
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess, acceptProject, acceptProjectSuccess, changeAdmin, changeAdminSuccess, changeAdminFailure, unacceptProject, unacceptProjectSuccess, acceptProjectFailure, unacceptProjectFailure, removeProject, removeProjectSuccess, removeProjectFailure } from './project.actions';
+import { addProject, addProjectSuccess, addProjectFailure, loadProjects, loadProjectsFailure, loadProjectsSuccess, loadSupervisorAvailability, loadSupervisorAvailabilityFailure, loadSupervisorAvailabilitySuccess, updateProject, updateProjectSuccess, updateProjectFailure, updateSupervisorAvailability, updateSupervisorAvailabilityFailure, updateSupervisorAvailabilitySuccess, acceptProject, acceptProjectSuccess, unacceptProject, unacceptProjectSuccess, acceptProjectFailure, unacceptProjectFailure, removeProject, removeProjectSuccess, removeProjectFailure } from './project.actions';
 import { ProjectService } from '../project.service';
 
 @Injectable()
@@ -91,18 +91,6 @@ export class ProjectEffects {
                 .pipe(
                     map(() => unacceptProjectSuccess({projectId: action.projectId, role: action.role})),
                     catchError(error => of(unacceptProjectFailure({ error })))
-                )
-            )
-        )
-    )
-
-    changeProjectAdmin$ = createEffect(() => this.actions$
-        .pipe(
-            ofType(changeAdmin),
-            mergeMap((action) => this.projectService.changeProjectAdmin(action.projectId, action.indexNumber)
-                .pipe(
-                    map(() => changeAdminSuccess()),
-                    catchError(error => of(changeAdminFailure({ error })))
                 )
             )
         )

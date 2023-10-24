@@ -63,16 +63,6 @@ export class ProjectService {
             )
     }
 
-    changeProjectAdmin(projectId: number, indexNumber: string): Observable<null> {
-        return this.http
-            .patch<null>(`/apigateway/project/${projectId}/admin-change/${indexNumber}`, null)
-            .pipe(
-                retry(3),
-                catchError(
-                    (err: HttpErrorResponse) => throwError(() => err))
-            )
-    }
-
     acceptProject(projectId: number): Observable<null> {
         return this.http
             .patch<null>(`/apigateway/project/${projectId}/accept`, null)

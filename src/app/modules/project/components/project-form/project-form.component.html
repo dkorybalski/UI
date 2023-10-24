@@ -1,7 +1,7 @@
-<div class="back" routerLink="/projects">
+<div class="back" (click)="navigateBack()">
     <mat-icon>arrow_back</mat-icon>
-     Project list
- </div>
+    {{ projectDetails ? 'Project Details' : 'Project List' }}
+</div>
 <h2 mat-dialog-title>
     {{ projectDetails ? 'Edit project form' : 'New project form'  }}
 </h2>

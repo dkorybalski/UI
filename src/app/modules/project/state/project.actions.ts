@@ -96,20 +96,6 @@ export const removeProjectFailure = createAction(
     props<{ error: string }>()
 )
 
-export const changeAdmin = createAction(
-    '[ProjectDetails] Change Admin',
-    props<{ projectId: number, indexNumber: string }>()
-)
-
-export const changeAdminSuccess = createAction(
-    '[ProjectDetails API] Change Admin Success',
-)
-
-export const changeAdminFailure = createAction(
-    '[ProjectDetails API] Change Admin Fail',
-    props<{ error: string }>()
-)
-
 export const loadSupervisorAvailability = createAction(
     '[SupervisorAvailability] Load'
 )
