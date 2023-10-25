@@ -1,14 +1,14 @@
 <form *ngIf="showForm" [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
         <mat-label>Login</mat-label>
-        <input matInput formControlName="login">
+        <input matInput formControlName="login" test="login-input">
         <mat-error *ngIf="form.controls.login.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
-        <input [type]="hide ? 'password' : 'text'" matInput formControlName="password">
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="password" test="password-input">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         <mat-error *ngIf="form.controls.password.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
-    <button type="submit" color="primary" mat-raised-button [disabled]="!form.valid" cdkFocusInitial>Submit</button>
+    <button type="submit" test="login-page-submit-button" color="primary" mat-raised-button [disabled]="!form.valid" cdkFocusInitial>Submit</button>
 </form>
