@@ -37,6 +37,7 @@ const routes: Routes = [
   { 
     path: 'details/:id', component: ProjectDetailsComponent, 
     resolve: {
+      user: userResolver,
       projectDetails: projectResolver,
       supervisorAvailability: supervisorAvailabilityResolver
     },

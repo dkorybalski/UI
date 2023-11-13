@@ -11,8 +11,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { UserInterceptor } from './modules/user/user.interceptor';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({

@@ -3,31 +3,27 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
-import { changeFilters } from '../../state/project.actions';
-import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
-import { getFilters } from '../../state/project.selectors';
+import { changeFilters } from '../../state/grade.actions';
+import { getFilters } from '../../state/grade.selectors';
 import { UserService } from 'src/app/modules/user/user.service';
 
 @Component({
-  selector: 'project-filters',
-  templateUrl: './project-filters.component.html',
-  styleUrls: ['./project-filters.component.scss']
+  selector: 'grade-filters',
+  templateUrl: './grade-filters.component.html',
+  styleUrls: ['./grade-filters.component.scss']
 })
-export class ProjectFiltersComponent implements OnInit, OnDestroy {
-  allColumns: string[] = ['name', 'supervisorName'];
-  displayedColumns: string[] = [];
+export class GradeFiltersComponent implements OnInit, OnDestroy {
   supervisors$!: Observable<Supervisor[]>
   unsubscribe$ = new Subject()
-  @Input() showExternalLinkColumns?: boolean
 
   searchValue: string = '';
   supervisorIndexNumber!: string | undefined;
-  acceptanceStatus!: boolean | undefined;
+  criteriaMetStatus!: boolean | undefined;
+  semester: 'FIRST' | 'SECOND' = 'FIRST';
 
   constructor(
     private userService: UserService, 
     private store: Store<State>,
-    private externalLinkService: ExternalLinkService
   ){}
 
   ngOnInit(): void {
@@ -36,39 +32,31 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
     this.store.select(getFilters).pipe(takeUntil(this.unsubscribe$)).subscribe(
       filters => {
         this.searchValue = filters.searchValue;
+        this.semester = filters.semester
         this.supervisorIndexNumber = filters.supervisorIndexNumber;
-        this.acceptanceStatus = filters.acceptanceStatus;
-        this.displayedColumns = filters.columns;
+        this.criteriaMetStatus = filters.criteriaMetStatus;
       }
     )
-
-    if(this.showExternalLinkColumns){
-      this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-        columnHeaders => this.allColumns = [...this.allColumns, ...columnHeaders, 'accepted']
-      )
-    } else {
-      this.allColumns = [...this.allColumns, 'accepted']
-    }
   }
 
   onFiltersChange(){
     this.store.dispatch(changeFilters({filters: {
       searchValue: this.searchValue,
       supervisorIndexNumber: this.supervisorIndexNumber,
-      acceptanceStatus: this.acceptanceStatus,
-      columns: this.displayedColumns
+      semester: this.semester,
+      criteriaMetStatus: this.criteriaMetStatus
     }}))
   }
 
   resetFilters(){
     this.searchValue = '';
-    this.acceptanceStatus = undefined;
+    this.criteriaMetStatus = undefined;
     this.supervisorIndexNumber = undefined;
     this.onFiltersChange()
   }
 
   isAnyFilterActive(): boolean {
-    return (this.searchValue !== '' || this.supervisorIndexNumber !== undefined || this.acceptanceStatus !== undefined)
+    return (this.searchValue !== '' || this.supervisorIndexNumber !== undefined || this.criteriaMetStatus !== undefined)
   }
 
   ngOnDestroy(): void {

@@ -18,12 +18,17 @@ const routes: Routes = [
     loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
     canActivate: [UserGuard]
   },
- /*{
+  {
     path: 'projects',
     loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
     canActivate: [UserGuard],
-    outlet: 'modal'
-  },*/
+    outlet: 'modal',
+  },
+  {
+    path: 'grades',
+    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
+    canActivate: [UserGuard]
+  },
   {
     path: 'external-links',
     loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),

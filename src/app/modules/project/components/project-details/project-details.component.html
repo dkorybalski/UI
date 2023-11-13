@@ -1,8 +1,8 @@
 
 <div>
-  <div class="back" routerLink="/projects">
+  <div class="back" (click)="navigateBack()">
      <mat-icon>arrow_back</mat-icon>
-      Project list
+      Project List
   </div>
   <h1>{{data.name}}</h1>
   <p>{{data.description}}</p>

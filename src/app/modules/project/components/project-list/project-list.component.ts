@@ -1,16 +1,15 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ProjectWithExternals } from '../../models/project';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject, combineLatest, takeUntil, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ProjectService } from '../../project.service';
 import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
 import { getFilters, getProjects } from '../../state/project.selectors';
 import { State } from 'src/app/app.state';
 import { Router } from '@angular/router';
-import { loadProjects } from '../../state/project.actions';
+import { changeFilters, loadProjects } from '../../state/project.actions';
+import { Project } from '../../models/project';
 
 @Component({
   selector: 'project-list',
@@ -24,7 +23,7 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   columns = ['name', 'supervisorName', 'accepted'];
-  projects!: MatTableDataSource<ProjectWithExternals>;
+  projects!: MatTableDataSource<Project>;
   externalLinkColumnHeaders: string[] = [];
   unsubscribe$ = new Subject();
   loading = true;
@@ -65,7 +64,7 @@ export class ProjectListComponent implements OnDestroy, OnInit{
                   this.filterProjectBySupervisorIndexNumber(project, filters.supervisorIndexNumber)
                 )             
           )
-          this.projects = new MatTableDataSource<ProjectWithExternals>(filteredProjects);
+          this.projects = new MatTableDataSource<Project>(filteredProjects);
           this.projects.paginator = this.paginator;
           this.projects.sort = this.sort;
 
@@ -81,16 +80,16 @@ export class ProjectListComponent implements OnDestroy, OnInit{
     )
   }
 
-  filterProjectBySearchValue(project: ProjectWithExternals, searchValue: string): boolean {
+  filterProjectBySearchValue(project: Project, searchValue: string): boolean {
     return project.name.toLowerCase().includes(searchValue.toLowerCase()) ||
            project.supervisor.name.toLowerCase().includes(searchValue.toLowerCase())
   }
 
-  filterProjectByAcceptanceStatus(project: ProjectWithExternals, acceptanceStatus?: boolean): boolean {
+  filterProjectByAcceptanceStatus(project: Project, acceptanceStatus?: boolean): boolean {
     return acceptanceStatus !== undefined ? project.accepted === acceptanceStatus : true
   }
 
-  filterProjectBySupervisorIndexNumber(project: ProjectWithExternals, supervisorIndexNumber?: string): boolean {
+  filterProjectBySupervisorIndexNumber(project: Project, supervisorIndexNumber?: string): boolean {
     return supervisorIndexNumber !== undefined ? project.supervisor.indexNumber === supervisorIndexNumber : true
   }
 
@@ -105,11 +104,18 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   }
 
   navigateToProjectDetails(projectId: string){
-    this.router.navigate ([`projects/details/${projectId}`]) 
+    this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete()
+
+    this.store.dispatch(changeFilters({filters: {
+      searchValue: '',
+      supervisorIndexNumber: undefined,
+      acceptanceStatus: undefined,
+      columns: ['name', 'supervisorName', 'accepted']
+    }}))
   }
 }

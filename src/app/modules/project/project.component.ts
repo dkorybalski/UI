@@ -9,6 +9,7 @@ import { Supervisor } from '../user/models/supervisor.model';
 import { Student } from '../user/models/student.model';
 import { User } from '../user/models/user.model';
 import { Router } from '@angular/router';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'project',
@@ -34,6 +35,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   constructor(
       public dialog: MatDialog, 
       private projectService: ProjectService, 
+      private userService: UserService, 
       private store: Store<State>,
       private router: Router,
   ) {}
@@ -41,7 +43,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkUserRoleAndAssociatedProject();
     this.projectService.students$.pipe(takeUntil(this.unsubscribe$)).subscribe(students => this.students = students)
-    this.projectService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
+    this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(supervisors => this.supervisors = supervisors)
   }
 
   checkUserRoleAndAssociatedProject(): void{
@@ -71,15 +73,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   openProjectForm(): void {
     if(this.isProjectAdmin){
-      this.router.navigate ([`projects/form/${this.projectId}`]) 
+      this.router.navigate([{outlets: {modal: `projects/form/${this.projectId}`}}]);
     } else {
-      this.router.navigate ([`projects/form`]) 
+      this.router.navigate([{outlets: {modal: `projects/form`}}]);
     }
   }
 
   openSupervisorAvailabilityForm(): void {
     if(this.isCoordinator){
-      this.router.navigate ([`projects/availability`]) 
+      this.router.navigate([{outlets: {modal: `projects/availability`}}]) 
     }
   }
 

@@ -52,7 +52,7 @@ export class UserService {
     }
 
     supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/apigateway/user/supervisor', { withCredentials: true })
+        .get<Supervisor[]>('/apigateway/user/supervisor')
         .pipe(
             retry(3),
             catchError(

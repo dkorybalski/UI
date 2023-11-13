@@ -1,6 +1,6 @@
 <div class="back" (click)="navigateBack()">
     <mat-icon>arrow_back</mat-icon>
-    {{ projectDetails ? 'Project Details' : 'Project List' }}
+    {{ comingFromDetailsPage ? 'Project Details' : 'Project List' }}
 </div>
 <h2 mat-dialog-title>
     {{ projectDetails ? 'Edit project form' : 'New project form'  }}

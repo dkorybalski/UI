@@ -39,6 +39,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   students!: Student[];
   supervisors!: Supervisor[];
   unsubscribe$ = new Subject();
+  comingFromDetailsPage: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +84,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         }));
       }
     })
+
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
+      this.comingFromDetailsPage = params['comingFromDetailsPage'];
+    });
 
     this.filteredStudents = this.memberInput.valueChanges.pipe(
       startWith(null),
@@ -166,7 +171,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   navigateBack(): void {
-    this.router.navigate ([`projects/details/${this.projectDetails!.id}`]) 
+    if(this.comingFromDetailsPage){
+      this.router.navigate([{outlets: { modal: `projects/details/${this.projectDetails!.id}` }}]) 
+    } else {
+      this.router.navigate([`projects`]) 
+    }
   }
 
   get acceptedMembers(): Student[]{
