@@ -8,6 +8,10 @@ export interface Project {
     name: string;
     supervisor: Supervisor,
     accepted: boolean;
+    externalLinks?: ExternalLink[];
+    firstSemesterGrade?: string | null;
+    secondSemesterGrade?: string | null;
+    criteriaMet?: boolean;
 }
 
 export interface ProjectDetails {
@@ -41,8 +45,4 @@ export interface ProjectDetailsData {
     projectDetails?: ProjectDetails;
     user: User;
     columns: string[];
-}
-
-export interface ProjectWithExternals extends Project {
-    externalLinks: ExternalLink[]
 }

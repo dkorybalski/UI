@@ -1,0 +1,74 @@
+<div class="back" (click)="navigateBack()">
+    <mat-icon>arrow_back</mat-icon>
+     Grade List
+ </div>
+ <h1>{{data.projectName}}</h1>
+ <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
+    <table class="grade-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="centered-header">I</th>
+                <th class="centered-header">II</th>
+                <th class="centered-header">III</th>
+                <th class="centered-header">IV</th>
+                <th class="centered-header">Expand details</th>
+                <th>Selected criterion / Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let section of data.sections;">
+                <tr>
+                    <td><h2>{{ section.name }}</h2></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <ng-container *ngFor="let criteriaGroup of section.criteriaGroups;">
+                    <tr>
+                        <td class="criteria-group-name"><h3>{{ criteriaGroup.name }}</h3></td>
+                        <td *ngFor="let criterionIndex of [0,1,2,3]">
+                            <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                                <mat-radio-button [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, criterionIndex)" [value]="criterionIndex" />
+                            </mat-radio-group>
+                        </td>
+                        <td class="expand-more-cell">
+                            <div>
+                                <mat-icon (click)="criterionGroupExpandedStatus[criteriaGroup.id] = !criterionGroupExpandedStatus[criteriaGroup.id]">
+                                    {{ criterionGroupExpandedStatus[criteriaGroup.id] ? 'expand_less' :'expand_more' }}
+                                </mat-icon>
+                            </div>
+                        </td>
+                        <td class="criterion-details-cell-container">
+                            <table *ngIf="criterionGroupExpandedStatus[criteriaGroup.id]">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Description</th>
+                                        <th>Mandatory</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr [ngClass]="{'selected-row': criteriaGroup.selectedCriterion === i }" *ngFor="let criterion of criteriaGroup.criteria; let i = index;">
+                                        <td>{{ criteriaSymbols[i] }}</td>
+                                        <td>{{ criterion.description }}</td>
+                                        <td>{{ criterion.mandatory ? 'Yes' : 'No' }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>     
+                            <span *ngIf="!criterionGroupExpandedStatus[criteriaGroup.id]">{{ 
+                                criteriaGroup.criteria[criteriaGroup.selectedCriterion] ? criteriaGroup.criteria[criteriaGroup.selectedCriterion].description : 'Not selected' }}</span>
+                        </td>
+                    </tr>            
+                </ng-container>
+            </ng-container>
+        </tbody>
+     </table>
+     <div class="buttons-container">
+        <button color="primary" type="submit" mat-raised-button  cdkFocusInitial>Submit</button>
+    </div>
+ </form>
+ 

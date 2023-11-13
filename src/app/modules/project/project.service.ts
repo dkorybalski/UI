@@ -91,14 +91,6 @@ export class ProjectService {
                 (err: HttpErrorResponse) => throwError(() => err))
         )
 
-    supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/apigateway/user/supervisor', { withCredentials: true })
-        .pipe(
-            retry(3),
-            catchError(
-                (err: HttpErrorResponse) => throwError(() => err))
-        )
-
      students$: Observable<Student[]> = this.http
         .get<Student[]>('/apigateway/user/student')
         .pipe(

@@ -70,9 +70,13 @@ export class SupervisorAvailabilityFormComponent implements OnInit, OnDestroy{
       this.actions$.pipe(ofType(updateSupervisorAvailabilitySuccess),takeUntil(this.unsubscribe$))
         .subscribe(() => {
           this._snackbar.open('Supervisors availability successfully updated', 'close');
-          this.router.navigate([`projects`]) 
+          this.router.navigate([{outlets: {modal: null}}]);
         });
     }
+  }
+
+  navigateBack(){
+    this.router.navigate([{outlets: {modal: null}}]);
   }
 
   get availability(): FormArray {

@@ -1,11 +1,10 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ProjectDetails, ProjectDetailsData } from '../../models/project';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ProjectDetails } from '../../models/project';
 import { SupervisorAvailability} from '../../models/supervisor-availability.model';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Student } from 'src/app/modules/user/models/student.model';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ProjectService } from '../../project.service';
 import { Subject, takeUntil} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
@@ -13,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserState } from 'src/app/modules/user/state/user.state';
 import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess } from '../../state/project.actions';
 import { Actions, ofType } from '@ngrx/effects';
-import { getUser } from 'src/app/modules/user/state/user.selectors';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -50,8 +48,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     ){}
    
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user}) => {
       this.data = projectDetails;
+      this.user = user;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -66,10 +65,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.maxAvailabilityFilled = projectSupervisorAvailability?.assigned === projectSupervisorAvailability?.max
       }
     })
-
-    this.store.select(getUser).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      user => this.user = user
-    )
   }
 
 
@@ -118,7 +113,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   editProject(){
-    this.router.navigate ([`projects/form/${this.data.id}`]) 
+    this.router.navigate([{outlets: {modal: `projects/form/${this.data.id}`}}], { queryParams: {comingFromDetailsPage: true} });
   }
 
   openRemoveProjectDialog(){
@@ -195,6 +190,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]
+  }
+
+  navigateBack(){
+    this.router.navigate([{outlets: {modal: null}}]);
   }
 
   get showExternalLinks(): boolean{

@@ -1,0 +1,30 @@
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input [(ngModel)]="searchValue" matInput (keyup)="onFiltersChange()">
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Supervisor</mat-label>
+  <mat-select [(ngModel)]="supervisorIndexNumber" (selectionChange)="onFiltersChange()">
+    <mat-option *ngIf="supervisorIndexNumber !== undefined" [value]="undefined">---</mat-option>
+    <mat-option *ngFor="let supervisor of (supervisors$ | async)" [value]="supervisor.indexNumber">
+      {{ supervisor.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Criteria met</mat-label>
+  <mat-select [(ngModel)]="criteriaMetStatus" (selectionChange)="onFiltersChange()">
+    <mat-option *ngIf="criteriaMetStatus !== undefined" [value]="undefined">---</mat-option>
+    <mat-option [value]="true">Criteria met</mat-option>
+    <mat-option [value]="false">Criteria not met</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-radio-group aria-label="Select an option" [(ngModel)]="semester">
+  <mat-radio-button value="FIRST">First semester</mat-radio-button>
+  <mat-radio-button value="SECOND">Second semester</mat-radio-button>
+</mat-radio-group>
+
+<button *ngIf="isAnyFilterActive()" (click)="resetFilters()" mat-button>reset</button>
