@@ -17,7 +17,7 @@ export class ExternalLinkService {
     filters$ = this.filtersSubject$.asObservable();
 
     externalLinkDataList$: Observable<ExternalLinkData[]> = this.http
-        .get<ExternalLinkData[]>(`/apigateway/project/external-link`)
+        .get<ExternalLinkData[]>(`/pri/project/external-link`)
         .pipe(
             retry(3),
             catchError(
@@ -25,7 +25,7 @@ export class ExternalLinkService {
         )
 
     columnHeaders$: Observable<string[]> = this.http
-        .get<string[]>(`/apigateway/project/external-link/column-header`)
+        .get<string[]>(`/pri/project/external-link/column-header`)
         .pipe(
             retry(3),
             catchError(
@@ -34,7 +34,7 @@ export class ExternalLinkService {
 
     getExternalLinks(projectId: number): Observable<ExternalLink[]> {
         return this.http
-        .get<ExternalLink[]>(`/apigateway/project/${projectId}/external-link`)
+        .get<ExternalLink[]>(`/pri/project/${projectId}/external-link`)
         .pipe(
             retry(3),
             catchError(
@@ -44,7 +44,7 @@ export class ExternalLinkService {
 
     setExternalLinks(projectId: number, externalLinks: ExternalLink[]): Observable<ExternalLink[]> {
         return this.http
-            .put<ExternalLink[]>(`/apigateway/project/${projectId}/external-link`, externalLinks)
+            .put<ExternalLink[]>(`/pri/project/${projectId}/external-link`, externalLinks)
             .pipe(
                 retry(3),
                 catchError(

@@ -14,7 +14,7 @@ export class ProjectService {
 
     getProjectDetails(id: number): Observable<ProjectDetails> {
         return this.http
-            .get<ProjectDetails>(`/apigateway/project/${id}`)
+            .get<ProjectDetails>(`/pri/project/${id}`)
             .pipe(
                 retry(3),
                 catchError(
@@ -24,7 +24,7 @@ export class ProjectService {
 
     removeProject(id: number): Observable<null> {
         return this.http
-            .delete<null>(`/apigateway/project/${id}`)
+            .delete<null>(`/pri/project/${id}`)
             .pipe(
                 retry(3),
                 catchError(
@@ -35,7 +35,7 @@ export class ProjectService {
 
     addProject(project: ProjectDetails): Observable<ProjectDetails> {
         return this.http
-            .post<ProjectDetails>(`/apigateway/project`, project)
+            .post<ProjectDetails>(`/pri/project`, project)
             .pipe(
                 retry(3),
                 catchError(
@@ -45,7 +45,7 @@ export class ProjectService {
 
     updateProject(project: ProjectDetails): Observable<ProjectDetails>  {
         return this.http
-            .put<ProjectDetails>(`/apigateway/project/${project.id}`, project)
+            .put<ProjectDetails>(`/pri/project/${project.id}`, project)
             .pipe(
                 retry(3),
                 catchError(
@@ -55,7 +55,7 @@ export class ProjectService {
 
     updateSupervisorAvailability(supervisorAvailability: SupervisorAvailability[]): Observable<SupervisorAvailability[]> {
         return this.http
-            .put<SupervisorAvailability[]>('/apigateway/project/supervisor/availability', supervisorAvailability)
+            .put<SupervisorAvailability[]>('/pri/project/supervisor/availability', supervisorAvailability)
             .pipe(
                 retry(3),
                 catchError(
@@ -65,7 +65,7 @@ export class ProjectService {
 
     acceptProject(projectId: number): Observable<null> {
         return this.http
-            .patch<null>(`/apigateway/project/${projectId}/accept`, null)
+            .patch<null>(`/pri/project/${projectId}/accept`, null)
             .pipe(
                 retry(3),
                 catchError(
@@ -75,7 +75,7 @@ export class ProjectService {
 
     unacceptProject(projectId: number): Observable<null> {
         return this.http
-            .patch<null>(`/apigateway/project/${projectId}/unaccept`, null)
+            .patch<null>(`/pri/project/${projectId}/unaccept`, null)
             .pipe(
                 retry(3),
                 catchError(
@@ -84,7 +84,7 @@ export class ProjectService {
     }
 
     projects$: Observable<Project[]> = this.http
-        .get<Project[]>('/apigateway/project')
+        .get<Project[]>('/pri/project')
         .pipe(
             retry(3),
             catchError(
@@ -92,7 +92,7 @@ export class ProjectService {
         )
 
      students$: Observable<Student[]> = this.http
-        .get<Student[]>('/apigateway/user/student')
+        .get<Student[]>('/pri/user/student')
         .pipe(
             retry(3),
             catchError(
@@ -101,7 +101,7 @@ export class ProjectService {
 
     supervisorsAvailability$: Observable<SupervisorAvailability[]> = 
         this.http
-            .get<SupervisorAvailability[]>('/apigateway/project/supervisor/availability')
+            .get<SupervisorAvailability[]>('/pri/project/supervisor/availability')
             .pipe(
                 retry(3),
                 catchError(

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
+import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateDisplayedColumns, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
 
 
@@ -76,6 +76,12 @@ export const projectReducer = createReducer(
         return {
             ...state,
             filters: action.filters
+        }
+    }),
+    on(updateDisplayedColumns, (state, action): ProjectState => {
+        return {
+            ...state,
+            filters: {...state.filters, columns: action.columns }
         }
     }),
     on(loadSupervisorAvailabilitySuccess, (state, action): ProjectState => {

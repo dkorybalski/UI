@@ -14,19 +14,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExternalLinkListComponent } from './components/external-link-list/external-link-list.component';
 import { ExternalLinkComponent } from './external-link.component';
 import { ExternalLinkRoutingModule } from './external-link-routing.module';
 import { ExternalLinkFormComponent } from './components/external-link-form/external-link-form.component';
-import { ExternalLinkFiltersComponent } from './components/external-link-filters/external-link-filters.component';
 import { ExternalLinkDetailsComponent } from './components/external-link-details/external-link-details.component';
 
 @NgModule({
   declarations: [
-    ExternalLinkListComponent,
     ExternalLinkComponent,
     ExternalLinkFormComponent,
-    ExternalLinkFiltersComponent,
     ExternalLinkDetailsComponent
   ],
   imports: [
@@ -46,7 +42,7 @@ import { ExternalLinkDetailsComponent } from './components/external-link-details
     MatSortModule,
     MatRadioModule,
     MatSnackBarModule,
-    ExternalLinkRoutingModule
+    ExternalLinkRoutingModule,
   ],
   exports: [
     ExternalLinkDetailsComponent
