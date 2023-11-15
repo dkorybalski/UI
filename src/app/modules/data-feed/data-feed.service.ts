@@ -11,7 +11,7 @@ export class DataFeedService {
 
     uploadStudents(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/apigateway/data/import/student`, data)
+            .post<null>(`/pri/data/import/student`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -33,7 +33,7 @@ export class DataFeedService {
 
     uploadSupervisors(data: FormData): Observable<null>  {
         return this.http
-            .post<null>(`/apigateway/data/import/supervisor`, data)
+            .post<null>(`/pri/data/import/supervisor`, data)
             .pipe(
                 retry(3),
                 catchError(
@@ -43,7 +43,7 @@ export class DataFeedService {
 
     exportStudents(): Observable<any> {
         return this.http
-            .get<HttpResponse<Blob>>(`/apigateway/data/export/student`, this.setHttpHeadersForFile())
+            .get<HttpResponse<Blob>>(`/pri/data/export/student`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(

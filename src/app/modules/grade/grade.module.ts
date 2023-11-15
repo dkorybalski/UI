@@ -17,19 +17,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { StoreModule } from '@ngrx/store';
-import { gradeReducer } from './state/grade.reducer';
-import { GradeEffects } from './state/grade.effects';
-import { EffectsModule } from '@ngrx/effects';
-import { GradeListComponent } from './components/grade-list/grade-list.component';
-import { GradeFiltersComponent } from './components/grade-filters/grade-filters.component';
 import { GradeDetailsComponent } from './components/grade-details/grade-details.component';
 
 @NgModule({
   declarations: [
     GradeComponent,
-    GradeListComponent,
-    GradeFiltersComponent,
     GradeDetailsComponent
   ],
   imports: [
@@ -51,8 +43,6 @@ import { GradeDetailsComponent } from './components/grade-details/grade-details.
     MatRadioModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    StoreModule.forFeature('grade', gradeReducer),
-    EffectsModule.forFeature([GradeEffects]),
   ]
 })
 export class GradeModule { }

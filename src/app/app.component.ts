@@ -71,9 +71,9 @@ export class AppComponent implements OnDestroy, OnInit{
     );
   }
 
-  navigateTo(page: string){
+  navigateTo(page: string, pageQueryParameter?: string){
     this.router.navigate([{outlets: {modal: null}}]).then(
-      () => this.router.navigate([page])
+      () => this.router.navigate([page], { queryParams: { 'page': pageQueryParameter } })
     )
   }
 

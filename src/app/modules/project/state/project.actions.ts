@@ -21,6 +21,11 @@ export const changeFilters = createAction(
     props<{ filters: ProjectFilters }>()
 )
 
+export const updateDisplayedColumns = createAction(
+    '[ProjectList] Update Displayed Columns',
+    props<{ columns: string[] }>()
+)
+
 export const addProject = createAction(
     '[ProjectForm] Add',
     props<{ project: ProjectDetails }>()

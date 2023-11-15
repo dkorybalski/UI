@@ -32,6 +32,7 @@ export interface ProjectFilters {
     supervisorIndexNumber: string | undefined;
     acceptanceStatus: boolean | undefined;
     columns: string[];
+    criteriaMetStatus: boolean | undefined;
 }
 
 export interface ProjectFormData {

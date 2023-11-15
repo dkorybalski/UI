@@ -26,9 +26,9 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
 import { SupervisorAvailabilityListComponent } from './components/supervisor-availability-list/supervisor-availability-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExternalLinkModule } from '../external-link/external-link.module';
 import { ProjectRemoveDialogComponent } from './components/project-remove-dialog/project-remove-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ExternalLinkModule } from '../external-link/external-link.module';
 
 @NgModule({
   declarations: [

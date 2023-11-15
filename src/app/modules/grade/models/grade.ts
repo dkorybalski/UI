@@ -1,14 +1,3 @@
-import { Supervisor } from "../../user/models/supervisor.model";
-
-export interface Grade {
-    id: string;
-    projectName: string;
-    supervisor: Supervisor;
-    firstSemesterGrade: string | null;
-    secondSemesterGrade: string | null;
-    criteriaMet: boolean;
-} 
-
 export interface Criterion {
     description: string;
     mandatory: boolean;

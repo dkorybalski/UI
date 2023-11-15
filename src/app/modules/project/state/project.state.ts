@@ -18,7 +18,8 @@ export const initialState: ProjectState = {
         searchValue: '',
         supervisorIndexNumber: undefined,
         acceptanceStatus: undefined,
-        columns: ['name', 'supervisorName', 'accepted'],
+        columns: ['name'],
+        criteriaMetStatus: undefined,
     },
     supervisorsAvailability: []
 }
