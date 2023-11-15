@@ -1,0 +1,42 @@
+include:
+  - "cicd-config/.rules-ci.yml"
+  - "cicd-config/.variables-ci.yml"
+
+stages:
+  - build
+  - test
+  - deploy
+
+unit-test:
+  extends:
+    - .common-rule
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    # - cd /${CI_PROJECT_DIR}
+    # - sudo npm install
+    # - sudo npm run test
+
+clean:
+  extends:
+    - .after-merge-rule
+  stage: build
+  script:
+    - sudo docker stop pri-ui || true && sudo docker rm pri-ui || true 
+    - sudo docker rmi pri-ui || true
+
+build:
+  extends:
+    - .after-merge-rule
+  stage: build
+  script:
+    - sudo docker build --rm -t pri-ui .
+
+deploy:
+  extends:
+    - .after-merge-rule
+  stage: deploy
+  before_script:
+    - sudo docker version
+  script:
+    - sudo docker run -d --name pri-ui --network=pri-network -p 80:80 pri-ui
