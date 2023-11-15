@@ -13,7 +13,7 @@ export class UserService {
 
     loadUser(): Observable<User> {
         return this.http
-            .get<User>(`/pri/user` , { withCredentials: true })
+            .get<User>(`/pri/user`)
             .pipe(
                 retry(3),
                 catchError(
