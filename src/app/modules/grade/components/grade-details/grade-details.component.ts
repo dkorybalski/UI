@@ -17,10 +17,17 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   user!: UserState;
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});
-  columns = ['criterion', 'description', 'mandatory'];
-  criteriaDetails = {};
-  criteriaSymbols = ['I','II','III','IV'];
+  columns = ['criterion', 'description', 'disqualifying'];
+  criteriaSymbols = ['1p','2p','3p','4p'];
+  criteriaKeys = [
+    'CRITERION_NOT_MET',
+    'UNSUCCESSFUL_ATTEMPT_TO_MEET_THE_CRITERION',
+    'CRITERION_MET_WITH_RESERVATIONS',
+    'CRITERION_MET'
+  ]
   criterionGroupExpandedStatus: { [key: string]: boolean } = {};
+  selectedSemester = 'FIRST';
+  expanded = false;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private fb: FormBuilder) { }
 
@@ -46,7 +53,7 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
   }
 
 
-  isRadioButtonChecked(sectionIndex: string, groupIndex: string, value: number): boolean {
+  isRadioButtonChecked(sectionIndex: string, groupIndex: string, value: string): boolean {
     return this.gradeForm.controls[sectionIndex].controls[groupIndex].value === value
   }
 
@@ -60,6 +67,17 @@ export class GradeDetailsComponent implements OnInit, OnDestroy {
     if (this.gradeForm.valid) {    
       console.log(this.gradeForm.value)
     }
+  }
+
+  expandAllCriteriaDetails(){
+    this.expanded = !this.expanded;
+    for(let key in this.criterionGroupExpandedStatus){
+      this.criterionGroupExpandedStatus[key] = this.expanded;
+    }
+  }
+
+  getSelectedCriterion(sectionId: string, groupId: string){
+    return this.gradeForm.controls[sectionId].controls[groupId].value
   }
 
   getGradeData(sectionIndex: string, groupIndex: string): FormControl {

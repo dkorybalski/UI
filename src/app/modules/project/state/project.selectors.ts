@@ -13,6 +13,11 @@ export const getFilters = createSelector(
     state => state.filters
 );
 
+export const getNumberOfColumns = createSelector(
+    getProjectFeatureState,
+    state => state.filters.columns.length
+);
+
 export const getSupervisorAvailability = createSelector(
     getProjectFeatureState,
     state => state.supervisorsAvailability

@@ -2,15 +2,13 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subject, combineLatest, forkJoin, takeUntil, tap, zip } from 'rxjs';
+import { Subject, combineLatest, takeUntil, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
 import { getFilters, getProjects } from '../../state/project.selectors';
 import { State } from 'src/app/app.state';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { changeFilters, loadProjects, updateDisplayedColumns } from '../../state/project.actions';
+import { ActivatedRoute, Router } from '@angular/router';
+import { changeFilters, loadProjects } from '../../state/project.actions';
 import { Project } from '../../models/project';
-import { isCoordinator } from 'src/app/modules/user/state/user.selectors';
 
 @Component({
   selector: 'project-list',
@@ -21,57 +19,22 @@ import { isCoordinator } from 'src/app/modules/user/state/user.selectors';
 export class ProjectListComponent implements OnDestroy, OnInit{
   @Input() acceptedProjects!: number[];
   @Input() assignedProjects!: number[];
+  @Input() page!: string;
+  @Input() externalLinkColumnHeaders!: string[];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   columns = ['name'];
   projects!: MatTableDataSource<Project>;
-  externalLinkColumnHeaders: string[] = [];
   unsubscribe$ = new Subject();
   loading = true;
-  page: string = 'PROJECT_GROUPS';
 
   constructor(
     private store: Store<State>,
-    private externalLinkService: ExternalLinkService ,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    combineLatest([
-      this.activatedRoute.queryParamMap,
-      this.store.select(isCoordinator),
-      this.externalLinkService.columnHeaders$
-    ])
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(
-        ([params, isCoordinator, externalLinkColumnHeaders]) => {
-          this.externalLinkColumnHeaders = externalLinkColumnHeaders;
-
-          if (params.get('page')) {
-            this.page = params.get('page')!;
-          }
-
-          let displayedColumns = ['name'];
-          if(isCoordinator){
-            displayedColumns.push('supervisorName')
-          }
-
-          switch(this.page){
-            case 'PROJECT_GROUPS':
-              displayedColumns.push('accepted')
-            break;
-            case 'GRADES':
-              displayedColumns.push('firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'); 
-            break;
-            case 'EXTERNAL_LINKS':
-              displayedColumns.push(...externalLinkColumnHeaders)
-            break;
-          }
-
-          this.store.dispatch(updateDisplayedColumns({columns: displayedColumns}));
-        }
-      )
-  
     this.store.dispatch(loadProjects());
 
     combineLatest([
@@ -105,14 +68,12 @@ export class ProjectListComponent implements OnDestroy, OnInit{
           this.projects.paginator = this.paginator;
           this.projects.sort = this.sort;
 
+          // Uncomment if we want to reset sorting after changing page
+          //this.sort.sort({ id: '', start: 'desc', disableClear: false });
+
+
           this.loading = false;
         }
-      }
-    )
-
-    this.externalLinkService.columnHeaders$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      columnHeaders => {
-        this.externalLinkColumnHeaders = columnHeaders;
       }
     )
   }
@@ -149,7 +110,9 @@ export class ProjectListComponent implements OnDestroy, OnInit{
         this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
       break;
       case 'GRADES':
-        this.router.navigate([`grades/details/${projectId}`]) 
+        this.router.navigate([{outlets: {modal: `grades/details/${projectId}`}}]) 
+
+        //this.router.navigate([`grades/details/${projectId}`]) 
       break;
     }
   }

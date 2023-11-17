@@ -30,6 +30,12 @@ const routes: Routes = [
     canActivate: [UserGuard]
   },
   {
+    path: 'grades',
+    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
+    canActivate: [UserGuard],
+    outlet: 'modal',
+  },
+  {
     path: 'external-links',
     loadChildren: () => import('./modules/external-link/external-link.module').then(m => m.ExternalLinkModule),
     canActivate: [UserGuard]
