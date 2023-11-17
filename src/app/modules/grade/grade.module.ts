@@ -18,6 +18,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GradeDetailsComponent } from './components/grade-details/grade-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { GradeDetailsComponent } from './components/grade-details/grade-details.
     MatRadioModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatTabsModule,
   ]
 })
 export class GradeModule { }

@@ -1,13 +1,13 @@
 export interface Criterion {
     description: string;
-    mandatory: boolean;
+    isDisqualifying: boolean;
 }
 
 export interface CriteriaGroup {
     id: string;
     name: string;
-    selectedCriterion: number;
-    criteria: Criterion[];
+    selectedCriterion: string;
+    criteria: {[key: string]: Criterion}
 }
 
 export interface GradeSection {
