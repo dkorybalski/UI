@@ -8,6 +8,8 @@ import { projectAcceptedByStudent } from './modules/user/state/user.selectors';
 import { UserState } from './modules/user/state/user.state';
 import { UserService } from './modules/user/user.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatSelectChange } from '@angular/material/select';
 
 enum ROLE {
   STUDENT = 'student',
@@ -27,8 +29,10 @@ export class AppComponent implements OnDestroy, OnInit{
   user!: UserState;
   unsubscribe$ = new Subject();  
   projectId?: number 
-  learningMode = "PARTTIME";
+  learningMode!: string;
   isModalOpen = false;
+  studyYear!: string;
+  availableStudyYears!: string[];
 
   private _mobileQueryListener: () => void;
 
@@ -45,10 +49,12 @@ export class AppComponent implements OnDestroy, OnInit{
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
 
     this.store.select('user').subscribe(user => {
-      this.user = user
+      this.user = user;
+      this.learningMode = user.actualYear.split('#')[0];
+      this.studyYear = user.actualYear.split('#')[1];
+      this.availableStudyYears = [...new Set(user.studyYears.map(year => year.split('#')[1]))]
     });
     this.store.dispatch(loadUser());
-    
   }
 
   ngOnInit(): void {
@@ -77,12 +83,26 @@ export class AppComponent implements OnDestroy, OnInit{
     )
   }
 
+  studyModeChanged(event: MatButtonToggleChange){
+    this.userService.changeStudyYear(`${this.learningMode}#${this.studyYear}`)
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(
+        () => window.location.reload()
+      )
+  }
+
+  studyYearChanged(event: MatSelectChange){
+    this.userService.changeStudyYear(`${this.learningMode}#${this.studyYear}`)
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+
   get role(): string {
     return ROLE[this.user.role]
   }
 
   get hasBothLearningModes() {
-    return this.user?.studyYears.length === 2;
+    return this.user?.studyYears.filter(year => year.split('#')[1] === this.studyYear).length === 2;
   }
 
   get isLogged() {

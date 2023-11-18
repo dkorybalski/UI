@@ -41,4 +41,3 @@ export const loadUserFailure = createAction(
     '[User API] Load Fail',
     props<{ error: string }>()
 )
-

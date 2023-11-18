@@ -12,7 +12,7 @@ export const userReducer = createReducer(
             ...state,
             ...action.user,
             logged: true,
-            selectedStudyYear: action.user.studyYears[0],
+            actualYear: action.user.actualYear,
         }
     }),
     on(updateProjectSuccess, (state, action): UserState => {

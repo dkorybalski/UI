@@ -7,9 +7,15 @@
       <h4 class="app-name">{{ appName }}</h4>
     </div>
     <div class="user-panel" *ngIf="isLogged">
-      <mat-button-toggle-group *ngIf="hasBothLearningModes" [(ngModel)]="learningMode"  name="fontStyle" aria-label="Font Style">
-        <mat-button-toggle value="FULLTIME">Full-time</mat-button-toggle>
-        <mat-button-toggle value="PARTTIME">Part-time</mat-button-toggle>
+      <mat-form-field *ngIf="availableStudyYears.length > 1">
+        <mat-label>Study year</mat-label>
+        <mat-select (selectionChange)="studyYearChanged($event)" [(ngModel)]="studyYear">
+          <mat-option *ngFor="let year of availableStudyYears" [value]="year">{{ year }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-button-toggle-group (change)="studyModeChanged($event)" *ngIf="hasBothLearningModes" [(ngModel)]="learningMode"  name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle value="FULL_TIME">Full-time</mat-button-toggle>
+        <mat-button-toggle value="PART_TIME">Part-time</mat-button-toggle>
       </mat-button-toggle-group>  
       <div class="user-data">
         <p>{{user.name}}</p>
