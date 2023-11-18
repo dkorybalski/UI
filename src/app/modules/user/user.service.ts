@@ -51,6 +51,16 @@ export class UserService {
             )
     }
 
+    changeStudyYear(studyYear: string): Observable<null> {
+        return this.http
+            .put<null>(`/pri/user/study-year`, { studyYear })
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
     supervisors$: Observable<Supervisor[]> = this.http
         .get<Supervisor[]>('/pri/user/supervisor')
         .pipe(

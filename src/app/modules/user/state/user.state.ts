@@ -3,7 +3,6 @@ import { User } from '../models/user.model';
 
 export interface UserState extends User {
     logged: boolean;
-    selectedStudyYear: string;
     lang: string;
 }
 
@@ -17,7 +16,6 @@ export const initialState: UserState = {
     role: 'STUDENT',
     studyYears: [],
     email: '',
-    selectedStudyYear: '',
     projects: [],
     acceptedProjects: [],
     logged: false,

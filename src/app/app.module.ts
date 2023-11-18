@@ -14,6 +14,7 @@ import { UserInterceptor } from './modules/user/user.interceptor';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FormsModule } from '@angular/forms';
     EffectsModule.forRoot([]),
     MatMenuModule,
     MatButtonToggleModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },

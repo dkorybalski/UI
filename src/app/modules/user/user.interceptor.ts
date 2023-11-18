@@ -15,7 +15,7 @@ export class UserInterceptor implements HttpInterceptor {
                 const modifiedReq = req.clone({
                         setHeaders: {
                             "index-number": user.indexNumber,
-                            "study-year": user.selectedStudyYear,
+                            "study-year": user.actualYear,
                             "lang": user.lang,
                         },
                         withCredentials: true
