@@ -1,9 +1,9 @@
-<mat-form-field>
+<mat-form-field test="search-project-groups">
   <mat-label>Search</mat-label>
   <input [(ngModel)]="searchValue" matInput (keyup)="onFiltersChange()">
 </mat-form-field>
 
-<mat-form-field *ngIf="showSupervisorSelect" appearance="fill">
+<mat-form-field test="supervisor-project-groups" *ngIf="showSupervisorSelect" appearance="fill">
   <mat-label>Supervisor</mat-label>
   <mat-select [(ngModel)]="supervisorIndexNumber" (selectionChange)="onFiltersChange()">
     <mat-option *ngIf="supervisorIndexNumber !== undefined" [value]="undefined">---</mat-option>
@@ -13,7 +13,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="showAcceptanceStatusSelect" appearance="fill">
+<mat-form-field test="acceptance-status-project-groups"  *ngIf="showAcceptanceStatusSelect" appearance="fill">
   <mat-label>Acceptance status</mat-label>
   <mat-select [(ngModel)]="acceptanceStatus" (selectionChange)="onFiltersChange()">
     <mat-option *ngIf="acceptanceStatus !== undefined" [value]="undefined">---</mat-option>
@@ -22,7 +22,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="showDisplayedColumnsSelect" shouldLabelFloat="false">
+<mat-form-field test="selected-columns-project-groups" *ngIf="showDisplayedColumnsSelect" shouldLabelFloat="false">
   <mat-select [(ngModel)]="displayedColumns" multiple (selectionChange)="onFiltersChange()">
     <mat-select-trigger>
       Selected columns: {{displayedColumns.length}}
@@ -31,7 +31,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field *ngIf="showCriteriaMetStatusSelect" appearance="fill">
+<mat-form-field *ngIf="showCriteriaMetStatusSelect" appearance="fill" test="criteria-met-project-groups">
   <mat-label>Criteria met</mat-label>
   <mat-select [(ngModel)]="criteriaMetStatus" (selectionChange)="onFiltersChange()">
     <mat-option *ngIf="criteriaMetStatus !== undefined" [value]="undefined">---</mat-option>
@@ -41,4 +41,4 @@
 </mat-form-field>
 
 
-<button *ngIf="isAnyFilterActive()" (click)="resetFilters()" mat-button>reset</button>
+<button *ngIf="isAnyFilterActive()" (click)="resetFilters()" mat-button test="reset-button-project-groups">reset</button>
