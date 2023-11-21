@@ -1,3 +1,23 @@
+
+
+:host {
+    display: grid;
+    column-gap: 50px;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1300px;
+}
+
+.project-details {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 35px;margin-bottom: 50px;
+}
+
+.grade-title {
+    text-align: center;
+}
+
 p {
     //font-size: 14px;
     text-align: justify;
@@ -72,16 +92,23 @@ mat-dialog-content {
     background: #92e882;
 }
 
-:host {
-    display: flex;
-    column-gap: 50px;
-    height: 100%;
-    margin: 0 auto;
-}
-
 .buttons {
     display: flex;
     justify-content: flex-end;
     column-gap: 15px;
     margin-top: 20px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+
+    a {
+        text-decoration: none;
+        color: black;
+    
+        mat-icon {
+            color: #4050b5;
+        }
+    }
 }

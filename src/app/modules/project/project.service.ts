@@ -1,10 +1,11 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
-import { Project, ProjectDetails } from "./models/project";
 import { Supervisor } from "../user/models/supervisor.model";
 import { SupervisorAvailability } from "./models/supervisor-availability.model";
 import { Student } from "../user/models/student.model";
+import { ExternalLink } from "./models/external-link.model";
+import { Project, ProjectDetails } from "./models/project.model";
 
 @Injectable({
     providedIn: 'root'
@@ -81,6 +82,16 @@ export class ProjectService {
                 catchError(
                     (err: HttpErrorResponse) => throwError(() => err))
             )
+    }
+
+    getExternalLinks(projectId: number): Observable<ExternalLink[]> {
+        return this.http
+        .get<ExternalLink[]>(`/pri/project/${projectId}/external-link`)
+        .pipe(
+            retry(3),
+            catchError(
+                (err: HttpErrorResponse) => throwError(() => err))
+        )
     }
 
     projects$: Observable<Project[]> = this.http

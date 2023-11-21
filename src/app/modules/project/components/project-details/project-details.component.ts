@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProjectDetails } from '../../models/project';
 import { SupervisorAvailability} from '../../models/supervisor-availability.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +13,8 @@ import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSucces
 import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectDetails } from '../../models/project.model';
+import { GradeDetails } from '../../models/grade.model';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -36,6 +37,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   maxAvailabilityFilled: boolean = false;
   data!: ProjectDetails;
   user!: UserState;
+  gradeDetails!: GradeDetails;
+  gradesShown = false;
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -48,9 +51,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     ){}
    
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, gradeDetails}) => {
       this.data = projectDetails;
       this.user = user;
+      this.gradeDetails = gradeDetails;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -187,6 +191,11 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   get showUnacceptButton(){
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
   }
+
+  get showGradesButton(){
+    return true;
+  }
+
 
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]
