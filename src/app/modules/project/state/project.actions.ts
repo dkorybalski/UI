@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { Project, ProjectDetails, ProjectFilters } from "../models/project";
 import { SupervisorAvailability } from "../models/supervisor-availability.model";
+import { Project, ProjectDetails, ProjectFilters } from "../models/project.model";
 
 export const loadProjects = createAction(
     '[ProjectList] Load'

@@ -1,5 +1,7 @@
 :host {
     margin: 0 auto;
+    display: block;
+    max-width: 1200px;
 }
 
 form {
@@ -93,6 +95,14 @@ mat-dialog-content {
 
 mat-form-field {
     width: 100%;
+
+    span {
+        position: absolute;
+        right: 0;
+        top: 3px;
+        font-size: 12px;
+        color: gray;
+    }
 }
 
 .hidden {

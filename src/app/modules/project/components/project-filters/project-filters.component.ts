@@ -4,11 +4,11 @@ import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { changeFilters } from '../../state/project.actions';
-import { ExternalLinkService } from 'src/app/modules/external-link/external-link.service';
 import { getFilters } from '../../state/project.selectors';
 import { UserService } from 'src/app/modules/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { isCoordinator, isSupervisor } from 'src/app/modules/user/state/user.selectors';
+import { ExternalLinkService } from '../../services/external-link.service';
 
 @Component({
   selector: 'project-filters',

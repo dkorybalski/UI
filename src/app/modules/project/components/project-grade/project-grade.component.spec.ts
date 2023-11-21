@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ProjectGradeComponent } from './project-grade.component';
 
-import { ExternalLinkComponent } from './external-link.component';
-
-describe('ExternalLinkComponent', () => {
-  let component: ExternalLinkComponent;
-  let fixture: ComponentFixture<ExternalLinkComponent>;
+describe('ProjectGradeComponent', () => {
+  let component: ProjectGradeComponent;
+  let fixture: ComponentFixture<ProjectGradeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExternalLinkComponent ]
+      declarations: [ ProjectGradeComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ExternalLinkComponent);
+    fixture = TestBed.createComponent(ProjectGradeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -37,10 +37,8 @@
   <mat-sidenav-container>
     <mat-sidenav #snav [mode]="mobileQuery?.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery?.matches" fixedTopGap="56">
       <mat-nav-list>
-        <a mat-list-item (click)="navigateTo('projects', 'PROJECT_GROUPS')">Project groups</a>
-        <a *ngIf="showExternalLinks" mat-list-item (click)="navigateTo('projects', 'EXTERNAL_LINKS')" >External links</a>
+        <a mat-list-item (click)="navigateTo('projects')">Project groups</a>
         <a *ngIf="isCoordinator" mat-list-item (click)="navigateTo('data-feed')">Data feed</a>
-        <a mat-list-item (click)="navigateTo('projects', 'GRADES')">Grades</a>
       </mat-nav-list>
     </mat-sidenav>
 

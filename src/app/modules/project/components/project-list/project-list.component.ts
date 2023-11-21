@@ -8,7 +8,7 @@ import { getFilters, getProjects } from '../../state/project.selectors';
 import { State } from 'src/app/app.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { changeFilters, loadProjects } from '../../state/project.actions';
-import { Project } from '../../models/project';
+import { Project } from '../../models/project.model';
 
 @Component({
   selector: 'project-list',

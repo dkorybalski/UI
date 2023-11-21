@@ -1,5 +1,5 @@
-import { Project, ProjectFilters } from '../models/project'
 import * as AppState from '../../../app.state';
+import { Project, ProjectFilters } from '../models/project.model';
 import { SupervisorAvailability } from '../models/supervisor-availability.model';
 
 export interface State extends AppState.State {

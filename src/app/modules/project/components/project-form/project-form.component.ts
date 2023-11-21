@@ -3,7 +3,6 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from
 import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { ProjectDetails } from '../../models/project';
 import { Student } from 'src/app/modules/user/models/student.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserState } from 'src/app/modules/user/state/user.state';
@@ -13,6 +12,8 @@ import { Store } from '@ngrx/store';
 import { addProject, addProjectSuccess, updateProject, updateProjectSuccess } from '../../state/project.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ExternalLink } from '../../models/external-link.model';
+import { ProjectDetails } from '../../models/project.model';
 
 @Component({
   selector: 'project-form',
@@ -33,6 +34,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     technologies: new FormControl<string[]>([], [Validators.required]),
     supervisorIndexNumber: ['', Validators.required],
     projectAdmin: ['', Validators.required],
+    externalLinks: this.fb.array<ExternalLink>([]),
   });
   projectDetails?: ProjectDetails;
   user!: UserState;
@@ -68,6 +70,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           }));
           this.selectedMembers.push(student);
         })
+        this.projectDetails.externalLinks.forEach(externalLink => {
+          this.externalLinks.controls.push(this.fb.group({
+            id: externalLink.id,
+            url: externalLink.url,
+            name: externalLink.name,
+            columnHeader: externalLink.columnHeader,
+            deadline: externalLink.deadline
+          }));
+        });
         this.projectForm.controls.projectAdmin.setValue(this.projectDetails.admin);
         this.projectForm.controls.supervisorIndexNumber.setValue(this.projectDetails.supervisor.indexNumber);
         this.projectForm.controls.technologies.setValue(this.projectDetails.technologies);
@@ -205,6 +216,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       : true
   }
 
+  get externalLinks(): FormArray {
+    return this.projectForm.get('externalLinks') as FormArray;
+  }
+
+  getExternalLinkFormControl(externalLink: AbstractControl): {name: string, deadline: string, url: FormControl} {
+    return {
+      name: externalLink.get('name')?.value,
+      deadline: externalLink.get('deadline')?.value,
+      url: externalLink.get('url') as FormControl
+    }
+  }
+
   onSubmit(): void {
     if (this.projectForm.valid) {    
       let projectDetails: ProjectDetails = {
@@ -216,6 +239,13 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           indexNumber: control.controls.indexNumber.value,
           email: control.controls.email.value,
           role: control.controls.role.value
+        }}),
+        externalLinks: this.externalLinks.controls.map((control: any) => { return {
+          id: control.controls.id.value,
+          url: control.controls.url.value,
+          name: control.controls.name.value,
+          columnHeader: control.controls.columnHeader.value,
+          deadline: control.controls.deadline.value,
         }}),
         technologies: this.projectForm.controls.technologies.value!,
         admin: this.projectForm.controls.projectAdmin.value!,
