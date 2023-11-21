@@ -25,17 +25,6 @@ const routes: Routes = [
     outlet: 'modal',
   },
   {
-    path: 'grades',
-    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
-    canActivate: [UserGuard]
-  },
-  {
-    path: 'grades',
-    loadChildren: () => import('./modules/grade/grade.module').then(m => m.GradeModule),
-    canActivate: [UserGuard],
-    outlet: 'modal',
-  },
-  {
     path: 'data-feed',
     loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
     canActivate: [CoordinatorGuard]

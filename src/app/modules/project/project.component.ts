@@ -25,7 +25,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   user!: User;
   projectDetailsForEdit?: ProjectDetails;
   projectButtonText!: string;
-  projectId?: number;
+  projectId?: number
   isProjectAdmin?: boolean;
   isCoordinator?: boolean;
   acceptedProjects: number[] = [];

@@ -3,7 +3,7 @@
   <input type="file" class="file-input" (change)="uploadStudents($event)" #studentsFileUpload>
   <div class="file-upload">
     <button mat-mini-fab color="primary" class="upload-btn"
-    (click)="studentsFileUpload.click()">
+    (click)="studentsFileUpload.click()" test="students-attach-button-data-feed">
       <mat-icon>attach_file</mat-icon>
     </button>
     {{studentsFileName || "Students"}}
@@ -13,14 +13,14 @@
   <input type="file" class="file-input" (change)="uploadSupervisors($event)" #supervisorsFileUpload>
   <div class="file-upload">
     <button mat-mini-fab color="primary" class="upload-btn"
-    (click)="supervisorsFileUpload.click()">
+    (click)="supervisorsFileUpload.click()" test="supervisors-attach-button-data-feed">
       <mat-icon>attach_file</mat-icon>
     </button>
     {{supervisorsFileName || "Supervisors"}}
 
   </div>  
 
-  <button (click)=uploadFiles() mat-raised-button color="primary">Submit</button>
+  <button (click)=uploadFiles() mat-raised-button color="primary" test="submit-button-data-feed">Submit</button>
 </div>
 
 <h2>Export</h2>
