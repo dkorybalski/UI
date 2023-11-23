@@ -9,7 +9,7 @@ import { userResolver } from '../user/resolvers/user.resolver';
 import { studentResolver } from './resolvers/student.resolver';
 import { supervisorResolver } from './resolvers/supervisor.resolver';
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
-import { gradeDetailsResolver } from './resolvers/grade-details.resolver';
+import { evaulationCardsResolver } from './resolvers/grade-details.resolver';
 
 const routes: Routes = [
   { 
@@ -41,7 +41,7 @@ const routes: Routes = [
       user: userResolver,
       projectDetails: projectResolver,
       supervisorAvailability: supervisorAvailabilityResolver,
-      gradeDetails: gradeDetailsResolver
+      evaluationCards: evaulationCardsResolver
     },
   },
   { path: '', component: ProjectComponent },

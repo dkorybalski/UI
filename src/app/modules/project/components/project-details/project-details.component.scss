@@ -23,6 +23,10 @@ p {
     text-align: justify;
 }
 
+::ng-deep .mat-mdc-tab-disabled {
+    display: none !important;  
+}
+
 ::ng-deep .mat-mdc-standard-chip {
     background-color: #dde2ff !important;
 }

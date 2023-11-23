@@ -86,23 +86,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
             this.page = params.get('page')!;
           }
 
-          this.displayedColumns = ['name'];
-          if(this.isCoordinator){
-            this.displayedColumns.push('supervisorName')
-          }
-
-          switch(this.page){
-            case 'PROJECT_GROUPS':
-              this.displayedColumns.push('accepted')
-            break;
-            case 'GRADES':
-              this.displayedColumns.push('firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'); 
-            break;
-            case 'EXTERNAL_LINKS':
-              this.displayedColumns.push(...externalLinkColumnHeaders)
-            break;
-          }
-
+          this.displayedColumns = ['name','supervisorName','accepted','firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'];
+          this.displayedColumns.push(...externalLinkColumnHeaders)
           this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
       )
