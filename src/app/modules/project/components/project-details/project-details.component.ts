@@ -14,7 +14,8 @@ import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectDetails } from '../../models/project.model';
-import { GradeDetails } from '../../models/grade.model';
+import { EvaluationCard, EvaluationCards } from '../../models/grade.model';
+import { KeyValue } from '@angular/common';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -37,7 +38,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   maxAvailabilityFilled: boolean = false;
   data!: ProjectDetails;
   user!: UserState;
-  gradeDetails!: GradeDetails;
+  evaluationCards!: EvaluationCards;
   gradesShown = false;
   
   constructor(
@@ -51,10 +52,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     ){}
    
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, gradeDetails}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
-      this.gradeDetails = gradeDetails;
+      this.evaluationCards = evaluationCards;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -71,6 +72,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
+  keepOrder = (a: any, b: any) => {
+    return a;
+  }
 
   acceptProject(): void {
     this.store.dispatch(acceptProject({projectId: this.data.id!, role: this.user.role}))
@@ -193,9 +197,28 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   get showGradesButton(){
-    return true;
+    return this.evaluationCards;
   }
 
+  getEvaluationCardsTranslations(key: string): string{
+    const translations: {[key: string]: string} = {
+      'FIRST': 'First semester',
+      'SECOND': 'Second semester',
+      'SEMESTER_PHASE': 'Semester phase',
+      'DEFENSE_PHASE': 'Defense phase',
+      'RETAKE_PHASE': 'Retake phase',
+    }
+
+    return translations[key];
+  }
+
+  isOnlyOnePhaseVisible(semester: {[key: string]: EvaluationCard}): boolean {
+    return Object.keys(semester).filter(key => semester[key]['visible']).length === 1;
+  }
+
+  allPhasesAreNotVisible(semester: {[key: string]: EvaluationCard}): boolean {
+    return Object.keys(semester).filter(key => semester[key]['visible']).length === 0;
+  }
 
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]

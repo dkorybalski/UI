@@ -119,7 +119,6 @@ export class AppComponent implements OnDestroy, OnInit{
 
   get modalIsOpen(){
     return this.activatedRoute.params.subscribe(params => {
-      console.log(params["modal"] !== undefined)
       return params["modal"] !== undefined
     })
   }

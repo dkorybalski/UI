@@ -2,7 +2,6 @@ import { Student } from "../../user/models/student.model";
 import { Supervisor } from "../../user/models/supervisor.model";
 import { User } from "../../user/models/user.model";
 import { ExternalLink } from "./external-link.model";
-import { GradeDetails } from "./grade.model";
 
 export interface Project {
     id?: number;

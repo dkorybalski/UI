@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry, throwError, catchError } from "rxjs";
-import { GradeDetails } from "../models/grade.model";
+import { EvaluationCards } from "../models/grade.model";
 
 @Injectable({
     providedIn: 'root'
@@ -9,10 +9,18 @@ import { GradeDetails } from "../models/grade.model";
 export class GradeService {
     constructor(private http: HttpClient) { }
 
-    getGradeDetails(id: number, semester = 'FIRST'): Observable<GradeDetails> {
+    getEvaluationCards(id: number): Observable<EvaluationCards> {
+            return this.http.get<EvaluationCards>(`/pri/project/${id}/evaluation-card`)
+                .pipe(
+                    retry(3),
+                    catchError(
+                        (err: HttpErrorResponse) => throwError(() => err))
+                )
+        }
+
+    changeGrade(projectId: number, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<null>  {
             return this.http
-                .get<GradeDetails>(`/pri/project/${id}/grade`,
-                    {params: new HttpParams().set('semester', semester)})
+                .put<null>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
                 .pipe(
                     retry(3),
                     catchError(

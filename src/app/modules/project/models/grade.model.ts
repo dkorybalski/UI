@@ -6,25 +6,29 @@ export interface Criterion {
 export interface CriteriaGroup {
     id: string;
     name: string;
-    selectedCriterion: string;
+    modificationDate: string | null; // 21.01.2021 | null
+    gradeWeight: string;
+    selectedCriterion: string | null;
     criteria: {[key: string]: Criterion}
 }
 
 export interface GradeSection {
     id: string;
     name: string;
+    gradeWeight: string;
     criteriaGroups: CriteriaGroup[];
 }
 
-export interface GradeDetails {
-    semester: 'FIRST' | 'SECOND';
-    grade: string | null;
-    sections: GradeSection[];
+export interface EvaluationCards {
+   [key: string]: { // SEMESTER
+        [key: string]: EvaluationCard // PHASE
+   }
 }
 
-export interface GradeFilters {
-    searchValue: string;
-    supervisorIndexNumber: string | undefined;
-    criteriaMetStatus: boolean | undefined;
-    semester: 'FIRST' | 'SECOND';
+export interface EvaluationCard {
+    id: string
+    grade: string | null;
+    sections: GradeSection[];
+    editable: boolean,
+    visible: boolean,
 }

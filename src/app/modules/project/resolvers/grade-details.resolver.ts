@@ -1,9 +1,9 @@
 import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from "@angular/router";
-import { GradeDetails } from "../models/grade.model";
 import { GradeService } from "../services/grade.service";
+import { EvaluationCards } from "../models/grade.model";
 
-export const gradeDetailsResolver: ResolveFn<GradeDetails> =
+export const evaulationCardsResolver: ResolveFn<EvaluationCards> =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-      return inject(GradeService).getGradeDetails(Number(route.paramMap.get('id')!));
+      return inject(GradeService).getEvaluationCards(Number(route.paramMap.get('id')!));
 };

@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { GradeDetails } from '../../models/grade.model';
+import { EvaluationCard } from '../../models/grade.model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { GradeService } from '../../services/grade.service';
 
 @Component({
   selector: 'project-grade',
@@ -12,7 +13,9 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 })
 export class ProjectGradeComponent implements OnInit, OnDestroy {
 
-  @Input() data!: GradeDetails;
+  @Input() evaulationCard!:  EvaluationCard;
+  @Input() projectId!: number;
+  data!: EvaluationCard;
   unsubscribe$ = new Subject();
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});
   columns = ['criterion', 'description', 'disqualifying'];
@@ -28,11 +31,10 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
   expanded = false;
   
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private fb: FormBuilder) { }
+  constructor(private gradeSerice: GradeService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({gradeDetails}) => {
-      this.data = gradeDetails;
+      this.data = this.evaulationCard;
 
       this.data.sections.forEach(section => {
         this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
@@ -41,9 +43,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
           this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
           this.criterionGroupExpandedStatus[`${section.id}_${group.id}`] = false;
         })
-
       })
-    })
   }
 
   navigateBack(){
@@ -56,11 +56,16 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
   }
 
   selectCriterion(sectionIndex: string, groupIndex: string, key: string): void {
+    console.log('hey')
     this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
+    this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
+      .pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
   unselectCriterion(sectionIndex: string, groupIndex: string): void {
     this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(null);
+    this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: null })
+      .pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
  
   isDisqualifying(sectionIndex: string, groupIndex: string, key: string): boolean | undefined {
