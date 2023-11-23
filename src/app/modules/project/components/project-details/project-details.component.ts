@@ -217,11 +217,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   isOnlyOnePhaseVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    return Object.keys(semester).filter(key => semester[key]['visible']).length === 1;
+    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 1;
   }
 
   allPhasesAreNotVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    return Object.keys(semester).filter(key => semester[key]['visible']).length === 0;
+    
+    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 0;
   }
 
   getRole(role: keyof typeof ROLE): string {

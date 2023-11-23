@@ -70,61 +70,52 @@
 </div>
 <mat-tab-group *ngIf="gradesShown" class="mat-elevation-z8">
   <mat-tab 
-    *ngIf="!allPhasesAreNotVisible(evaluationCards['FIRST'])" [label]="'First semester'"
+    *ngIf="evaluationCards['FIRST']" [label]="'First semester'"
   >
     <mat-tab-group>
       <mat-tab 
-        *ngIf="evaluationCards['FIRST']['SEMESTER_PHASE']?.visible"
+        *ngIf="evaluationCards['FIRST']['SEMESTER_PHASE']"
         [label]="getEvaluationCardsTranslations('SEMESTER_PHASE')"
-        [class.hidden]="!evaluationCards['FIRST']['SEMESTER_PHASE'].visible || (!evaluationCards['FIRST']['DEFENSE_PHASE'].visible && !evaluationCards['FIRST']['RETAKE_PHASE'].visible)"
-        [disabled]="!evaluationCards['FIRST']['SEMESTER_PHASE'].visible || (!evaluationCards['FIRST']['DEFENSE_PHASE'].visible && !evaluationCards['FIRST']['RETAKE_PHASE'].visible)"
+        [disabled]="!evaluationCards['FIRST']['RETAKE_PHASE'] && !evaluationCards['FIRST']['DEFENSE_PHASE']"
       >
         <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="FIRST" [evaulationCard]="evaluationCards['FIRST']['SEMESTER_PHASE']"></project-grade>
       </mat-tab>
       <mat-tab 
-        *ngIf="evaluationCards['FIRST']['DEFENSE_PHASE']?.visible"
+        *ngIf="evaluationCards['FIRST']['DEFENSE_PHASE']"
         [label]="getEvaluationCardsTranslations('DEFENSE_PHASE')"
-        [class.hidden]="!evaluationCards['FIRST']['DEFENSE_PHASE'].visible"
-        [disabled]="!evaluationCards['FIRST']['DEFENSE_PHASE'].visible"
       >
-        <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="FIRST" [evaulationCard]="evaluationCards['FIRST']['SEMESTER_PHASE']"></project-grade>
+        <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="FIRST" [evaulationCard]="evaluationCards['FIRST']['DEFENSE_PHASE']"></project-grade>
       </mat-tab>
       <mat-tab 
-        *ngIf="evaluationCards['FIRST']['RETAKE_PHASE']?.visible"
+        *ngIf="evaluationCards['FIRST']['RETAKE_PHASE']"
         [label]="getEvaluationCardsTranslations('RETAKE_PHASE')"
-        [class.hidden]="!evaluationCards['FIRST']['RETAKE_PHASE'].visible"
-        [disabled]="!evaluationCards['FIRST']['RETAKE_PHASE'].visible"
       >
         <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="FIRST" [evaulationCard]="evaluationCards['FIRST']['RETAKE_PHASE']"></project-grade>
       </mat-tab>
     </mat-tab-group>
   </mat-tab>
   <mat-tab 
-    *ngIf="!allPhasesAreNotVisible(evaluationCards['SECOND'])" [label]="'Second semester'"
+    *ngIf="evaluationCards['SECOND']" [label]="'Second semester'"
   >
     <mat-tab-group>
       <mat-tab 
-        *ngIf="evaluationCards['SECOND']['SEMESTER_PHASE']?.visible"
+        *ngIf="evaluationCards['SECOND']['SEMESTER_PHASE']"
         [label]="getEvaluationCardsTranslations('SEMESTER_PHASE')"
-        [class.hidden]="!evaluationCards['SECOND']['SEMESTER_PHASE'].visible || (!evaluationCards['SECOND']['DEFENSE_PHASE'].visible && !evaluationCards['SECOND']['RETAKE_PHASE'].visible)"
-        [disabled]="!evaluationCards['SECOND']['SEMESTER_PHASE'].visible || (!evaluationCards['SECOND']['DEFENSE_PHASE'].visible && !evaluationCards['SECOND']['RETAKE_PHASE'].visible)"
+        [disabled]="!evaluationCards['SECOND']['RETAKE_PHASE'] && !evaluationCards['SECOND']['DEFENSE_PHASE']"
+
       >
         <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="SECOND" [evaulationCard]="evaluationCards['SECOND']['SEMESTER_PHASE']"></project-grade>
       </mat-tab>
       <mat-tab 
-        *ngIf="evaluationCards['SECOND']['DEFENSE_PHASE']?.visible"
+        *ngIf="evaluationCards['SECOND']['DEFENSE_PHASE']"
         [label]="getEvaluationCardsTranslations('DEFENSE_PHASE')"
-        [class.hidden]="!evaluationCards['SECOND']['DEFENSE_PHASE'].visible"
-        [disabled]="!evaluationCards['SECOND']['DEFENSE_PHASE'].visible"
       >
-        <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="SECOND"  [evaulationCard]="evaluationCards['SECOND']['SEMESTER_PHASE']"></project-grade>
+        <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="SECOND"  [evaulationCard]="evaluationCards['SECOND']['DEFENSE_PHASE']"></project-grade>
         <h2>Grade: {{evaluationCards['SECOND']['DEFENSE_PHASE'].grade}}</h2>
       </mat-tab>
       <mat-tab 
-        *ngIf="evaluationCards['SECOND']['RETAKE_PHASE']?.visible"
+        *ngIf="evaluationCards['SECOND']['RETAKE_PHASE']"
         [label]="getEvaluationCardsTranslations('RETAKE_PHASE')"
-        [class.hidden]="!evaluationCards['SECOND']['RETAKE_PHASE'].visible"
-        [disabled]="!evaluationCards['SECOND']['RETAKE_PHASE'].visible"
       >
         <project-grade (gradeChange)="onGradeChange($event)" [projectId]="data.id!" semester="SECOND" [evaulationCard]="evaluationCards['SECOND']['RETAKE_PHASE']"></project-grade>
       </mat-tab>
