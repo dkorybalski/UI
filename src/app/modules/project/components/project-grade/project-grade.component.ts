@@ -44,6 +44,8 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
 
       this.grade = this.data.grade ? this.data.grade : '0%';
 
+      this.gradeChange.emit(this.grade);
+
       this.data.sections.forEach(section => {
         this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
 
