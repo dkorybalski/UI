@@ -32,6 +32,10 @@ import { ProjectGradeComponent } from './components/project-grade/project-grade.
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+
 
 
 @NgModule({
@@ -69,6 +73,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatDividerModule,
     MatTabsModule,
     MatButtonToggleModule,
+    MatTooltipModule,
+    MatExpansionModule,
+    MatMenuModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects]),
   ]

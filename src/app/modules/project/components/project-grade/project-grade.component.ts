@@ -56,16 +56,20 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
   }
 
   selectCriterion(sectionIndex: string, groupIndex: string, key: string): void {
-    console.log('hey')
-    this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
-    this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
-      .pipe(takeUntil(this.unsubscribe$)).subscribe()
+    if(this.data.editable){
+      this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
+      this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
+        .pipe(takeUntil(this.unsubscribe$)).subscribe()
+    }
+
   }
 
   unselectCriterion(sectionIndex: string, groupIndex: string): void {
-    this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(null);
-    this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: null })
-      .pipe(takeUntil(this.unsubscribe$)).subscribe()
+    if(this.data.editable){
+      this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(null);
+      this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: null })
+        .pipe(takeUntil(this.unsubscribe$)).subscribe()    
+    }
   }
  
   isDisqualifying(sectionIndex: string, groupIndex: string, key: string): boolean | undefined {

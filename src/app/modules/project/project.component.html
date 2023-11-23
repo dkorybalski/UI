@@ -1,12 +1,25 @@
 <div>
     <div class="title-and-add-project-button">
         <h1>{{ pageTitle }}</h1>
-        <button *ngIf="showEditOrAddProjectButton" (click)="openProjectForm()" mat-raised-button color="primary">
-            {{ projectButtonText }}
-        </button>
+        <div>
+            <button mat-button [matMenuTriggerFor]="supervisorAvailability">Supervisor availability</button>
+            <button *ngIf="showEditOrAddProjectButton"  (click)="openProjectForm()" mat-raised-button color="primary">
+                {{ projectButtonText }}
+            </button>
+            <mat-menu xPosition="before" #supervisorAvailability="matMenu">
+                <div class="supervisor-availability-menu" >
+                    <supervisor-availability-list/>
+                    <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
+                        Edit availability
+                    </button>
+                </div>
+            </mat-menu>
+        </div>
+       
     </div>
     <div class="project-filters-container">
         <project-filters [showExternalLinkColumns]="showExternalLinkColumns"></project-filters>
+        
     </div>
     <div [class.full-width]="mainTableFullWidth" class="tables">   
         <div class="project-list-container">
@@ -17,12 +30,6 @@
                 [page]="page"
                 />
 
-        </div>
-        <div *ngIf="isProjectGroupsPage" class="supervisor-availability-list-container">
-            <supervisor-availability-list/>
-            <button [class.hidden]="!isCoordinator" (click)="openSupervisorAvailabilityForm()" mat-raised-button color="primary">
-                Edit availability
-            </button>
         </div>
     </div>
 </div>
