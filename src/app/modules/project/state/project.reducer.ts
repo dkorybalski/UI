@@ -105,7 +105,7 @@ export const projectReducer = createReducer(
                         ...project,
                         criteriaMet: action.criteriaMet,
                         firstSemesterGrade: action.semester === 'FIRST' ? action.grade : project.firstSemesterGrade,
-                        secondSemesterGrade: action.semester === 'SECOND' ? action.grade : project.firstSemesterGrade,
+                        secondSemesterGrade: action.semester === 'SECOND' ? action.grade : project.secondSemesterGrade
                     }
                 }
                 return project;
