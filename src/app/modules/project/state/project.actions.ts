@@ -101,6 +101,11 @@ export const removeProjectFailure = createAction(
     props<{ error: string }>()
 )
 
+export const updateGrade = createAction(
+    '[Project Details] Update Grade',
+    props<{ semester: string, projectId: number, grade: string, criteriaMet: boolean }>()
+)
+
 export const loadSupervisorAvailability = createAction(
     '[SupervisorAvailability] Load'
 )
@@ -129,4 +134,5 @@ export const updateSupervisorAvailabilityFailure = createAction(
     '[SupervisorAvailability API] Update Fail',
     props<{ error: string }>()
 )
+
 
