@@ -1,10 +1,13 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EvaluationCard } from '../../models/grade.model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { GradeService } from '../../services/grade.service';
+import { updateGrade } from '../../state/project.actions';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/app.state';
 
 @Component({
   selector: 'project-grade',
@@ -27,14 +30,19 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
     'CRITERION_MET'
   ]
   criterionGroupExpandedStatus: { [key: string]:  boolean } = {};
-  selectedSemester = 'FIRST';
+  @Input() semester!: string;
   expanded = false;
-  
+  grade!: string;
+  @Output() gradeChange: EventEmitter<string> = new EventEmitter();
 
-  constructor(private gradeSerice: GradeService, private router: Router, private fb: FormBuilder) { }
+
+  constructor(private gradeSerice: GradeService, private router: Router, private fb: FormBuilder, private store: Store<State>,
+    ) { }
 
   ngOnInit(): void {
       this.data = this.evaulationCard;
+
+      this.grade = this.data.grade ? this.data.grade : '0%';
 
       this.data.sections.forEach(section => {
         this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
@@ -59,7 +67,13 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
     if(this.data.editable){
       this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
-        .pipe(takeUntil(this.unsubscribe$)).subscribe()
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(
+          (value: any) => {
+            this.grade = value.grade;
+            this.gradeChange.emit(value.grade);
+            this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
+          }
+        )
     }
 
   }
@@ -68,7 +82,13 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
     if(this.data.editable){
       this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(null);
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: null })
-        .pipe(takeUntil(this.unsubscribe$)).subscribe()    
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(
+          (value: any) => {
+            this.grade = value.grade;
+            this.gradeChange.emit(value.grade);
+            this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
+          }
+        )  
     }
   }
  

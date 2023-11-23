@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateDisplayedColumns, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
+import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateDisplayedColumns, updateGrade, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
 
 
@@ -94,6 +94,22 @@ export const projectReducer = createReducer(
         return {
             ...state,
             supervisorsAvailability: action.supervisorAvailability
+        }
+    }),
+    on(updateGrade, (state, action): ProjectState => {
+        return {
+            ...state,
+            projects: [...state.projects!].map(project => {
+                if (project.id === action.projectId) {
+                    return {
+                        ...project,
+                        criteriaMet: action.criteriaMet,
+                        firstSemesterGrade: action.semester === 'FIRST' ? action.grade : project.firstSemesterGrade,
+                        secondSemesterGrade: action.semester === 'SECOND' ? action.grade : project.firstSemesterGrade,
+                    }
+                }
+                return project;
+            }) 
         }
     })
 );

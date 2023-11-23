@@ -39,7 +39,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   data!: ProjectDetails;
   user!: UserState;
   evaluationCards!: EvaluationCards;
-  gradesShown = false;
+  gradesShown = true;
+  grade: string = '0%';
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -55,6 +56,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
+      this.gradesShown = this.evaluationCards !== undefined || this.evaluationCards !== null;
       this.evaluationCards = evaluationCards;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
@@ -74,6 +76,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   keepOrder = (a: any, b: any) => {
     return a;
+  }
+
+  onGradeChange(grade: string){
+    this.grade = grade;
   }
 
   acceptProject(): void {
@@ -196,9 +202,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
   }
 
-  get showGradesButton(){
-    return this.evaluationCards;
-  }
+
 
   getEvaluationCardsTranslations(key: string): string{
     const translations: {[key: string]: string} = {

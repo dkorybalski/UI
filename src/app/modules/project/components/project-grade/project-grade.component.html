@@ -32,7 +32,7 @@
                             <h3>{{ criteriaGroup.name }}</h3>
                         </td>
                         <td class="centered-cell" [class.disqualifying]="isDisqualifying(section.id, criteriaGroup.id, key)" *ngFor="let key of criteriaKeys">
-                            <mat-radio-group [formControl]="getGradeData(section.id, criteriaGroup.id)">
+                            <mat-radio-group >
                                 <mat-radio-button matTooltipPosition="above" 
                                  [matTooltip]="isDisqualifying(section.id, criteriaGroup.id, key) ? 'Disqualifying' : ''"    (click)="selectCriterion(section.id, criteriaGroup.id, key)"
                                  [disabled]="!data.editable"  [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, key)" [value]="key" />
@@ -77,9 +77,6 @@
                 </ng-container>
             </ng-container>
         </tbody>
-     </table>
-     <div class="buttons-container">
-        <h2>Grade: 30%</h2>
-    </div>
+    </table>
  </form>
  
