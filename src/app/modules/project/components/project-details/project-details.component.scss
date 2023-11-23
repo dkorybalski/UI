@@ -19,7 +19,6 @@
 }
 
 p {
-    //font-size: 14px;
     text-align: justify;
 }
 
@@ -83,6 +82,21 @@ mat-dialog-content {
     max-width: 800px;
     grid-gap: 10px
 }
+
+::ng-deep .mdc-tab {
+    border-right: 2px solid #e7e7e7 !important;
+}
+
+::ng-deep .mdc-tab-indicator__content {
+    border-color:  #e7e7e7 !important;
+    opacity: 1 !important;
+}
+
+::ng-deep .mdc-tab-indicator--active .mdc-tab-indicator__content {
+    border-color: var(--mdc-tab-indicator-active-indicator-color, #3f51b5) !important;
+}
+
+
 
 .ellipse {
     width: 15px;

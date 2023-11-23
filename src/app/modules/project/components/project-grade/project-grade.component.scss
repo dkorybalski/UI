@@ -140,26 +140,38 @@ td h3 {
 
     .all-criteria  {
         display: grid;
-        max-width: 500px;
         .criterion-description {
             display: flex;
-            column-gap: 20px;
             padding: 10px;
             cursor: pointer;
+            justify-content: space-between;
+            border-bottom: 1px solid #e7e7e7;
+
+            div {
+                display: flex;
+                column-gap: 10px;
+                max-width: 500px;
+            }
             
 
             p {
                 margin: 0px;
                 padding: 0px;
+                display: flex;
+                align-items: center;
             }
 
-            span {
-                font-size: 12px;
-                font-weight: bold;
-                padding: 10px;
-                color: black;
+            mat-icon {
+                color: gray;
             }
+
+           
             
+        }
+
+        .criterion-description:last-of-type  {
+            border-bottom: none
+
         }
         .selected-row {
             background:#e2ffe2;
