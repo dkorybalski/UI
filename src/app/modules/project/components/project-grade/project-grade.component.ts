@@ -22,7 +22,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});
   columns = ['criterion', 'description', 'disqualifying'];
-  criteriaSymbols = ['1p','2p','3p','4p'];
+  criteriaSymbols = ['0p','1p','3p','4p'];
   criteriaKeys = [
     'CRITERION_NOT_MET',
     'UNSUCCESSFUL_ATTEMPT_TO_MEET_THE_CRITERION',
@@ -90,10 +90,10 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
             this.gradeChange.emit(value.grade);
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
           }
-        )  
+        )
     }
   }
- 
+
   isDisqualifying(sectionIndex: string, groupIndex: string, key: string): boolean | undefined {
     return this.data.sections.find(section => section.id === sectionIndex)?.criteriaGroups.find(group => group.id === groupIndex)?.criteria[key].isDisqualifying
   }
@@ -103,9 +103,9 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete()
   }
 
-  
+
   onSubmit(): void {
-    if (this.gradeForm.valid) {    
+    if (this.gradeForm.valid) {
       console.log(this.gradeForm.value)
     }
   }
