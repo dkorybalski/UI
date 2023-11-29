@@ -39,4 +39,4 @@ deploy:
   before_script:
     - sudo docker version
   script:
-    - sudo docker run -d --name pri-ui --network=pri-network -p 80:80 pri-ui
+    - sudo docker run -v /etc/letsencrypt/ssl:/etc/letsencrypt/ssl -d --name pri-ui --network=pri-network -p 443:443 pri-ui
