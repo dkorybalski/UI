@@ -18,7 +18,7 @@ export const projectReducer = createReducer(
                 id: action.project.id,
                 name: action.project.name,
                 supervisor: action.project.supervisor,
-                accepted: false
+                accepted: action.userRole === 'COORDINATOR'
             }]
         }
     }),

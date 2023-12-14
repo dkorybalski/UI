@@ -54,7 +54,7 @@ export class ProjectEffects {
             ofType(addProject),
             mergeMap((action) => this.projectService.addProject(action.project)
                 .pipe(
-                    map((project) => addProjectSuccess({project})),
+                    map((project) => addProjectSuccess({project, userRole: action.userRole})),
                     catchError(error => of(addProjectFailure({ error })))
                 )
             )

@@ -25,8 +25,8 @@ export const userReducer = createReducer(
     on(addProjectSuccess, (state, action): UserState => {
         return {
             ...state,
-            acceptedProjects: [action.project.id!],
-            role: 'PROJECT_ADMIN'
+            acceptedProjects: state.role === 'COORDINATOR' ? [] : [action.project.id!],
+            role: state.role === 'COORDINATOR' ? state.role : 'PROJECT_ADMIN'
         }
     }),
     on(acceptProjectSuccess, (state, action): UserState => {
