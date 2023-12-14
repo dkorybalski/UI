@@ -251,8 +251,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         }}),
         technologies: this.projectForm.controls.technologies.value!,
         admin: this.projectForm.controls.projectAdmin.value!,
-        accepted: this.projectDetails ? this.projectDetails?.accepted! : false,
-        confirmed: this.projectDetails ? this.projectDetails?.confirmed! : false,
+        accepted: this.user.role === 'COORDINATOR' || (this.projectDetails ? this.projectDetails?.accepted! : false),
+        confirmed: this.user.role === 'COORDINATOR' || (this.projectDetails ? this.projectDetails?.confirmed! : false),
         supervisor: this.supervisors.find(
           supervisor => supervisor.indexNumber === this.projectForm.controls.supervisorIndexNumber.value
         )!
