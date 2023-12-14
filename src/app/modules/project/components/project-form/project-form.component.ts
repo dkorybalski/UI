@@ -84,15 +84,17 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.projectForm.controls.technologies.setValue(this.projectDetails.technologies);
         this.technologies = this.projectDetails.technologies;
       } else {
-        this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
+        if(this.user.role !== 'COORDINATOR'){
+          this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
   
-        this.members.push(this.fb.group({
-          name: this.user.name,
-          indexNumber: this.user.indexNumber,
-          email: this.students.find(student => student.indexNumber === user.indexNumber)?.email,
-          accepted: true,
-          role: [null, Validators.required]
-        }));
+          this.members.push(this.fb.group({
+            name: this.user.name,
+            indexNumber: this.user.indexNumber,
+            email: this.students.find(student => student.indexNumber === user.indexNumber)?.email,
+            accepted: true,
+            role: [null, Validators.required]
+          }));
+        }
       }
     })
 
@@ -193,7 +195,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     if(this.projectDetails){
       return this.projectDetails.students.slice().filter(student => student.accepted)
     } else {
-      return []
+      return this.user.role === 'COORDINATOR' ? this.selectedMembers : [];
     }
   }
 
@@ -205,9 +207,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   get showProjectAdminField() {
-    return this.projectDetails?.accepted 
-      ? (this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR')
-      : this.projectDetails
+    return (this.projectDetails?.accepted 
+      ? (this.user.role === 'SUPERVISOR')
+      : this.projectDetails) || this.user.role === 'COORDINATOR'
   }
 
   get showMembersField() {
@@ -256,16 +258,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         )!
       }
 
-      if(this.user.role === 'STUDENT'){
-        this.store.dispatch(addProject({project: projectDetails}))
-        this.actions$.pipe(ofType(addProjectSuccess),takeUntil(this.unsubscribe$)).subscribe((project) => {
-          this._snackbar.open('Project successfully created', 'close');
-          this.router.navigate([{outlets: {modal: null}}]);
-        });
-      } else {
+      if(this.projectDetails){
         this.store.dispatch(updateProject({project: projectDetails}))
         this.actions$.pipe(ofType(updateProjectSuccess),takeUntil(this.unsubscribe$)).subscribe(() => {
           this._snackbar.open('Project successfully updated', 'close');
+          this.router.navigate([{outlets: {modal: null}}]);
+        });
+      } else {
+        this.store.dispatch(addProject({project: projectDetails, userRole: this.user.role}))
+        this.actions$.pipe(ofType(addProjectSuccess),takeUntil(this.unsubscribe$)).subscribe((project) => {
+          this._snackbar.open('Project successfully created', 'close');
           this.router.navigate([{outlets: {modal: null}}]);
         });
       }

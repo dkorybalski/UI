@@ -1,0 +1,32 @@
+:host {
+    width: 100%;
+
+    ::ng-deep .mat-mdc-tab-body-wrapper, ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active  {
+        padding: 0px !important;
+        overflow: visible !important;
+    }
+    
+    ::ng-deep .mat-mdc-tab-body-content  {
+        overflow-y: hidden !important;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .committee-selection-container {
+        display: grid;
+        width: 100%;
+    
+        .tables-container {
+            column-gap: 50px;
+            display: flex;
+        }
+    
+        .buttons-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    }
+    
+}
+

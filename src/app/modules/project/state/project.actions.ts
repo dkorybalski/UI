@@ -28,12 +28,12 @@ export const updateDisplayedColumns = createAction(
 
 export const addProject = createAction(
     '[ProjectForm] Add',
-    props<{ project: ProjectDetails }>()
+    props<{ project: ProjectDetails, userRole: string }>()
 )
 
 export const addProjectSuccess = createAction(
     '[ProjectForm API] Add Success',
-    props<{ project: ProjectDetails }>()
+    props<{ project: ProjectDetails, userRole: string }>()
 )
 
 export const addProjectFailure = createAction(
