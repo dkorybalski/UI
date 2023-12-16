@@ -187,19 +187,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     if(this.comingFromDetailsPage){
       this.router.navigate([{outlets: { modal: `projects/details/${this.projectDetails!.id}` }}]) 
     } else {
-      this.router.navigate([`projects`]) 
+      this.router.navigate([{outlets: { modal: null }}]) 
     }
   }
 
   get acceptedMembers(): Student[]{
-    if(this.user.role === 'COORDINATOR'){
-      return this.students;
+    if(this.projectDetails){
+      return this.projectDetails.students.slice().filter(student => student.accepted)
     } else {
-      if(this.projectDetails){
-        return this.projectDetails.students.slice().filter(student => student.accepted)
-      } else {
-        return []
-      }
+      return this.user.role === 'COORDINATOR' ? this.selectedMembers : []
     }
   }
 
