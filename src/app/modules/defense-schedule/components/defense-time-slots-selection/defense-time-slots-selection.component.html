@@ -1,0 +1,21 @@
+<table>
+    <tr class="grey-background">
+        <th *ngFor="let date of dates">{{ date }}</th>
+    </tr>
+    <tr *ngFor="let time of times">
+        
+        <td 
+            (mouseenter)="onMouseEnter(date, time)"
+            (mousedown)="onMouseDown(date, time)"
+            (mouseup)="onMouseUp(date, time)"
+            [class.hovered]="hoveredSlots[date] && hoveredSlots[date][time]" 
+            [class.selected]="(selectedSlots[date] && selectedSlots[date][time].available)"
+            *ngFor="let date of dates"
+        >
+            {{ time }}
+            <span>
+
+            </span>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,51 @@
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 15px 15px;
+    text-align: center;
+    border: 1px solid #aeaeae;
+    border-bottom: 1px solid #aeaeae;
+    margin: 0px;
+    transition: all 0.1s linear;
+    position: relative;
+
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.grey-background {
+    background: #f0f0f0;
+}
+
+td:hover {
+    cursor: pointer;
+    box-sizing: border-box;
+
+    span {
+        height: 2px;
+    }
+
+}
+
+td span {
+    position: absolute;
+    transition: all 0.1s linear;
+    bottom: 0px;
+    left: 0px;
+    height: 0px;
+    width: 100%;
+    background: #3f51b5;
+}
+
+.selected {
+    background: #b4bfff;
+}
+
+.hovered {
+    background: #d0d7ff !important ; 
+    //border-bottom: 1px solid #d0d7ff
+}

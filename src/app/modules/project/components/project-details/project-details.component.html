@@ -61,6 +61,7 @@
       <tr mat-row *matRowDef="let row; columns: columns;"></tr>
     </table>
     <div class="buttons">
+      <button *ngIf="showFreezeGradingButton" (click)="freezeGrading()" mat-raised-button color="primary" cdkFocusInitial>Freeze grading</button>
       <button *ngIf="showEditButton" (click)="editProject()" mat-raised-button color="primary" cdkFocusInitial>Edit project</button>
       <button *ngIf="showRemoveButton" (click)="openRemoveProjectDialog()" mat-raised-button color="primary" cdkFocusInitial>Remove project</button>
       <button *ngIf="showAcceptButton" (click)="acceptProject()" mat-raised-button color="primary" cdkFocusInitial>Accept project</button>
@@ -69,9 +70,7 @@
   </div>
 </div>
 <mat-tab-group *ngIf="gradesShown" class="mat-elevation-z8">
-  <mat-tab 
-    *ngIf="evaluationCards['FIRST']" [label]="'First semester'"
-  >
+  <mat-tab *ngIf="evaluationCards['FIRST']" [label]="'First semester'">
     <mat-tab-group>
       <mat-tab 
         *ngIf="evaluationCards['FIRST']['SEMESTER_PHASE']"

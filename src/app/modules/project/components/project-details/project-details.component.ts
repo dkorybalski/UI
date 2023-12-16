@@ -202,7 +202,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
   }
 
+  
+  get showFreezeGradingButton(){
+    return this.user.role === 'COORDINATOR'
+  }
 
+
+  freezeGrading(){
+    
+  }
 
   getEvaluationCardsTranslations(key: string): string{
     const translations: {[key: string]: string} = {
