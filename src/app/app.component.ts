@@ -49,11 +49,13 @@ export class AppComponent implements OnDestroy, OnInit{
 
     this.store.select('user').subscribe(user => {
       this.user = user;
-      this.learningMode = user.actualYear.split('#')[0];
-      this.studyYear = user.actualYear;
-      this.availableStudyYears = user.studyYears.map(year => {
-        return { text: `${year.split('#')[1]} - ${this.translateLearningMode(year.split('#')[0])}`, value: year}
-      })
+      if(user){
+        this.learningMode = user.actualYear.split('#')[0];
+        this.studyYear = user.actualYear;
+        this.availableStudyYears = user.studyYears.map(year => {
+          return { text: `${year.split('#')[1]} - ${this.translateLearningMode(year.split('#')[0])}`, value: year}
+        })
+      }
     });
     this.store.dispatch(loadUser());
   }

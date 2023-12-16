@@ -25,10 +25,21 @@ const routes: Routes = [
     outlet: 'modal',
   },
   {
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
+    canActivate: [UserGuard]
+  },
+  {
+    path: 'defense-schedule',
+    loadChildren: () => import('./modules/defense-schedule/defense-schedule.module').then(m => m.DefenseScheduleModule),
+    canActivate: [UserGuard],
+    outlet: 'modal',
+  },
+  {
     path: 'data-feed',
     loadChildren: () => import('./modules/data-feed/data-feed.module').then(m => m.DataFeedModule),
     canActivate: [CoordinatorGuard]
-  },
+  }
 ];
 
 @NgModule({

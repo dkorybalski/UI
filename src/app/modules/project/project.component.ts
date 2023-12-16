@@ -135,7 +135,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   get showEditOrAddProjectButton(){
-    return (this.user.role === 'STUDENT' && this.user.acceptedProjects.length === 0) || (this.user.role === 'PROJECT_ADMIN') || (this.user.role === 'COORDINATOR')
+    return (this.user.role === 'STUDENT' && this.user.acceptedProjects.length === 0) || (this.user.role === 'PROJECT_ADMIN') || (this.user.role === 'COORDINATOR') 
   }
 
   get showExternalLinkColumns(){

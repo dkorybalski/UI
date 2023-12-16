@@ -1,0 +1,13 @@
+form {
+    display: grid;
+    width: 300px;
+
+    mat-form-field {
+        margin-bottom: 10px;
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: end;
+    }
+}

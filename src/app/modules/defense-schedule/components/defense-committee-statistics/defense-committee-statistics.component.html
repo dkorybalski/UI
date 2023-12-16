@@ -1,0 +1,21 @@
+
+<table *ngIf="statistics[0]">
+    <tr>
+        <th></th>
+        <th *ngFor="let statistic of statistics">{{ statistic.supervisor }}</th>
+    </tr>
+    <tr class="grey-background">
+        <td>Grupy</td>
+        <th *ngFor="let statistic of statistics">{{ statistic.numberOfGroups }}</th>
+    </tr>
+    <tr *ngFor="let date of objectKeys(statistics[0].committeesPerDay)">
+        <td>{{ date }}</td>
+        <td *ngFor="let statistic of statistics">
+            <span *ngIf="statistic.committeesPerDay">{{ statistic.committeesPerDay[date] }} </span>
+        </td>       
+    </tr>
+    <tr class="grey-background">
+        <td>Suma</td>
+        <td *ngFor="let statistic of statistics">{{ statistic.load }}</td>       
+    </tr>
+</table>
