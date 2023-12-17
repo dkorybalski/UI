@@ -44,7 +44,7 @@ export class DefenseScheduleService {
 
     getSupervisorsStatistics(): Observable<SupervisorStatistics[]> {
         return this.http
-            .get<SupervisorStatistics[]>(`/pri/schedule/availability/statistics`)
+            .get<SupervisorStatistics[]>(`/pri/schedule/committee/statistics`)
             .pipe(
                 retry(3),
                 catchError(
@@ -82,6 +82,16 @@ export class DefenseScheduleService {
         )
     }
 
+    updateProjectDefenses(defenses: ProjectDefense[]): Observable<null> {
+        return this.http
+            .patch<null>(`/pri/schedule/defense`, defenses)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+        }
+
     getSupervisorsDefenseAssignment(): Observable<SupervisorDefenseAssignmentAggregated> {
         return this.http
             .get<SupervisorDefenseAssignmentAggregated>(`/pri/schedule/committee/supervisor`)
@@ -92,9 +102,11 @@ export class DefenseScheduleService {
             )
     }
     
-    updateCommitteeSchedule(slots: {[key: string]: SupervisorDefenseAssignment}): Observable<SupervisorStatistics[]> {
+    updateCommitteeSchedule(slots: {[key: string]: SupervisorDefenseAssignment}): 
+        Observable<{ statistics: SupervisorStatistics[], defenses: ProjectDefense[] }> {
         return this.http
-            .put<SupervisorStatistics[]>(`/pri/schedule/committee/supervisor`, slots)
+            .put<{statistics: SupervisorStatistics[], defenses: ProjectDefense[] }>
+                (`/pri/schedule/committee/supervisor`, slots)
             .pipe(
                 retry(3),
                 catchError(
@@ -132,9 +144,11 @@ export class DefenseScheduleService {
             )
     }
 
-    updateChairpersonAssignment(assignment: ChairpersonAssignment): Observable<null> {
+    updateChairpersonAssignment(assignment: ChairpersonAssignment):
+        Observable<{ statistics: SupervisorStatistics[], defenses: ProjectDefense[] }> {
         return this.http
-            .put<null>(`/pri/schedule/committee/chairperson`, assignment)
+            .put<{ statistics: SupervisorStatistics[], defenses: ProjectDefense[] }>
+                (`/pri/schedule/committee/chairperson`, assignment)
             .pipe(
                 retry(3),
                 catchError(

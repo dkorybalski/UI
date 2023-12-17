@@ -1,5 +1,5 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="defenses" matSort>
+<div [ngClass]="{'mat-elevation-z8': userRole !== 'COORDINATOR', 'normal-border':  userRole === 'COORDINATOR'}">
+  <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="checkbox">
       <th mat-header-cell *matHeaderCellDef>Select</th>
       <td mat-cell *matCellDef="let defense">
@@ -11,17 +11,22 @@
         </mat-radio-button>
       </td>
     </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let defense">{{defense.date}}</td>
+    </ng-container>
     <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
       <td mat-cell *matCellDef="let defense">{{defense.time}}</td>
     </ng-container>
     <ng-container matColumnDef="project">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Project </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Project</th>
       <td mat-cell *matCellDef="let defense">
-        <mat-select [(ngModel)]="defense.projectId" (selectionChange)="projectChanged($event, defense.projectDefenseId)">
+        <mat-select *ngIf="userRole === 'COORDINATOR'" [(ngModel)]="defense.projectId" (selectionChange)="projectChanged($event, defense)">
           <mat-option [value]="null">---</mat-option>
           <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
         </mat-select>
+        <span *ngIf="userRole !== 'COORDINATOR'">{{defense.projectName}}</span>
     </td>
     </ng-container>
     <ng-container matColumnDef="class">
@@ -29,13 +34,20 @@
       <td mat-cell *matCellDef="let defense">{{ defense.classRoom }}</td>
     </ng-container>
     <ng-container matColumnDef="committee">
-      <th class="centered-header" mat-header-cell *matHeaderCellDef mat-sort-header> Committee</th>
-      <td class="centered-cell" mat-cell *matCellDef="let defense">{{ defense.committee }}</td>
-  
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Committee</th>
+      <td mat-cell *matCellDef="let defense">{{ defense.committee }}</td>
+    </ng-container>
+    <ng-container matColumnDef="students">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Students</th>
+      <td mat-cell *matCellDef="let defense">{{ defense.committee }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns; let project"></tr>
   </table>
   
   <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page"></mat-paginator>
+</div>
+<div class="buttons-container">
+  <button (click)="updateDefenses()" mat-raised-button color="primary" cdkFocusInitial>Update</button>
+
 </div>

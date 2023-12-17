@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { DefenseScheduleService } from './defense-schedule.service';
-import { SupervisorDefenseAssignmentAggregated, SupervisorStatistics, ChairpersonAssignmentAggregated } from './models/defense-schedule.model';
+import { SupervisorDefenseAssignmentAggregated, SupervisorStatistics, ChairpersonAssignmentAggregated, ProjectDefense } from './models/defense-schedule.model';
 import { Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
@@ -18,6 +18,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   statistics: SupervisorStatistics[] = [];
   user!: User;
+  defenses!: ProjectDefense[];
 
   constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
 
@@ -32,6 +33,10 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
 
     this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
       assignments => this.chairpersonAssignments = assignments
+    )
+
+    this.defenseScheduleService.getProjectDefenses().subscribe(
+      defenses =>  this.defenses = defenses
     )
 
     this.store.select('user').subscribe(user => this.user = user);
@@ -52,6 +57,11 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   get showCommitteeSelectionSurvey(): boolean {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
   }
+
+  get showDefensesList(): boolean {
+    return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN';
+  }
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

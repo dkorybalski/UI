@@ -1,7 +1,10 @@
 :host {
-    display: flex;
-    column-gap: 50px;
-    width: 100%;
+    display: grid;
+    .selection-table-and-statistics {
+        display: flex;
+        column-gap: 50px;
+        width: 100%;
+    }
 }
 
 table {
@@ -184,8 +187,6 @@ td .selection-indicator {
 }
 
 .committee-config-container {
-    margin-top: 50px;
-
     div {
         display: flex;
         column-gap: 30px;
@@ -196,5 +197,13 @@ td .selection-indicator {
             margin: 0px;
             font-weight: bold;
         }
+    }
+
+    .classroom-input {
+        max-width: 150px;
+    }
+
+    .chairperson-select {
+        width: 400px;
     }
 }

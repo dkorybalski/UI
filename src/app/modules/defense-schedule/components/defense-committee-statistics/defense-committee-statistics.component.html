@@ -5,7 +5,7 @@
         <th *ngFor="let statistic of statistics">{{ statistic.supervisor }}</th>
     </tr>
     <tr class="grey-background">
-        <td>Grupy</td>
+        <td>Groups</td>
         <th *ngFor="let statistic of statistics">{{ statistic.numberOfGroups }}</th>
     </tr>
     <tr *ngFor="let date of objectKeys(statistics[0].committeesPerDay)">
@@ -15,7 +15,11 @@
         </td>       
     </tr>
     <tr class="grey-background">
-        <td>Suma</td>
+        <td>Sum</td>
+        <td *ngFor="let statistic of statistics">{{ statistic.totalNumberOfCommittees }}</td>       
+    </tr>
+    <tr class="grey-background">
+        <td>Load</td>
         <td *ngFor="let statistic of statistics">{{ statistic.load }}</td>       
     </tr>
 </table>
