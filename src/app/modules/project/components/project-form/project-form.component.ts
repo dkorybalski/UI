@@ -84,7 +84,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.projectForm.controls.technologies.setValue(this.projectDetails.technologies);
         this.technologies = this.projectDetails.technologies;
       } else {
-        this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
+        if(user.role !== 'COORDINATOR'){
+          this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
+        
+        }
 
         if(user.role !== 'COORDINATOR'){
           this.members.push(this.fb.group({
