@@ -37,7 +37,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    if(this.user.role === 'STUDENT' || this.user.role === 'PROJECT_ADMIN'){
+    if(this.user.role === 'PROJECT_ADMIN'){
       this.columns = ['checkbox', ...this.columns]
     }
   }
