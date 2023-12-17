@@ -45,7 +45,7 @@
     <tr mat-row *matRowDef="let row; columns: columns; let project"></tr>
   </table>
   
-  <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[50, 100, 200]" showFirstLastButtons aria-label="Select page"></mat-paginator>
 </div>
 <div class="buttons-container">
   <button *ngIf="user.role === 'COORDINATOR'" (click)="updateDefenses()" mat-raised-button color="primary" cdkFocusInitial>Update</button>
