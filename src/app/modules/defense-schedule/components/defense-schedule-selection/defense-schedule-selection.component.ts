@@ -59,8 +59,8 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
 
   updateDefenses(){
     this.defenseScheduleService.updateProjectDefenses(this.updatedDefenses)
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(
-        
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses =>
+        this.defenses = defenses
       )
   }
 
@@ -72,7 +72,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
 
   defenseSelected(defenseId: string){
     this.defenseScheduleService.updateProjectDefense(defenseId, String(this.user.acceptedProjects[0]))
-      .pipe(takeUntil(this.unsubscribe$)).subscribe()
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses => this.defenses = defenses)
   }
 
   ngOnDestroy(): void {
