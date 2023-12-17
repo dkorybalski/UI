@@ -8,7 +8,6 @@ import { UserService } from 'src/app/modules/user/user.service';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { User } from 'src/app/modules/user/models/user.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';

@@ -6,7 +6,7 @@
         <mat-radio-button 
           [value]="false" 
           (change)="defenseSelected(defense.projectDefenseId)"
-          [disabled]="!defense.isEditable"
+          *ngIf="defense.isEditable"
         >
         </mat-radio-button>
       </td>
