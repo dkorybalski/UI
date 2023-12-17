@@ -22,6 +22,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { DefenseCommitteeStatisticsComponent } from './components/defense-committee-statistics/defense-committee-statistics.component';
 import { DefenseScheduleSelectionComponent } from './components/defense-schedule-selection/defense-schedule-selection.component';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTabsModule,
     MatRadioModule,
     MatCheckboxModule,
+    MatMenuModule,
     ReactiveFormsModule,
     MatTableModule,
     MatExpansionModule,

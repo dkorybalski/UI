@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnDestroy, OnChanges, OnInit, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DefenseScheduleService } from '../../defense-schedule.service';
-import {  ChairpersonAssignment, SupervisorDefenseAssignment, SupervisorStatistics } from '../../models/defense-schedule.model';
+import {  ChairpersonAssignment, ProjectDefense, SupervisorDefenseAssignment, SupervisorStatistics } from '../../models/defense-schedule.model';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil} from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 import { FormControl } from '@angular/forms';
@@ -8,6 +8,7 @@ import { UserService } from 'src/app/modules/user/user.service';
 import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 interface SupervisorTimeReference {
   supervisor: string,
@@ -25,7 +26,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   supervisors!: Supervisor[];
   times: string[] = [];
   statistics: SupervisorStatistics[] = [];
-
+  defenses!: ProjectDefense[];
+    
   slotsSelected: boolean = false;
   hoveredSlots: {[key: string]: {[key: string]: boolean}} = {};
   selectedSlots!: {[key: string]: { [key: string]: SupervisorDefenseAssignment }}
@@ -37,6 +39,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   cursorPositionY = '';
   cursorPositionX = '';
 
+  @ViewChild('slotMenu',  {static: false}) slotMenu!: ElementRef
+
   committeeMultipleSelection: string | null = null;
   classroomFormControls: {[key: string]: FormControl} = {
     'A': new FormControl<string | null>(null),
@@ -45,7 +49,27 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     'D': new FormControl<string | null>(null)
   }
 
+  supervisorsInCommitties: {[key: string]: string[]} = {
+    'A': [],
+    'B': [],
+    'C': [],
+    'D': [],
+  }
+  existenCommittees: string[] = [];
+
   unsubscribe$ = new Subject();
+
+  @HostListener('document:mousedown', ['$event'])
+  onGlobalClick(event: MouseEvent): void {
+     if (
+        this.slotMenu && 
+        !this.slotMenu.nativeElement.contains(event.target) && 
+        document.getElementsByClassName('cdk-overlay-container')[0].children.length === 0
+      ) {
+        // clicked outside => close dropdown list
+     this.closeSelectionMenu()
+     }
+  }
 
   constructor(private defenseScheduleService: DefenseScheduleService, private userService: UserService){
     this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(
@@ -54,6 +78,10 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
     this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
       statistics => this.statistics = statistics
+    )
+
+    this.defenseScheduleService.getProjectDefenses().subscribe(
+      defenses =>  this.defenses = defenses
     )
   }
 
@@ -86,6 +114,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
       }
     }
 
+    this.updateExistenCommitties()
+
     if(this.chairpersonAssignment){
       for(let assignment of Object.values(this.chairpersonAssignment)){
         this.classroomFormControls[assignment.committeeIdentifier].setValue(assignment.classroom);
@@ -99,13 +129,22 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
   updateChairpersonAssignment(chairpersonAssignment: ChairpersonAssignment){
     this.defenseScheduleService.updateChairpersonAssignment(chairpersonAssignment).pipe(takeUntil(this.unsubscribe$))
-      .subscribe()
+      .subscribe(
+        result => { 
+          this.statistics = result.statistics;
+          this.defenses = result.defenses;
+        }
+      )
   }
 
   updateCommitteeSchedule(slots: {[key: string]: SupervisorDefenseAssignment}){
     this.defenseScheduleService.updateCommitteeSchedule(slots).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      statistics => this.statistics = statistics
+      result => { 
+        this.statistics = result.statistics;
+        this.defenses = result.defenses;
+      }
     )
+    this.updateExistenCommitties()
   }
 
   multipleCommitteeSelectionChanged(event: MatSelectChange){
@@ -120,16 +159,26 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   committeeChairpersonSelected(event: MatSelectChange, committeeIdentifier: string){
     this.chairpersonAssignment[committeeIdentifier].chairpersonId = event.value;
     this.updateChairpersonAssignment(this.chairpersonAssignment[committeeIdentifier])
+    this.updateExistenCommitties()
   }
 
   unselectSlots(){
-    const supervisor = this.lastSelectedSupervisor;
-    for(let t of Object.keys(this.lastSelectedSlots[supervisor])){
-        this.lastSelectedSlots[supervisor][t].committeeIdentifier = null
-        this.selectedSlots[supervisor][t].committeeIdentifier = null
+    const supervisorId = this.lastSelectedSupervisor;
+    for(let t of Object.keys(this.lastSelectedSlots[supervisorId])){
+        if(this.isChairperson(this.lastSelectedSlots[supervisorId][t])){
+          this.supervisors.forEach(supervisor => {
+            console.log(supervisor.initials, this.selectedSlots[supervisor.id][t].committeeIdentifier)
+            if(this.selectedSlots[supervisor.id][t].committeeIdentifier === this.lastSelectedSlots[supervisorId][t].committeeIdentifier){
+              this.selectedSlots[supervisor.id][t].committeeIdentifier = null
+            }
+          })
+        }
+        this.lastSelectedSlots[supervisorId][t].committeeIdentifier = null
+        this.selectedSlots[supervisorId][t].committeeIdentifier = null
+        
     }
   
-    this.updateCommitteeSchedule(this.lastSelectedSlots[supervisor])
+    this.updateCommitteeSchedule(this.lastSelectedSlots[supervisorId])
 
     for(let supervisor of Object.keys(this.selectedSlots)){
       this.lastSelectedSlots[supervisor] = {};
@@ -158,9 +207,9 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.start = { supervisor: '', time: '' };
     this.end = { supervisor: '', time: '' };
     this.supervisors.forEach(supervisor => {
-      this.hoveredSlots[supervisor.indexNumber] = {};
+      this.hoveredSlots[supervisor.id] = {};
       this.times.forEach(time => {
-        this.hoveredSlots[supervisor.indexNumber][time] = false;
+        this.hoveredSlots[supervisor.id][time] = false;
       })
     });
   }
@@ -211,6 +260,10 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.cursorPositionX = `${rect.x + rect.width - matTabBodyRect.x}px`;
     this.cursorPositionY = `${rect.y - matTabBodyRect.y}px`;
   }
+
+  openSelectionMenu(){
+    this.slotsSelected = true;
+  }
   
   onMouseUp(supervisor: string, time: string, event: MouseEvent){
     this.end = {supervisor, time};
@@ -255,6 +308,39 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     }
     
     this.resetSlotsSelection();
+  }
+
+  chairpersonCandidates(committee: string): Supervisor[] {
+    return this.supervisors.filter(supervisor => this.supervisorsInCommitties[committee].includes(supervisor.id))
+  }
+
+  doesCommitteeExist(committee: string): boolean {
+    return this.existenCommittees.includes(committee);
+  }
+
+  updateExistenCommitties(){
+    this.existenCommittees = [];
+    ['A', 'B', 'C', 'D'].forEach(committee => {
+      this.supervisorsInCommitties[committee] = [];
+    })
+
+    for(let supervisor of Object.keys(this.selectedSlots)){
+      for(let time of Object.keys(this.selectedSlots[supervisor])){
+        ['A', 'B', 'C', 'D'].forEach(committee => {
+          if(this.selectedSlots[supervisor][time].committeeIdentifier === committee){
+            if(!this.supervisorsInCommitties[committee].includes(supervisor)){
+              this.supervisorsInCommitties[committee].push(supervisor);
+            }
+            if(!this.existenCommittees.includes(committee)){
+              this.existenCommittees.push(committee);
+            }
+          }
+        })
+      }
+    }   
+
+    console.log(this.existenCommittees)
+    console.log(this.supervisorsInCommitties)
   }
 
   ngOnDestroy(): void {

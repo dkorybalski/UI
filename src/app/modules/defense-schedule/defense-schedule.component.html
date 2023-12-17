@@ -14,7 +14,7 @@
     </div>
 </div>
 <br><br>
-<defense-schedule-selection [user]="user"></defense-schedule-selection>
+<defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" [userRole]="user.role"></defense-schedule-selection>
 
 
   
