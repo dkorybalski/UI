@@ -39,7 +39,9 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
       defenses =>  this.defenses = defenses
     )
 
-    this.store.select('user').subscribe(user => this.user = user);
+    this.store.select('user').subscribe(user => {
+      this.user = user;
+    });
   }
 
   onStatisticsUpdated(statistics: SupervisorStatistics[]){

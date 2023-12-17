@@ -72,9 +72,9 @@ export class DefenseScheduleService {
             )
     }
 
-    updateProjectDefense(projectDefenseId: string, projectId: string): Observable<null> {
+    updateProjectDefense(projectDefenseId: string, projectId: string): Observable<ProjectDefense[]> {
     return this.http
-        .patch<null>(`/pri/schedule/defense/${projectDefenseId}`, {projectId})
+        .patch<ProjectDefense[]>(`/pri/schedule/defense/${projectDefenseId}`, {projectId})
         .pipe(
             retry(3),
             catchError(
@@ -82,9 +82,9 @@ export class DefenseScheduleService {
         )
     }
 
-    updateProjectDefenses(defenses: ProjectDefense[]): Observable<null> {
+    updateProjectDefenses(defenses: ProjectDefense[]): Observable<ProjectDefense[]> {
         return this.http
-            .patch<null>(`/pri/schedule/defense`, defenses)
+            .patch<ProjectDefense[]>(`/pri/schedule/defense`, defenses)
             .pipe(
                 retry(3),
                 catchError(

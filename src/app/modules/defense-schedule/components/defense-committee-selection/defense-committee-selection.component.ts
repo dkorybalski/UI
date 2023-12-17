@@ -10,6 +10,8 @@ import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { User } from 'src/app/modules/user/models/user.model';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/app.state';
 
 interface SupervisorTimeReference {
   supervisor: string,
@@ -40,7 +42,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   cursorPositionY = '';
   cursorPositionX = '';
 
-  @Input() user!: User;
+  user!: User;
   @ViewChild('slotMenu',  {static: false}) slotMenu!: ElementRef
 
   committeeMultipleSelection: string | null = null;
@@ -73,7 +75,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
      }
   }
 
-  constructor(private defenseScheduleService: DefenseScheduleService, private userService: UserService){
+  constructor(private defenseScheduleService: DefenseScheduleService, private userService: UserService, private store: Store<State>){
     this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       supervisors => this.supervisors = supervisors
     )
@@ -85,6 +87,11 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.defenseScheduleService.getProjectDefenses().subscribe(
       defenses =>  this.defenses = defenses
     )
+
+    this.store.select('user').subscribe(user => {
+      this.user = user;
+     
+    });
   }
 
   ngOnInit(): void {
