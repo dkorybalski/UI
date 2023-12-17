@@ -55,7 +55,7 @@
     <div class="statistics-and-config-container">
         <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
         <br>
-        <div *ngIf="userRole === 'COORDINATOR'"  class="buttons-container"> 
+        <div *ngIf="user.role === 'COORDINATOR'"  class="buttons-container"> 
             <button (click)="getDefenseSummary()" mat-button color="primary">Export summary</button>
             <button (click)="openRegistration()" mat-button color="primary">Open registration</button>
             <button (click)="closeRegistration()" mat-button color="primary">Close registration</button>

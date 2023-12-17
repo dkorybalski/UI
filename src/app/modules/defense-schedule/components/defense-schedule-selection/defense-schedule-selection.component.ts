@@ -7,6 +7,7 @@ import { Project, ProjectDefense } from '../../models/defense-schedule.model';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
+import { User } from 'src/app/modules/user/models/user.model';
 
 @Component({
   selector: 'defense-schedule-selection',
@@ -21,7 +22,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   dataSource!: MatTableDataSource<ProjectDefense>;
   projects: Project[] = [];
   unsubscribe$ = new Subject();
-  @Input() userRole!: string;
+  @Input() user!: User;
   @Input() defenses!: ProjectDefense[];
   updatedDefenses: ProjectDefense[] = [];
 
@@ -36,7 +37,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    if(this.userRole === 'STUDENT' || this.userRole === 'PROJECT_ADMIN'){
+    if(this.user.role === 'STUDENT' || this.user.role === 'PROJECT_ADMIN'){
       this.columns = ['checkbox', ...this.columns]
     }
   }
@@ -60,8 +61,8 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
     }
   }
 
-  defenseSelected(projectId: string, defenseId: string){
-    this.defenseScheduleService.updateProjectDefense(defenseId, projectId)
+  defenseSelected(defenseId: string){
+    this.defenseScheduleService.updateProjectDefense(defenseId, String(this.user.acceptedProjects[0]))
       .pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 

@@ -9,6 +9,7 @@ import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
 import { HttpResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { User } from 'src/app/modules/user/models/user.model';
 
 interface SupervisorTimeReference {
   supervisor: string,
@@ -39,7 +40,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   cursorPositionY = '';
   cursorPositionX = '';
 
-  @Input() userRole!: string;
+  @Input() user!: User;
   @ViewChild('slotMenu',  {static: false}) slotMenu!: ElementRef
 
   committeeMultipleSelection: string | null = null;

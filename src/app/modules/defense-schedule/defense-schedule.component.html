@@ -6,7 +6,7 @@
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
             <mat-tab *ngFor="let assignment of defenseAssignments | keyvalue" [label]="assignment.key">
                 <defense-committee-selection 
-                    [userRole]="user.role"
+                    [user]="user"
                     [chairpersonAssignment]="chairpersonAssignments[assignment.key]"
                     [defenseAssignment]="defenseAssignments[assignment.key]">
                 </defense-committee-selection>
@@ -15,7 +15,7 @@
     </div>
 </div>
 <br><br>
-<defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" [userRole]="user.role"></defense-schedule-selection>
+<defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" [user]="user"></defense-schedule-selection>
 
 
   
