@@ -39,7 +39,7 @@
     </ng-container>
     <ng-container matColumnDef="students">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Students</th>
-      <td mat-cell *matCellDef="let defense">{{ defense.committee }}</td>
+      <td mat-cell *matCellDef="let defense">{{ defense.students }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns; let project"></tr>
