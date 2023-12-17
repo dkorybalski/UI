@@ -205,7 +205,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.defenseScheduleService.getDefenseSummary().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (file: HttpResponse<Blob>) => {
         if(file?.body){
-          saveAs(file.body!, 'summary.pdf')
+          saveAs(file.body!, 'summary.csv')
         }
       }
     )
