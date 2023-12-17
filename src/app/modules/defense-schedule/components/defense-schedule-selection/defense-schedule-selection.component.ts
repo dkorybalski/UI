@@ -60,8 +60,8 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
     }
   }
 
-  defenseSelected(event: MatRadioChange, defenseId: string){
-    this.defenseScheduleService.updateProjectDefense(defenseId, event.value)
+  defenseSelected(projectId: string, defenseId: string){
+    this.defenseScheduleService.updateProjectDefense(defenseId, projectId)
       .pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 

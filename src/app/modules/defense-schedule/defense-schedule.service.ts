@@ -156,5 +156,25 @@ export class DefenseScheduleService {
             )
     }
 
+
+    openRegistration(): Observable<null> {
+        return this.http
+            .patch<null>(`/pri/schedule/config/registration/open`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
+    closeRegistration(): Observable<null> {
+        return this.http
+            .patch<null>(`/pri/schedule/config/registration/close`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
     
 }

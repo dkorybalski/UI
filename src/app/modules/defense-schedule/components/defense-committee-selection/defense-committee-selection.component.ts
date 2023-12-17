@@ -39,6 +39,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   cursorPositionY = '';
   cursorPositionX = '';
 
+  @Input() userRole!: string;
   @ViewChild('slotMenu',  {static: false}) slotMenu!: ElementRef
 
   committeeMultipleSelection: string | null = null;
@@ -341,6 +342,15 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
     console.log(this.existenCommittees)
     console.log(this.supervisorsInCommitties)
+  }
+
+  openRegistration(){
+    this.defenseScheduleService.openRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe()
+  }
+
+ 
+  closeRegistration(){
+    this.defenseScheduleService.closeRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
   ngOnDestroy(): void {
