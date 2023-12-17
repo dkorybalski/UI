@@ -59,9 +59,12 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
 
   updateDefenses(){
     this.defenseScheduleService.updateProjectDefenses(this.updatedDefenses)
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses =>
-        this.defenses = defenses
-      )
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses => {
+        this.defenses = defenses;
+        this.dataSource = new MatTableDataSource<ProjectDefense>(defenses);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+  })
   }
 
   projectChanged(event: MatSelectChange, defense: ProjectDefense){
