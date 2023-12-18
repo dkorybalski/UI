@@ -25,6 +25,7 @@
             <td class="committee-selection"
                 [class.not-available]="!selectedSlots[supervisor.id][time].available" 
                 [class.chairperson]="isChairperson(selectedSlots[supervisor.id][time])" 
+                [class.project-assigned]="isProjectAssigned(selectedSlots[supervisor.id][time].defenseSlotId)" 
                 [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time]" 
                 [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
                 (mouseenter)="onMouseEnter(supervisor.id, time)"
@@ -44,7 +45,7 @@
                         {{ chairpersonAssignment[selectedSlots[supervisor.id][time].committeeIdentifier!].classroom }}
                     </p>
                 </div>
-                <div >
+                <div class="commitee-info">
                     {{ selectedSlots[supervisor.id][time].committeeIdentifier }}
                 </div>
             </div>

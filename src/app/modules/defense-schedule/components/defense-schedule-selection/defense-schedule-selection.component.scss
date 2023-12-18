@@ -11,3 +11,12 @@
 .students-cell {
     max-width: 200px;
 }
+
+
+.selected {
+    background-color: #dfffdf;
+}
+
+.selected:hover {
+    background-color: #dfffdf !important;
+}

@@ -44,7 +44,7 @@
       <td class="students-cell" mat-cell *matCellDef="let defense">{{ defense.students }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns; let project"></tr>
+    <tr [class.selected]="isDefenseSelected(defense.projectId)" mat-row *matRowDef="let row; columns: columns; let defense"></tr>
   </table>
   
   <mat-paginator [pageSizeOptions]="[50, 100, 200]" showFirstLastButtons aria-label="Select page"></mat-paginator>

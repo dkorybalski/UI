@@ -181,7 +181,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
         }
       }
     }
-    
+
     this.updateChairpersonAssignment(this.chairpersonAssignment[committeeIdentifier])
     this.updateExistenCommitties()
   }
@@ -361,9 +361,10 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
         })
       }
     }   
+  }
 
-    console.log(this.existenCommittees)
-    console.log(this.supervisorsInCommitties)
+  isProjectAssigned(defenseSlotId: string): boolean {
+    return this.defenses.findIndex(defense => defense.projectDefenseId === defenseSlotId) !== -1;
   }
 
   openRegistration(){
