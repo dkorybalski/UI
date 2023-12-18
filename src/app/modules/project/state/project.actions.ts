@@ -58,12 +58,12 @@ export const updateProjectFailure = createAction(
 
 export const acceptProject = createAction(
     '[ProjectDetails] Accept Project',
-    props<{ projectId: number, role: string }>()
+    props<{ projectId: string, role: string }>()
 )
 
 export const acceptProjectSuccess = createAction(
     '[ProjectDetails API] Accept Project Success',
-    props<{ projectId: number, role: string }>()
+    props<{ projectId: string, role: string }>()
 )
 
 export const acceptProjectFailure = createAction(
@@ -73,12 +73,12 @@ export const acceptProjectFailure = createAction(
 
 export const unacceptProject = createAction(
     '[ProjectDetails] Unaccept Project',
-    props<{ projectId: number, role: string }>()
+    props<{ projectId: string, role: string }>()
 )
 
 export const unacceptProjectSuccess = createAction(
     '[ProjectDetails API] Unaccept Project Success',
-    props<{ projectId: number, role: string }>()
+    props<{ projectId: string, role: string }>()
 )
 
 export const unacceptProjectFailure = createAction(
@@ -88,12 +88,12 @@ export const unacceptProjectFailure = createAction(
 
 export const removeProject = createAction(
     '[ProjectDetails] Remove Project',
-    props<{ projectId: number}>()
+    props<{ projectId: string}>()
 )
 
 export const removeProjectSuccess = createAction(
     '[ProjectDetails API] Remove Project Success',
-    props<{ projectId: number}>()
+    props<{ projectId: string}>()
 )
 
 export const removeProjectFailure = createAction(
@@ -103,7 +103,7 @@ export const removeProjectFailure = createAction(
 
 export const updateGrade = createAction(
     '[Project Details] Update Grade',
-    props<{ semester: string, projectId: number, grade: string, criteriaMet: boolean }>()
+    props<{ semester: string, projectId: string, grade: string, criteriaMet: boolean }>()
 )
 
 export const loadSupervisorAvailability = createAction(

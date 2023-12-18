@@ -17,7 +17,7 @@ export class ExternalLinkService {
                 (err: HttpErrorResponse) => throwError(() => err))
         )
 
-    getExternalLinks(projectId: number): Observable<ExternalLink[]> {
+    getExternalLinks(projectId: string): Observable<ExternalLink[]> {
         return this.http
         .get<ExternalLink[]>(`/pri/project/${projectId}/external-link`)
         .pipe(

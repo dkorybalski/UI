@@ -13,7 +13,7 @@ import { Project, ProjectDetails } from "./models/project.model";
 export class ProjectService {
     constructor(private http: HttpClient) { }
 
-    getProjectDetails(id: number): Observable<ProjectDetails> {
+    getProjectDetails(id: string): Observable<ProjectDetails> {
         return this.http
             .get<ProjectDetails>(`/pri/project/${id}`)
             .pipe(
@@ -23,7 +23,7 @@ export class ProjectService {
             )
     }
 
-    removeProject(id: number): Observable<null> {
+    removeProject(id: string): Observable<null> {
         return this.http
             .delete<null>(`/pri/project/${id}`)
             .pipe(
@@ -64,7 +64,7 @@ export class ProjectService {
             )
     }
 
-    acceptProject(projectId: number): Observable<null> {
+    acceptProject(projectId: string): Observable<null> {
         return this.http
             .patch<null>(`/pri/project/${projectId}/accept`, null)
             .pipe(
@@ -74,7 +74,7 @@ export class ProjectService {
             )
     }
 
-    unacceptProject(projectId: number): Observable<null> {
+    unacceptProject(projectId: string): Observable<null> {
         return this.http
             .patch<null>(`/pri/project/${projectId}/unaccept`, null)
             .pipe(
@@ -84,7 +84,7 @@ export class ProjectService {
             )
     }
 
-    getExternalLinks(projectId: number): Observable<ExternalLink[]> {
+    getExternalLinks(projectId: string): Observable<ExternalLink[]> {
         return this.http
         .get<ExternalLink[]>(`/pri/project/${projectId}/external-link`)
         .pipe(

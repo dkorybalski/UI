@@ -25,11 +25,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
   user!: User;
   projectDetailsForEdit?: ProjectDetails;
   projectButtonText!: string;
-  projectId?: number
+  projectId?: string;
   isProjectAdmin?: boolean;
   isCoordinator?: boolean;
-  acceptedProjects: number[] = [];
-  assignedProjects: number[] = [];
+  acceptedProjects: string[] = [];
+  assignedProjects: string[] = [];
   unsubscribe$ = new Subject();
   page: string = 'PROJECT_GROUPS';
   externalLinkColumnHeaders: string[] = [];

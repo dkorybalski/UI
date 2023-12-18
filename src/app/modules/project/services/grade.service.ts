@@ -9,7 +9,7 @@ import { EvaluationCards } from "../models/grade.model";
 export class GradeService {
     constructor(private http: HttpClient) { }
 
-    getEvaluationCards(id: number): Observable<EvaluationCards> {
+    getEvaluationCards(id: string): Observable<EvaluationCards> {
             return this.http.get<EvaluationCards>(`/pri/project/${id}/evaluation-card`)
                 .pipe(
                     retry(3),
@@ -18,7 +18,7 @@ export class GradeService {
                 )
         }
 
-    changeGrade(projectId: number, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<null>  {
+    changeGrade(projectId: string, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<null>  {
             return this.http
                 .put<null>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
                 .pipe(

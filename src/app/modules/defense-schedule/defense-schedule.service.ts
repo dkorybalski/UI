@@ -144,9 +144,9 @@ export class DefenseScheduleService {
             )
     }
 
-    getCurrentPhase(): Observable<string> {
+    getCurrentPhase(): Observable<{phase: string}> {
         return this.http
-            .get<string>(`/pri/schedule/config/phase`)
+            .get<{phase: string}>(`/pri/schedule/config/phase`)
             .pipe(
                 retry(3),
                 catchError(

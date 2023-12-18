@@ -17,7 +17,7 @@ import { State } from 'src/app/app.state';
 export class ProjectGradeComponent implements OnInit, OnDestroy {
 
   @Input() evaulationCard!:  EvaluationCard;
-  @Input() projectId!: number;
+  @Input() projectId!: string;
   data!: EvaluationCard;
   unsubscribe$ = new Subject();
   gradeForm = this.fb.group<{[key: string]: FormGroup }>({});

@@ -29,7 +29,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   times: string[] = [];
   statistics: SupervisorStatistics[] = [];
   defenses!: ProjectDefense[];
-    
+  @Input() date!: string;
   slotsSelected: boolean = false;
   hoveredSlots: {[key: string]: {[key: string]: boolean}} = {};
   selectedSlots!: {[key: string]: { [key: string]: SupervisorDefenseAssignment }}
@@ -60,6 +60,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   }
   existenCommittees: string[] = [];
 
+  currentPhase!: string;
+
   unsubscribe$ = new Subject();
 
   @HostListener('document:mousedown', ['$event'])
@@ -89,8 +91,11 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
     this.store.select('user').subscribe(user => {
       this.user = user;
-     
     });
+
+    this.defenseScheduleService.getCurrentPhase().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      phase => this.currentPhase = phase.phase
+    )
   }
 
   ngOnInit(): void {
@@ -363,9 +368,10 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     }   
   }
 
-  isProjectAssigned(defenseSlotId: string): boolean {
-    return this.defenses.find(defense => defense.projectDefenseId === defenseSlotId) !== undefined &&
-           this.defenses.find(defense => defense.projectDefenseId === defenseSlotId)?.projectId !== null;
+  isProjectAssigned(time: string): boolean {
+    const defense = this.defenses.find(defense => defense.date === this.date && defense.time === time);
+    return defense !== undefined && defense.projectId !== null
+           
   }
 
   openRegistration(){

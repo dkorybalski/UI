@@ -5,5 +5,5 @@ import { EvaluationCards } from "../models/grade.model";
 
 export const evaulationCardsResolver: ResolveFn<EvaluationCards> =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-      return inject(GradeService).getEvaluationCards(Number(route.paramMap.get('id')!));
+      return inject(GradeService).getEvaluationCards(route.paramMap.get('id')!);
 };

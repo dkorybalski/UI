@@ -4,7 +4,7 @@ import { User } from "../../user/models/user.model";
 import { ExternalLink } from "./external-link.model";
 
 export interface Project {
-    id?: number;
+    id?: string;
     name: string;
     supervisor: Supervisor,
     accepted: boolean;
@@ -15,7 +15,7 @@ export interface Project {
 }
 
 export interface ProjectDetails {
-    id?: number;
+    id?: string;
     name: string;
     description: string
     students: Student[];

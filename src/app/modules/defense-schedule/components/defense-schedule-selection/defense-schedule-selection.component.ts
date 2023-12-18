@@ -78,7 +78,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   isDefenseSelected(projectId: string): boolean {
-    return projectId === String(this.user.acceptedProjects[0]);
+    return this.user.acceptedProjects.includes(projectId)
   }
 
   defenseSelected(defenseId: string){

@@ -28,7 +28,7 @@ export class AppComponent implements OnDestroy, OnInit{
   mobileQuery?: MediaQueryList;
   user!: UserState;
   unsubscribe$ = new Subject();  
-  projectId?: number; 
+  projectId?: string; 
   learningMode!: string;
   isModalOpen = false;
   studyYear!: string;

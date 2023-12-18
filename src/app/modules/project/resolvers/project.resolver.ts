@@ -5,5 +5,5 @@ import { ProjectDetails } from "../models/project.model";
 
 export const projectResolver: ResolveFn<ProjectDetails> =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-      return inject(ProjectService).getProjectDetails(Number(route.paramMap.get('id')!));
+      return inject(ProjectService).getProjectDetails(route.paramMap.get('id')!);
 };

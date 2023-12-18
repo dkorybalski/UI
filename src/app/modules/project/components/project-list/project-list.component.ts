@@ -17,8 +17,8 @@ import { Project } from '../../models/project.model';
 })
 
 export class ProjectListComponent implements OnDestroy, OnInit{
-  @Input() acceptedProjects!: number[];
-  @Input() assignedProjects!: number[];
+  @Input() acceptedProjects!: string[];
+  @Input() assignedProjects!: string[];
   @Input() page!: string;
   @Input() externalLinkColumnHeaders!: string[];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -95,11 +95,11 @@ export class ProjectListComponent implements OnDestroy, OnInit{
     return criteriaMetStatus !== undefined ? project.criteriaMet === criteriaMetStatus : true
   }
 
-  isProjectAccepted(id: number){
+  isProjectAccepted(id: string){
     return this.acceptedProjects.findIndex(projectId => projectId === id) !== -1
   }
 
-  isProjectAssigned(id: number){
+  isProjectAssigned(id: string){
     return this.acceptedProjects.findIndex(projectId => projectId === id) === -1 && 
            this.assignedProjects.findIndex(projectId => projectId === id) !== -1 
   }

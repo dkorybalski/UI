@@ -25,7 +25,7 @@
             <td class="committee-selection"
                 [class.not-available]="!selectedSlots[supervisor.id][time].available" 
                 [class.chairperson]="isChairperson(selectedSlots[supervisor.id][time])" 
-                [class.project-assigned]="isProjectAssigned(selectedSlots[supervisor.id][time].defenseSlotId)" 
+                [class.project-assigned]="isProjectAssigned(time)" 
                 [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time]" 
                 [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
                 (mouseenter)="onMouseEnter(supervisor.id, time)"
@@ -56,6 +56,7 @@
     <div class="statistics-and-config-container">
         <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
         <br>
+        <h3>Current phase: {{currentPhase}}</h3>
         <div *ngIf="user.role === 'COORDINATOR'"  class="buttons-container"> 
             <button (click)="getDefenseSummary()" mat-button color="primary">Export summary</button>
             <button (click)="openRegistration()" mat-button color="primary">Open registration</button>

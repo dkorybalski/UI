@@ -1,5 +1,5 @@
 export interface ExternalLink {
-    id: number
+    id: string
     url: string;
     name: string;
     columnHeader: string;
