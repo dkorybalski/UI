@@ -166,6 +166,22 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
   committeeChairpersonSelected(event: MatSelectChange, committeeIdentifier: string){
     this.chairpersonAssignment[committeeIdentifier].chairpersonId = event.value;
+
+    if(event.value === null){
+      for(let supervisor of Object.keys(this.selectedSlots)){
+        this.hoveredSlots[supervisor] = {};
+        this.lastSelectedSlots[supervisor] = {};
+  
+        for(let time of Object.keys(this.selectedSlots[supervisor])){
+          if(this.selectedSlots[supervisor][time].committeeIdentifier === committeeIdentifier){
+            this.selectedSlots[supervisor][time].committeeIdentifier = null;
+
+          }
+         this.hoveredSlots[supervisor][time] = false;
+        }
+      }
+    }
+    
     this.updateChairpersonAssignment(this.chairpersonAssignment[committeeIdentifier])
     this.updateExistenCommitties()
   }
@@ -175,7 +191,6 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     for(let t of Object.keys(this.lastSelectedSlots[supervisorId])){
         if(this.isChairperson(this.lastSelectedSlots[supervisorId][t])){
           this.supervisors.forEach(supervisor => {
-            console.log(supervisor.initials, this.selectedSlots[supervisor.id][t].committeeIdentifier)
             if(this.selectedSlots[supervisor.id][t].committeeIdentifier === this.lastSelectedSlots[supervisorId][t].committeeIdentifier){
               this.selectedSlots[supervisor.id][t].committeeIdentifier = null
             }

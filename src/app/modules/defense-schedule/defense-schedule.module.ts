@@ -23,6 +23,7 @@ import { DefenseCommitteeStatisticsComponent } from './components/defense-commit
 import { DefenseScheduleSelectionComponent } from './components/defense-schedule-selection/defense-schedule-selection.component';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatSelectModule,
     MatSlideToggleModule,
     MatTableModule,
+    MatSnackBarModule,
     MatTabsModule,
     MatRadioModule,
     MatCheckboxModule,

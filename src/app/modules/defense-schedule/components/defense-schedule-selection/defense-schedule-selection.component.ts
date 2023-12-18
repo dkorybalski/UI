@@ -9,6 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { User } from 'src/app/modules/user/models/user.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'defense-schedule-selection',
@@ -27,7 +28,9 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   updatedDefenses: ProjectDefense[] = [];
 
 
-  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
+  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>,
+     private _snackbar: MatSnackBar,
+    ){}
 
   ngOnInit(): void {
     this.defenseScheduleService.getProjects().subscribe(
@@ -76,11 +79,18 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   defenseSelected(defenseId: string){
     this.defenseScheduleService.updateProjectDefense(defenseId, String(this.user.acceptedProjects[0]))
       .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses => { 
+
+        if(defenses.find(def => def.projectDefenseId === defenseId)?.projectId === String(this.user.acceptedProjects[0])){
+          this._snackbar.open('Defense successfully schduled', 'close');
+        } else {
+          this._snackbar.open('Unfortunately, another team has already registered, please select another slot', 'close');
+        }
+        
         this.defenses = defenses;
         this.dataSource = new MatTableDataSource<ProjectDefense>(defenses);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        })
+      })
   }
 
   ngOnDestroy(): void {
