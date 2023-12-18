@@ -370,17 +370,20 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
   isProjectAssigned(time: string): boolean {
     const defense = this.defenses.find(defense => defense.date === this.date && defense.time === time);
-    return defense !== undefined && defense.projectId !== null
-           
+    return defense !== undefined && defense.projectId !== null   
   }
 
   openRegistration(){
-    this.defenseScheduleService.openRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.defenseScheduleService.openRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      phase => this.currentPhase = phase.phase
+    )
   }
 
  
   closeRegistration(){
-    this.defenseScheduleService.closeRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.defenseScheduleService.closeRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      phase => this.currentPhase = phase.phase
+    )
   }
 
   ngOnDestroy(): void {

@@ -167,9 +167,9 @@ export class DefenseScheduleService {
     }
 
 
-    openRegistration(): Observable<null> {
+    openRegistration(): Observable<{phase: string}> {
         return this.http
-            .patch<null>(`/pri/schedule/config/registration/open`, this.setHttpHeadersForFile())
+            .patch<{phase: string}>(`/pri/schedule/config/registration/open`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
@@ -177,9 +177,9 @@ export class DefenseScheduleService {
             )
     } 
 
-    closeRegistration(): Observable<null> {
+    closeRegistration(): Observable<{phase: string}> {
         return this.http
-            .patch<null>(`/pri/schedule/config/registration/close`, this.setHttpHeadersForFile())
+            .patch<{phase: string}>(`/pri/schedule/config/registration/close`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(
