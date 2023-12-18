@@ -17,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./defense-schedule-selection.component.scss']
 })
 export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnChanges {
-  columns = ['date', 'time', 'project', 'class', 'committee', 'students']
+  columns = ['date', 'time', 'committeeIdentifier', 'project', 'class', 'committee', 'students']
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   dataSource!: MatTableDataSource<ProjectDefense>;

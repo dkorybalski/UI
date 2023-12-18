@@ -41,12 +41,14 @@ export interface ProjectDefense {
     projectId: string | null;
     time: string;
     projectName: string | null;
+    date: string;
+    committeeIdentifier: string | null; // null value should be possible for safety reason
     classRoom: string;
-    committee: string[];
+    committee: string;
+    students: string | null;
     chairperson: string; // should the chairperson be display also in committee list?
     isEditable: boolean; // for coordinator always true; for student - true only if (the registration is open and the project supervisor is in the committee and the slot is free) and student is the project admin
 }
-
 export interface Project {
     id: string,
     name: string,

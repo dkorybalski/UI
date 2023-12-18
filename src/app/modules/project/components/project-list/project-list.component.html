@@ -52,7 +52,7 @@
     <tr style="cursor: pointer" (click)="navigateToDetails(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page">
+  <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons aria-label="Select page">
   </mat-paginator>
 </div>
 <mat-spinner *ngIf="loading"></mat-spinner>

@@ -364,7 +364,7 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   }
 
   isProjectAssigned(defenseSlotId: string): boolean {
-    return this.defenses.findIndex(defense => defense.projectDefenseId === defenseSlotId) !== -1;
+    return this.defenses.find(defense => defense.projectDefenseId === defenseSlotId)?.projectId !== null;
   }
 
   openRegistration(){
