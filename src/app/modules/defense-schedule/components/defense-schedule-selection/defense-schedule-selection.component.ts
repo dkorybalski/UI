@@ -71,7 +71,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   projectChanged(event: MatSelectChange, defense: ProjectDefense){
-    if(!this.updatedDefenses.find(def => def.projectDefenseId === defense.projectDefenseId)){
+    if(this.updatedDefenses.findIndex(def => def.projectDefenseId === defense.projectDefenseId) === -1){
       this.updatedDefenses.push(defense)
     }
   }
