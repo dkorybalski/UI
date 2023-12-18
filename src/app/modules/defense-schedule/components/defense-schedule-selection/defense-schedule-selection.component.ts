@@ -81,7 +81,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
       .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses => { 
 
         if(defenses.find(def => def.projectDefenseId === defenseId)?.projectId === String(this.user.acceptedProjects[0])){
-          this._snackbar.open('Defense successfully schduled', 'close');
+          this._snackbar.open('Defense successfully registered', 'close');
         } else {
           this._snackbar.open('Unfortunately, another team has already registered, please select another slot', 'close');
         }
