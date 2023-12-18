@@ -33,7 +33,7 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.defenseScheduleService.getSupervisorAvailabilitySurvey(this.user.indexNumber).pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.defenseScheduleService.getSupervisorAvailabilitySurvey().pipe(takeUntil(this.unsubscribe$)).subscribe(
       survey => {
         this.selectedSlots = survey
         
@@ -55,7 +55,7 @@ export class DefenseTimeSlotsSelectionComponent implements OnInit {
   }
 
   updateAssignment(slots: {[key: string]: SupervisorDefenseAssignment}){
-    this.defenseScheduleService.updateSupervisorDefenseAssignment(slots, this.user.indexNumber).pipe(takeUntil(this.unsubscribe$)).subscribe()
+    this.defenseScheduleService.updateSupervisorDefenseAssignment(slots).pipe(takeUntil(this.unsubscribe$)).subscribe()
   }
 
 
