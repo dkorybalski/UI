@@ -61,7 +61,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   updateDefenses(){
-    this.defenseScheduleService.updateProjectDefenses(this.updatedDefenses)
+    this.defenseScheduleService.updateProjectDefenses(this.defenses)
       .pipe(takeUntil(this.unsubscribe$)).subscribe(defenses => {
         this.defenses = defenses;
         this.dataSource = new MatTableDataSource<ProjectDefense>(defenses);
@@ -71,9 +71,10 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   projectChanged(event: MatSelectChange, defense: ProjectDefense){
-    if(this.updatedDefenses.findIndex(def => def.projectDefenseId === defense.projectDefenseId) === -1){
+    //console.log(this.defenses)
+    /*if(this.updatedDefenses.findIndex(def => def.projectDefenseId === defense.projectDefenseId) === -1){
       this.updatedDefenses.push(defense)
-    }
+    }*/
   }
 
   defenseSelected(defenseId: string){
