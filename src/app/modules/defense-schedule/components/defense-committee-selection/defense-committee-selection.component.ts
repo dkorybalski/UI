@@ -368,8 +368,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     }   
   }
 
-  isProjectAssigned(time: string): boolean {
-    const defense = this.defenses.find(defense => defense.date === this.date && defense.time === time);
+  isProjectAssigned(time: string, committeeIdentifier: string | null): boolean {
+    const defense = this.defenses.find(defense => defense.date === this.date && defense.time === time && defense.committeeIdentifier === committeeIdentifier);
     return defense !== undefined && defense.projectId !== null   
   }
 

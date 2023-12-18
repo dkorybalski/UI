@@ -25,7 +25,7 @@
             <td class="committee-selection"
                 [class.not-available]="!selectedSlots[supervisor.id][time].available" 
                 [class.chairperson]="isChairperson(selectedSlots[supervisor.id][time])" 
-                [class.project-assigned]="isProjectAssigned(time)" 
+                [class.project-assigned]="isProjectAssigned(time, selectedSlots[supervisor.id][time].committeeIdentifier)" 
                 [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time]" 
                 [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
                 (mouseenter)="onMouseEnter(supervisor.id, time)"
