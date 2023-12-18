@@ -144,6 +144,16 @@ export class DefenseScheduleService {
             )
     }
 
+    getCurrentPhase(): Observable<string> {
+        return this.http
+            .get<string>(`/pri/schedule/config/phase`)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
     updateChairpersonAssignment(assignment: ChairpersonAssignment):
         Observable<{ statistics: SupervisorStatistics[], defenses: ProjectDefense[] }> {
         return this.http
