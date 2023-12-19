@@ -78,7 +78,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
   }
 
   isDefenseSelected(projectId: string): boolean {
-    return this.user.acceptedProjects.includes(projectId)
+    return this.user.acceptedProjects.map(id => Number(id)).includes(Number(projectId))
   }
 
   defenseSelected(defenseId: string){
