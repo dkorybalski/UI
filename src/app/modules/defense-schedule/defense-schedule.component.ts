@@ -61,7 +61,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showDefensesList(): boolean {
-    return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN';
+    return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN' || this.user?.role === 'SUPERVISOR';
   }
 
 
