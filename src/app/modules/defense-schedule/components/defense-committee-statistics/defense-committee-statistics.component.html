@@ -10,16 +10,16 @@
     </tr>
     <tr *ngFor="let date of objectKeys(statistics[0].committeesPerDay)">
         <td>{{ date }}</td>
-        <td *ngFor="let statistic of statistics">
+        <td [class.zero]="statistic.committeesPerDay[date] === 0" *ngFor="let statistic of statistics">
             <span *ngIf="statistic.committeesPerDay">{{ statistic.committeesPerDay[date] }} </span>
         </td>       
     </tr>
     <tr class="grey-background">
         <td>Sum</td>
-        <td *ngFor="let statistic of statistics">{{ statistic.totalNumberOfCommittees }}</td>       
+        <td [class.zero]="statistic.totalNumberOfCommittees === 0" *ngFor="let statistic of statistics">{{ statistic.totalNumberOfCommittees }}</td>       
     </tr>
     <tr class="grey-background">
         <td>Load</td>
-        <td *ngFor="let statistic of statistics">{{ statistic.load }}</td>       
+        <td  [class.zero]="statistic.load === 0" *ngFor="let statistic of statistics">{{ statistic.load }}</td>       
     </tr>
 </table>

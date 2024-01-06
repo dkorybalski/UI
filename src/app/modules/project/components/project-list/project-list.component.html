@@ -37,6 +37,36 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="defenseDay">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Defense day </th>
+      <td mat-cell *matCellDef="let project"> {{project.defenseDay}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="defenseTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Defense time </th>
+      <td mat-cell *matCellDef="let project"> {{project.defenseTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="evaluationPhase">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Evaluation phase </th>
+      <td mat-cell *matCellDef="let project"> {{project.evaluationPhase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="classroom">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Classroom </th>
+      <td mat-cell *matCellDef="let project"> {{project.classroom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="committee">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Committee </th>
+      <td mat-cell *matCellDef="let project"> {{project.committee}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="students">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Students </th>
+      <td mat-cell *matCellDef="let project"> {{project.students}} </td>
+    </ng-container>
+  
     <ng-container *ngFor="let externalLinkColumnHeader of externalLinkColumnHeaders; let i = index;" [matColumnDef]="externalLinkColumnHeader">
       <th class="link-header" mat-header-cell *matHeaderCellDef> {{externalLinkColumnHeader}} </th>
       <td mat-cell *matCellDef="let element">

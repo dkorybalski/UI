@@ -35,8 +35,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
-
-
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +48,6 @@ import {MatMenuModule} from '@angular/material/menu';
     SupervisorAvailabilityListComponent,
     SupervisorAvailabilityFormComponent,
     ProjectRemoveDialogComponent,
-    
   ],
   imports: [
     CommonModule,
@@ -78,6 +76,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatMenuModule,
     StoreModule.forFeature('project', projectReducer),
     EffectsModule.forFeature([ProjectEffects]),
+    SharedModule
   ]
 })
 export class ProjectModule { }

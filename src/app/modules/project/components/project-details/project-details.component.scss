@@ -7,6 +7,10 @@
     margin: 0 auto;
     max-width: 1300px;
 
+    ::ng-deep .mat-mdc-tab-body-content {
+        overflow-y: hidden !important;
+    }
+
         
     .project-details {
         display: flex;

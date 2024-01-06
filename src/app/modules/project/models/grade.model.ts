@@ -29,6 +29,17 @@ export interface EvaluationCard {
     id: string
     grade: string | null;
     sections: GradeSection[];
+    active: boolean;
     editable: boolean,
     visible: boolean,
+}
+
+export interface PhaseChangeResponse {
+    phase: string;
+    evaluationCards:  EvaluationCards;
+}
+
+export interface ChangeGradeResponse { 
+    grade: string;
+    criteriaMet: boolean;
 }

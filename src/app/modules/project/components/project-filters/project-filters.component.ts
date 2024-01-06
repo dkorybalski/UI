@@ -16,7 +16,20 @@ import { ExternalLinkService } from '../../services/external-link.service';
   styleUrls: ['./project-filters.component.scss']
 })
 export class ProjectFiltersComponent implements OnInit, OnDestroy {
-  allColumns: string[] = ['name', 'supervisorName', 'accepted', 'firstSemesterGrade', 'secondSemesterGrade', 'criteriaMetStatus'];
+  allColumns: string[] = [
+    'name',
+    'supervisorName',
+    'accepted',
+    'firstSemesterGrade',
+    'secondSemesterGrade',
+    'criteriaMetStatus',
+    'defenseDay',
+    'defenseTime',
+    'evaluationPhase',
+    'classroom',
+    'committee',
+    'students',
+  ];
   displayedColumns: string[] = [];
   supervisors$!: Observable<Supervisor[]>
   unsubscribe$ = new Subject()

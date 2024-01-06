@@ -1,3 +1,22 @@
+:host {
+    ::ng-deep .mat-mdc-select-value-text {
+        white-space: initial !important;
+        font-size: 14px;
+    }
+
+    ::ng-deep .mat-mdc-select-value {
+        padding-right: 10px;
+    }
+
+    ::ng-deep .mat-mdc-table .mdc-data-table__header-row {
+        height: auto;
+
+        th {
+            padding: 16px;
+        }
+    }
+}
+
 .normal-border {
     border: 1px solid #aeaeae
 }
@@ -8,16 +27,19 @@
     margin-top: 20px;
 }
 
-.students-cell {
-    max-width: 200px;
-}
-
-
 .selected {
-    background-color: #dfffdf;
+    background-color: #eeeeee!important;
 }
 
 .selected:hover {
+    background-color: #eeeeee !important;
+}
+
+.included {
+    background-color: #dfffdf !important;
+}
+
+.included:hover {
     background-color: #dfffdf !important;
 }
 
@@ -25,3 +47,47 @@
     text-align: center;
 }
 
+.mat-mdc-table .mdc-data-table__row {
+    height: fit-content;
+}
+
+.mdc-data-table__cell {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+
+tr {
+    display: flex;
+}
+
+.mat-column-date {
+    flex: 0 0 110px;
+}
+
+.mat-column-time {
+    flex: 0 0 120px;
+}
+
+
+
+.mat-column-committeeIdentifier {
+    flex: 0 0 50px;
+}
+
+.mat-column-class {
+    flex: 0 0 100px;
+}
+
+.mat-column-committee {
+    flex: 0 0 180px;
+}
+
+.mat-column-project {
+    flex: 1;
+}
+
+.mat-column-students {
+    flex: 1;
+}

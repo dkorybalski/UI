@@ -35,17 +35,11 @@
                 *ngFor="let supervisor of supervisors"
             >
             <div class="committee-role-info">
-                <div>
-                    <b>
-                        <mat-icon *ngIf="isChairperson(selectedSlots[supervisor.id][time])">
-                            groups
-                        </mat-icon>
-                    </b>
-                    <p *ngIf="isChairperson(selectedSlots[supervisor.id][time])">
-                        {{ chairpersonAssignment[selectedSlots[supervisor.id][time].committeeIdentifier!].classroom }}
-                    </p>
+                <div *ngIf="isChairperson(selectedSlots[supervisor.id][time])">
+                    <b><mat-icon>groups</mat-icon> {{selectedSlots[supervisor.id][time].committeeIdentifier}}</b>
+                    <p>{{ chairpersonAssignment[selectedSlots[supervisor.id][time].committeeIdentifier!].classroom }}</p>
                 </div>
-                <div class="commitee-info">
+                <div *ngIf="!isChairperson(selectedSlots[supervisor.id][time])" class="commitee-info">
                     {{ selectedSlots[supervisor.id][time].committeeIdentifier }}
                 </div>
             </div>
@@ -56,12 +50,11 @@
     <div class="statistics-and-config-container">
         <defense-committee-statistics [statistics]="statistics"></defense-committee-statistics>
         <br>
-        <h3>Current phase: {{currentPhase}}</h3>
+        <h3>Current phase: <b>{{currentPhase}}</b></h3>
         <div *ngIf="user.role === 'COORDINATOR'"  class="buttons-container"> 
             <button (click)="getDefenseSummary()" mat-button color="primary">Export summary</button>
             <button (click)="openRegistration()" mat-button color="primary">Open registration</button>
             <button (click)="closeRegistration()" mat-button color="primary">Close registration</button>
-
         </div>
         <div class="committee-config-container">
             <ng-container *ngFor="let assignment of chairpersonAssignment | keyvalue">

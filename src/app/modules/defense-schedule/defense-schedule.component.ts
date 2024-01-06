@@ -5,6 +5,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import { User } from '../user/models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 @Component({
   selector: 'defense-schedule',
@@ -20,33 +22,73 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   user!: User;
   defenses!: ProjectDefense[];
 
-  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>){}
+  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
 
   ngOnInit(): void {
-    this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => this.defenseAssignments = assignments
-    )
-
-    this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      statistics => this.statistics = statistics
-    )
-
-    this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      assignments => this.chairpersonAssignments = assignments
-    )
-
-    this.defenseScheduleService.getProjectDefenses().subscribe(
-      defenses =>  this.defenses = defenses
-    )
-
     this.store.select('user').subscribe(user => {
       this.user = user;
+
+      if(this.user.role === 'COORDINATOR'){
+
+        this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          assignments => this.defenseAssignments = assignments
+        )
+    
+        this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          statistics => this.statistics = statistics
+        )
+    
+        this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
+          assignments => this.chairpersonAssignments = assignments
+        )
+      }
+  
+      this.defenseScheduleService.getProjectDefenses().subscribe(
+        defenses =>  this.defenses = defenses
+      )
     });
   }
 
   onStatisticsUpdated(statistics: SupervisorStatistics[]){
     this.statistics = statistics;
   }
+
+  rebuildDefenseSchedule(){
+    this.defenseScheduleService.rebuildDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+
+  archiveDefenseSchedule(){
+    this.defenseScheduleService.archiveDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+
+  
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'rebuild': {
+        name: 'rebuild defense schedule (created schedule will be removed)',
+        action: this.rebuildDefenseSchedule.bind(this),
+      },
+      'archive': {
+        name: 'archive defense schedule (created schedule will be archived)',
+        action: this.archiveDefenseSchedule.bind(this),
+      }
+    }
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
+  }
+  
 
   get showDefenseScheduleConfig(): boolean {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments === null;
@@ -64,6 +106,13 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN' || this.user?.role === 'SUPERVISOR';
   }
 
+  get showRebuildDefenseScheduleButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
+
+  get showArchiveDefenseScheduleButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
