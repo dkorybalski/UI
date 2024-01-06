@@ -1,5 +1,7 @@
 :host {
     width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
     
     ::ng-deep .mat-mdc-tab-body-wrapper, ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active  {
         padding: 0px !important;
@@ -33,4 +35,25 @@
 
 mat-tab-group {
     width: 100%;
+}
+
+
+.title-and-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        column-gap: 20px;
+    }
+}
+
+.supervisor-survey-container {
+    defense-schedule-selection {
+        padding: 8px 8px;
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+
+
 }

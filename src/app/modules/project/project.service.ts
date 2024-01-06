@@ -94,6 +94,26 @@ export class ProjectService {
         )
     }
 
+    publishAllProjects(): Observable<null> {
+        return this.http
+            .put<null>(`/pri/project/evaluation-card/publish`, null)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    activateSecondSemester(): Observable<null> {
+        return this.http
+            .put<null>(`/pri/project/evaluation-card/activate-second-semester`, null)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
     projects$: Observable<Project[]> = this.http
         .get<Project[]>('/pri/project')
         .pipe(

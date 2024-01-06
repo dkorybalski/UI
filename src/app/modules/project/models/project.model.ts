@@ -8,10 +8,16 @@ export interface Project {
     name: string;
     supervisor: Supervisor,
     accepted: boolean;
-    externalLinks?: ExternalLink[];
+    externalLinks?: ExternalLink[] | null;
+    criteriaMet?: boolean | null;
     firstSemesterGrade?: string | null;
     secondSemesterGrade?: string | null;
-    criteriaMet?: boolean;
+    defenseDay?: string | null;
+    defenseTime?: string | null;
+    evaluationPhase?: string | null;   
+    classroom?: string | null;
+    committee?: string[] | null;
+    students?: string | null;
 }
 
 export interface ProjectDetails {
@@ -24,7 +30,12 @@ export interface ProjectDetails {
     supervisor: Supervisor;
     accepted: boolean;
     confirmed: boolean;
-    externalLinks: ExternalLink[]
+    publishButtonShown?: boolean;
+    freezeButtonShown?: boolean;
+    retakeButtonShown?: boolean;
+    externalLinks?: ExternalLink[],
+    firstSemesterGrade?: string | null;
+    secondSemesterGrade?: string | null;
 }
 
 export interface ProjectFilters {

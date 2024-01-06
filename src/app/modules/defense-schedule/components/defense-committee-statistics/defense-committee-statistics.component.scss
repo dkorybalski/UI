@@ -4,7 +4,7 @@ table {
 }
 
 td, th {
-    padding: 10px 15px;
+    padding: 10px;
     text-align: center;
     border: 1px solid #aeaeae;
     border-bottom: 1px solid #aeaeae;
@@ -14,4 +14,7 @@ td, th {
 }
 .grey-background {
     background: #f0f0f0;
+}
+.zero {
+    background-color: #ffe8e8;
 }

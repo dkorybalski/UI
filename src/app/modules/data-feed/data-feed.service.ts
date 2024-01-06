@@ -41,9 +41,40 @@ export class DataFeedService {
             )
     }
 
+    uploadCriteria(data: FormData): Observable<null>  {
+        return this.http
+            .post<null>(`/pri/data/import/criteria`, data)
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+
     exportStudents(): Observable<any> {
         return this.http
             .get<HttpResponse<Blob>>(`/pri/data/export/student`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    exportCriteria(): Observable<any> {
+        return this.http
+            .get<HttpResponse<Blob>>(`/pri/data/export/criteria`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    }
+
+    exportGrades(): Observable<any> {
+        return this.http
+            .get<HttpResponse<Blob>>(`/pri/data/export/grades`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(

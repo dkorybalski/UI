@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import {  Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { EvaluationCard } from '../../models/grade.model';
+import { ChangeGradeResponse, EvaluationCard } from '../../models/grade.model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { GradeService } from '../../services/grade.service';
 import { updateGrade } from '../../state/project.actions';
@@ -14,7 +14,7 @@ import { State } from 'src/app/app.state';
   templateUrl: './project-grade.component.html',
   styleUrls: ['./project-grade.component.scss']
 })
-export class ProjectGradeComponent implements OnInit, OnDestroy {
+export class ProjectGradeComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() evaulationCard!:  EvaluationCard;
   @Input() projectId!: string;
@@ -40,20 +40,24 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-      this.data = this.evaulationCard;
+     
+  }
 
-      this.grade = this.data.grade ? this.data.grade : '0%';
+  ngOnChanges(changes: SimpleChanges): void {
+    this.data = this.evaulationCard;
 
-      this.gradeChange.emit(this.grade);
+    this.grade = this.data.grade ? this.data.grade : '0%';
 
-      this.data.sections.forEach(section => {
-        this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
+    this.gradeChange.emit(this.grade);
 
-        section.criteriaGroups.forEach(group => {
-          this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
-          this.criterionGroupExpandedStatus[`${section.id}_${group.id}`] = false;
-        })
+    this.data.sections.forEach(section => {
+      this.gradeForm.addControl(section.id, this.fb.group<{[key: string]: FormControl }>({}))
+
+      section.criteriaGroups.forEach(group => {
+        this.gradeForm.controls[section.id].addControl(group.id, new FormControl(group.selectedCriterion))
+        this.criterionGroupExpandedStatus[`${section.id}_${group.id}`] = false;
       })
+    })
   }
 
   navigateBack(){
@@ -70,8 +74,9 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
       this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(key);
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: key } )
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
-          (value: any) => {
+          (value: ChangeGradeResponse) => {
             this.grade = value.grade;
+            this.data.grade = value.grade;
             this.gradeChange.emit(value.grade);
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))
           }
@@ -85,7 +90,7 @@ export class ProjectGradeComponent implements OnInit, OnDestroy {
       this.gradeForm.controls[sectionIndex].controls[groupIndex].setValue(null);
       this.gradeSerice.changeGrade(this.projectId, this.evaulationCard.id, { id: groupIndex, selectedCriterion: null })
         .pipe(takeUntil(this.unsubscribe$)).subscribe(
-          (value: any) => {
+          (value: ChangeGradeResponse) => {
             this.grade = value.grade;
             this.gradeChange.emit(value.grade);
             this.store.dispatch(updateGrade({projectId: this.projectId, grade: value!.grade, criteriaMet: value!.criteriaMet, semester: this.semester}))

@@ -9,13 +9,14 @@ import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserState } from 'src/app/modules/user/state/user.state';
-import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess } from '../../state/project.actions';
+import { acceptProject, acceptProjectSuccess, removeProject, removeProjectSuccess, unacceptProject, unacceptProjectSuccess, updateGradingPhase } from '../../state/project.actions';
 import { Actions, ofType } from '@ngrx/effects';
 import { ProjectRemoveDialogComponent } from '../project-remove-dialog/project-remove-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectDetails } from '../../models/project.model';
-import { EvaluationCard, EvaluationCards } from '../../models/grade.model';
-import { KeyValue } from '@angular/common';
+import { EvaluationCards, PhaseChangeResponse } from '../../models/grade.model';
+import { GradeService } from '../../services/grade.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -41,6 +42,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   evaluationCards!: EvaluationCards;
   gradesShown = true;
   grade: string = '0%';
+  objectKeys = Object.keys;
+  selectedSemesterIndex = 0;
+  selectedPhaseIndex = 0;
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,15 +53,17 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private _snackbar: MatSnackBar,
-
-    ){}
+    private gradeService: GradeService
+  ){}
    
   ngOnInit(): void {
+    document.getElementsByClassName('mat-drawer-content')[0].scrollTo(0, 0);
+
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
-      this.gradesShown = this.evaluationCards !== undefined || this.evaluationCards !== null;
       this.evaluationCards = evaluationCards;
+      this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -71,6 +77,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       if(projectSupervisorAvailability){
         this.maxAvailabilityFilled = projectSupervisorAvailability?.assigned === projectSupervisorAvailability?.max
       }
+      
+      this.selectedSemesterIndex = this.selectedSemester;
+      this.selectedPhaseIndex = this.selectedPhase;
     })
   }
 
@@ -146,6 +155,19 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  onTabChange(event: MatTabChangeEvent){
+    const semesterMap: {[key: number]: string} = {
+      0: 'FIRST',
+      1: 'SECOND'
+    }
+    const phaseMap: {[key: number]: string} = {
+      0: 'SEMESTER_PHASE',
+      1: 'DEFENSE_PHASE',
+      2: 'RETAKE_PHASE'
+    }
+    this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
+  }
+
   get showRemoveButton(){
     if(
       (this.user.role === 'PROJECT_ADMIN' && 
@@ -202,15 +224,57 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
   }
 
-  
   get showFreezeGradingButton(){
-    return this.user.role === 'COORDINATOR'
+    return this.user.role === 'COORDINATOR' && this.data.freezeButtonShown
   }
 
+  get showOpenRetakePhaseButton(){
+    return this.user.role === 'COORDINATOR' && this.data.retakeButtonShown
+  }
+
+  get showPublishButton(){
+    return this.user.role === 'COORDINATOR' && this.data.publishButtonShown
+  }
 
   freezeGrading(){
-    
+    this.gradeService.freezeGrading(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: PhaseChangeResponse) => {
+        this.data.freezeButtonShown = false;
+        this.data.publishButtonShown = true;
+        this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
+      }
+    );
   }
+
+  openRetakePhase(){
+    this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: PhaseChangeResponse) => {
+        this.data.retakeButtonShown = false;
+        this.data.publishButtonShown = false;
+        this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
+      }
+    );
+  }
+
+  publish(){
+    this.gradeService.publish(this.data.id!).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: PhaseChangeResponse) => {
+        this.data.retakeButtonShown = false;
+        this.data.publishButtonShown = false;
+        this.evaluationCards = response.evaluationCards;
+        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+        this.selectedSemesterIndex = this.selectedSemester;
+        this.selectedPhaseIndex = this.selectedPhase;
+      }
+    );
+  }
+
 
   getEvaluationCardsTranslations(key: string): string{
     const translations: {[key: string]: string} = {
@@ -224,21 +288,40 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return translations[key];
   }
 
-  isOnlyOnePhaseVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 1;
-  }
-
-  allPhasesAreNotVisible(semester: {[key: string]: EvaluationCard}): boolean {
-    
-    return Object.keys(semester).filter(key => semester && semester[key] && semester[key]['visible']).length === 0;
-  }
-
   getRole(role: keyof typeof ROLE): string {
     return ROLE[role]
   }
 
   navigateBack(){
     this.router.navigate([{outlets: {modal: null}}]);
+  }
+
+  get selectedSemester(): number {
+    for(let semester in this.evaluationCards){
+      for(let phase in this.evaluationCards[semester]){
+        if(this.evaluationCards[semester][phase].active){
+          return semester === 'FIRST' ? 0 : 1
+        }
+      }
+    }
+    return 0;
+  }
+
+  get selectedPhase(): number {
+    for(let semester in this.evaluationCards){
+      for(let phase in this.evaluationCards[semester]){
+        if(this.evaluationCards[semester][phase].active){
+          if(phase === 'SEMESTER_PHASE'){
+            return 0;
+          } else if(phase === 'DEFENSE_PHASE'){
+            return 1;
+          } else if(phase === 'RETAKE_PHASE'){  
+            return 2;
+          }
+        }
+      }
+    }
+    return 0;
   }
 
   get showExternalLinks(): boolean{

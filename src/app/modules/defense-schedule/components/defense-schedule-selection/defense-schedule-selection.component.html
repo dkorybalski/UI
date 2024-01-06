@@ -22,7 +22,7 @@
       <td mat-cell *matCellDef="let defense">{{defense.time}}</td>
     </ng-container>
     <ng-container matColumnDef="committeeIdentifier">
-      <th class="centered-header" mat-header-cell *matHeaderCellDef mat-sort-header>Identifier</th>
+      <th class="centered-header" mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
       <td class="centered-cell" mat-cell *matCellDef="let defense">{{defense.committeeIdentifier}}</td>
     </ng-container>
     <ng-container matColumnDef="project">
@@ -32,7 +32,7 @@
           <mat-option [value]="null">---</mat-option>
           <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
         </mat-select>
-        <span *ngIf="user.role !== 'COORDINATOR'">{{defense.projectName}}</span>
+        <span *ngIf="user.role !== 'COORDINATOR'">{{ defense.projectName }}</span>
     </td>
     </ng-container>
     <ng-container matColumnDef="class">
@@ -48,7 +48,12 @@
       <td class="students-cell" mat-cell *matCellDef="let defense">{{ defense.students }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr [class.selected]="isDefenseSelected(defense.projectId)" mat-row *matRowDef="let row; columns: columns; let defense"></tr>
+    <tr 
+      [class.selected]="defense.projectId !== null"
+      [class.included]="doesDefenseIncludeMyProject(defense.projectId)"
+      mat-row *matRowDef="let row; columns: 
+      columns; let defense">
+    </tr>
   </table>
   
   <mat-paginator [pageSizeOptions]="[50, 100, 200]" showFirstLastButtons aria-label="Select page"></mat-paginator>

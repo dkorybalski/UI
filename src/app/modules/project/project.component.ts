@@ -13,6 +13,7 @@ import { updateDisplayedColumns } from './state/project.actions';
 import { getNumberOfColumns } from './state/project.selectors';
 import { ExternalLinkService } from './services/external-link.service';
 import { ProjectDetails } from './models/project.model';
+import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 @Component({
   selector: 'project',
@@ -87,8 +88,19 @@ export class ProjectComponent implements OnInit, OnDestroy {
             this.page = params.get('page')!;
           }
 
-          this.displayedColumns = ['name','supervisorName','accepted','firstSemesterGrade','secondSemesterGrade','criteriaMetStatus'];
-          this.displayedColumns.push(...externalLinkColumnHeaders)
+          this.displayedColumns = [
+            'name',
+            'supervisorName',
+            'accepted',
+            'firstSemesterGrade',
+            'secondSemesterGrade',
+            'criteriaMetStatus',
+            'defenseDay',
+            'defenseTime',
+            'evaluationPhase',
+            'classroom',
+          ];
+          //this.displayedColumns.push(...externalLinkColumnHeaders)
           this.store.dispatch(updateDisplayedColumns({columns: this.displayedColumns}));
         }
       )
@@ -128,10 +140,45 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
   }
 
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'publish': {
+        name: 'publish all projects',
+        action: this.publishAllProjects.bind(this),
+      },
+      'activateSecondSemester': {
+        name: 'activate second semester',
+        action: this.activateSecondSemester.bind(this),
+      }
+    }
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
+  }
+
   openSupervisorAvailabilityForm(): void {
     if(this.isCoordinator){
       this.router.navigate([{outlets: {modal: `projects/availability`}}]) 
     }
+  }
+
+  publishAllProjects(): void{
+    this.projectService.publishAllProjects().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
+  }
+
+  activateSecondSemester(): void{
+    this.projectService.activateSecondSemester().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      () => window.location.reload()
+    )
   }
 
   get showEditOrAddProjectButton(){
@@ -140,6 +187,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   get showExternalLinkColumns(){
     return this.user.role === 'COORDINATOR' || this.user.role === 'SUPERVISOR'
+  }
+
+  get showPublishAllButton(){
+    return this.user.role === 'COORDINATOR'
+  }
+
+  get showActivateSecondSemesterButton(){
+    return this.user.role === 'COORDINATOR'
   }
 
   get pageTitle(): string {
@@ -159,6 +214,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   get isMainTableFullWidth(): boolean {
     return this.displayedColumns.length > 3
   }
+
+  
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

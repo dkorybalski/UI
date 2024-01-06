@@ -124,6 +124,17 @@ export class DefenseScheduleService {
             )
     } 
 
+    
+    additionalDay(date: string): Observable<null> {
+        return this.http
+            .post<null>(`/pri/schedule/defense/modify`, {date})
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
     getDefenseSummary(): Observable<any> {
         return this.http
             .get<HttpResponse<Blob>>(`/pri/schedule/defense/summary`, this.setHttpHeadersForFile())
@@ -180,6 +191,26 @@ export class DefenseScheduleService {
     closeRegistration(): Observable<{phase: string}> {
         return this.http
             .patch<{phase: string}>(`/pri/schedule/config/registration/close`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
+    rebuildDefenseSchedule(): Observable<{phase: string}> {
+        return this.http
+            .put<{phase: string}>(`/pri/schedule/config/rebuild`, this.setHttpHeadersForFile())
+            .pipe(
+                retry(3),
+                catchError(
+                    (err: HttpErrorResponse) => throwError(() => err))
+            )
+    } 
+
+    archiveDefenseSchedule(): Observable<{phase: string}> {
+        return this.http
+            .put<{phase: string}>(`/pri/schedule/config/archive`, this.setHttpHeadersForFile())
             .pipe(
                 retry(3),
                 catchError(

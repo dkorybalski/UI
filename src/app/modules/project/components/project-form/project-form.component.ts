@@ -70,7 +70,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           }));
           this.selectedMembers.push(student);
         })
-        this.projectDetails.externalLinks.forEach(externalLink => {
+        this.projectDetails.externalLinks?.forEach(externalLink => {
           this.externalLinks.controls.push(this.fb.group({
             id: externalLink.id,
             url: externalLink.url,

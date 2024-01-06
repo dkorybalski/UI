@@ -26,6 +26,11 @@ export const updateDisplayedColumns = createAction(
     props<{ columns: string[] }>()
 )
 
+export const updateGradingPhase = createAction(
+    '[Project List] Update Grading Phase',
+    props<{ projectId: string, phase: string }>()
+)
+
 export const addProject = createAction(
     '[ProjectForm] Add',
     props<{ project: ProjectDetails, userRole: string }>()
@@ -134,5 +139,6 @@ export const updateSupervisorAvailabilityFailure = createAction(
     '[SupervisorAvailability API] Update Fail',
     props<{ error: string }>()
 )
+
 
 

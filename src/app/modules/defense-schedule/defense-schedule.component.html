@@ -1,6 +1,12 @@
-<h1>Project defense schedule</h1>
+<div class="title-and-buttons">
+    <h1>Project defense schedule</h1>
+    <div>
+        <button *ngIf="showArchiveDefenseScheduleButton" (click)="openAreYouSureDialog('archive')" mat-raised-button color="primary">Archive defense schedule</button>
+        <button *ngIf="showRebuildDefenseScheduleButton" (click)="openAreYouSureDialog('rebuild')" mat-raised-button color="primary">Rebuild defense schedule</button>
+    </div>
+</div>
+
 <defense-date-range-selection *ngIf="showDefenseScheduleConfig"></defense-date-range-selection>
-<defense-time-slots-selection [user]="user" *ngIf="showSupervisorAccessibilitySurvey"></defense-time-slots-selection>
 <div *ngIf="showCommitteeSelectionSurvey" class="committee-selection-container">
     <div class="tables-container">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
@@ -13,9 +19,24 @@
             </mat-tab>
         </mat-tab-group>
     </div>
+    <defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+
 </div>
-<br><br>
-<defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+
+<div *ngIf="showSupervisorAccessibilitySurvey" class="supervisor-survey-container">
+    <div class="tables-container">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+            <mat-tab label="survey">
+                <defense-time-slots-selection [user]="user" *ngIf="showSupervisorAccessibilitySurvey"></defense-time-slots-selection>
+            </mat-tab>
+            <mat-tab label="defenses">
+                <defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+
+
 
 
   

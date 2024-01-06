@@ -17,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./defense-schedule-selection.component.scss']
 })
 export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnChanges {
-  columns = ['date', 'time', 'committeeIdentifier', 'project', 'class', 'committee', 'students']
+  columns = ['date', 'time', 'committeeIdentifier', 'project', 'class', 'students', 'committee' ]
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
   dataSource!: MatTableDataSource<ProjectDefense>;
@@ -77,7 +77,7 @@ export class DefenseScheduleSelectionComponent implements OnInit, OnDestroy, OnC
     }*/
   }
 
-  isDefenseSelected(projectId: string): boolean {
+  doesDefenseIncludeMyProject(projectId: string): boolean {
     return this.user.acceptedProjects.map(id => Number(id)).includes(Number(projectId))
   }
 
