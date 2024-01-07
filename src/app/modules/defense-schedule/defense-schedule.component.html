@@ -23,16 +23,12 @@
 
 </div>
 
+<defense-schedule-selection  [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
+
+
 <div *ngIf="showSupervisorAccessibilitySurvey" class="supervisor-survey-container">
     <div class="tables-container">
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-            <mat-tab label="survey">
-                <defense-time-slots-selection [user]="user" *ngIf="showSupervisorAccessibilitySurvey"></defense-time-slots-selection>
-            </mat-tab>
-            <mat-tab label="defenses">
-                <defense-schedule-selection [defenses]="defenses" *ngIf="showDefensesList" ></defense-schedule-selection>
-            </mat-tab>
-        </mat-tab-group>
+        <defense-time-slots-selection [user]="user"></defense-time-slots-selection>   
     </div>
 </div>
 

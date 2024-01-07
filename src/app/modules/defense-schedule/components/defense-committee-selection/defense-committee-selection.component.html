@@ -26,7 +26,7 @@
                 [class.not-available]="!selectedSlots[supervisor.id][time].available" 
                 [class.chairperson]="isChairperson(selectedSlots[supervisor.id][time])" 
                 [class.project-assigned]="isProjectAssigned(time, selectedSlots[supervisor.id][time].committeeIdentifier)" 
-                [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time]" 
+                [class.hovered]="hoveredSlots[supervisor.id] && hoveredSlots[supervisor.id][time] && user.role === 'COORDINATOR'" 
                 [class.last-selection]="lastSelectedSlots[supervisor.id] && lastSelectedSlots[supervisor.id][time]" 
                 (mouseenter)="onMouseEnter(supervisor.id, time)"
                 (mousedown)="onMouseDown(supervisor.id, time)"
@@ -43,7 +43,7 @@
                     {{ selectedSlots[supervisor.id][time].committeeIdentifier }}
                 </div>
             </div>
-            <span class="selection-indicator"></span>
+            <span *ngIf="user.role === 'COORDINATOR'" class="selection-indicator"></span>
             </td>
         </tr>
     </table>
@@ -56,7 +56,7 @@
             <button (click)="openRegistration()" mat-button color="primary">Open registration</button>
             <button (click)="closeRegistration()" mat-button color="primary">Close registration</button>
         </div>
-        <div class="committee-config-container">
+        <div *ngIf="user.role === 'COORDINATOR'" class="committee-config-container">
             <ng-container *ngFor="let assignment of chairpersonAssignment | keyvalue">
                 <div *ngIf="doesCommitteeExist(assignment.key)">
                     <h3>{{assignment.key}}</h3>
@@ -77,6 +77,7 @@
         </div>
     </div>
 </div>
+<br>
 <br>
 <defense-schedule-selection [defenses]="defenses" userRole="COORDINATOR"></defense-schedule-selection>
 

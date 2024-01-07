@@ -32,6 +32,7 @@ export interface EvaluationCard {
     active: boolean;
     editable: boolean,
     visible: boolean,
+    criteriaMet: boolean,
 }
 
 export interface PhaseChangeResponse {

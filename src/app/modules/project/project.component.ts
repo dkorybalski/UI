@@ -96,7 +96,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
             'secondSemesterGrade',
             'criteriaMetStatus',
             'defenseDay',
-            'defenseTime',
             'evaluationPhase',
             'classroom',
           ];
@@ -143,11 +142,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
   openAreYouSureDialog(action: string): void {
     const actionMap: {[key: string]: { name: string, action: Function}} = {
       'publish': {
-        name: 'publish all projects',
+        name: 'publish all projects, evaluation cards will be available for students to view.',
         action: this.publishAllProjects.bind(this),
       },
       'activateSecondSemester': {
-        name: 'activate second semester',
+        name: 'activate the evaluation card for the second semester, the entire evaluation process will start from the beginning for the second semester.',
         action: this.activateSecondSemester.bind(this),
       }
     }

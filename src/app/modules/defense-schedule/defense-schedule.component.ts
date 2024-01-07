@@ -14,13 +14,13 @@ import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you
   styleUrls: ['./defense-schedule.component.scss']
 })
 export class DefenseScheduleComponent implements OnInit, OnDestroy {
-
   defenseAssignments!: SupervisorDefenseAssignmentAggregated;
   chairpersonAssignments!: ChairpersonAssignmentAggregated;
   unsubscribe$ = new Subject();
   statistics: SupervisorStatistics[] = [];
   user!: User;
   defenses!: ProjectDefense[];
+  currentPhase!: string;
 
   constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
 
@@ -28,7 +28,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.store.select('user').subscribe(user => {
       this.user = user;
 
-      if(this.user.role === 'COORDINATOR'){
+      if(this.user.role === 'COORDINATOR' || this.user.role === 'SUPERVISOR'){
 
         this.defenseScheduleService.getSupervisorsDefenseAssignment().pipe(takeUntil(this.unsubscribe$)).subscribe(
           assignments => this.defenseAssignments = assignments
@@ -45,6 +45,10 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   
       this.defenseScheduleService.getProjectDefenses().subscribe(
         defenses =>  this.defenses = defenses
+      )
+
+      this.defenseScheduleService.getCurrentPhase().pipe(takeUntil(this.unsubscribe$)).subscribe(
+        response => this.currentPhase = response.phase
       )
     });
   }
@@ -69,11 +73,11 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   openAreYouSureDialog(action: string): void {
     const actionMap: {[key: string]: { name: string, action: Function}} = {
       'rebuild': {
-        name: 'rebuild defense schedule (created schedule will be removed)',
+        name: 'rebuild defense schedule - schedule will be irreversibly removed, you will need to create a new one',
         action: this.rebuildDefenseSchedule.bind(this),
       },
       'archive': {
-        name: 'archive defense schedule (created schedule will be archived)',
+        name: 'archive defense schedule - schedule will be irreversibly archived, you will need to create a new one',
         action: this.archiveDefenseSchedule.bind(this),
       }
     }
@@ -95,15 +99,15 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   }
 
   get showSupervisorAccessibilitySurvey(): boolean {
-    return this.user?.role === 'SUPERVISOR';
+    return this.user?.role === 'SUPERVISOR' && this.currentPhase === 'DEFENSE SCHEDULE PLANNING';
   }
 
   get showCommitteeSelectionSurvey(): boolean {
-    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+    return (this.user?.role === 'COORDINATOR' || (this.user?.role === 'SUPERVISOR' && this.currentPhase !== 'DEFENSE SCHEDULE PLANNING')) && this.defenseAssignments !== null;
   }
 
   get showDefensesList(): boolean {
-    return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN' || this.user?.role === 'SUPERVISOR';
+    return this.user?.role === 'STUDENT' || this.user?.role === 'PROJECT_ADMIN';
   }
 
   get showRebuildDefenseScheduleButton(): boolean {

@@ -61,9 +61,9 @@
       <tr mat-row *matRowDef="let row; columns: columns;"></tr>
     </table>
     <div class="buttons">
-      <button *ngIf="showPublishButton" (click)="publish()" mat-raised-button color="primary" cdkFocusInitial>Publish</button>
-      <button *ngIf="showOpenRetakePhaseButton" (click)="openRetakePhase()" mat-raised-button color="primary" cdkFocusInitial>Open retake phase</button>
-      <button *ngIf="showFreezeGradingButton" (click)="freezeGrading()" mat-raised-button color="primary" cdkFocusInitial>Freeze grading</button>
+      <button *ngIf="showPublishButton" (click)="openAreYouSureDialog('publish')" mat-raised-button color="primary" cdkFocusInitial>Publish</button>
+      <button *ngIf="showOpenRetakePhaseButton" (click)="openAreYouSureDialog('retake')" mat-raised-button color="primary" cdkFocusInitial>Open retake phase</button>
+      <button *ngIf="showFreezeGradingButton" (click)="openAreYouSureDialog('freeze')" mat-raised-button color="primary" cdkFocusInitial>Freeze grading</button>
       <button *ngIf="showEditButton" (click)="editProject()" mat-raised-button color="primary" cdkFocusInitial>Edit project</button>
       <button *ngIf="showRemoveButton" (click)="openRemoveProjectDialog()" mat-raised-button color="primary" cdkFocusInitial>Remove project</button>
       <button *ngIf="showAcceptButton" (click)="acceptProject()" mat-raised-button color="primary" cdkFocusInitial>Accept project</button>
@@ -71,14 +71,16 @@
     </div>
   </div>
 </div>
-<mat-tab-group (selectedTabChange)="onTabChange($event)" [(selectedIndex)]="selectedSemesterIndex" *ngIf="gradesShown" class="mat-elevation-z8">
-  <mat-tab *ngFor="let semester of objectKeys(evaluationCards)" [label]="getEvaluationCardsTranslations(semester)">
-    <mat-tab-group (selectedTabChange)="onTabChange($event)" [(selectedIndex)]="selectedPhaseIndex">
+<mat-tab-group (selectedTabChange)="onSemesterTabChange($event)" [selectedIndex]="selectedSemesterIndex" *ngIf="gradesShown" class="mat-elevation-z8">
+  <mat-tab #semesterTab *ngFor="let semester of objectKeys(evaluationCards)" [label]="getEvaluationCardsTranslations(semester)">
+    <mat-tab-group (selectedTabChange)="onPhaseTabChange($event)" [selectedIndex]="selectedPhaseIndex">
       <mat-tab 
+        #phaseTab
         *ngFor="let phase of objectKeys(evaluationCards[semester])"
         [label]="getEvaluationCardsTranslations(phase)"
       >
         <project-grade 
+          [isActive]="phaseTab.isActive && semesterTab.isActive"
           (gradeChange)="onGradeChange($event)"
           [projectId]="data.id!"
           [semester]="semester"
@@ -89,7 +91,13 @@
   </mat-tab>
 </mat-tab-group>
 
-<h2 *ngIf="gradesShown"  class="grade-info mat-elevation-z8">Grade: {{grade}}</h2>
+<div *ngIf="gradesShown" class="grade-info mat-elevation-z8">
+  <h2>Grade: {{grade}}</h2>
+  <div>
+    <h2 class="criteriaMet">Criteria met: <div [class.accepted]="criteriaMet" class="ellipse"></div></h2>
+    <h2>Selected criteria: {{selectedCriteria}}</h2>
+  </div>
+</div>
 
 
 

@@ -244,12 +244,14 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
 
 
   onMouseDown(supervisor: string, time: string){
-    for(let supervisor of Object.keys(this.selectedSlots)){
-      this.lastSelectedSlots[supervisor] = {};
+    if(this.user.role === 'COORDINATOR'){
+      for(let supervisor of Object.keys(this.selectedSlots)){
+        this.lastSelectedSlots[supervisor] = {};
+      }
+      this.slotsSelected = false;
+      this.hoveredSlots[supervisor][time] = true;
+      this.start = {supervisor, time}
     }
-    this.slotsSelected = false;
-    this.hoveredSlots[supervisor][time] = true;
-    this.start = {supervisor, time}
   }
 
   onMouseEnter(supervisor: string, time: string){
