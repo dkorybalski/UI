@@ -34,8 +34,8 @@
                         <td class="centered-cell" [class.disqualifying]="isDisqualifying(section.id, criteriaGroup.id, key)" *ngFor="let key of criteriaKeys">
                             <mat-radio-group >
                                 <mat-radio-button matTooltipPosition="above" 
-                                 [matTooltip]="isDisqualifying(section.id, criteriaGroup.id, key) ? 'Disqualifying' : ''"    (click)="selectCriterion(section.id, criteriaGroup.id, key)"
-                                 [disabled]="!data.editable"  [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, key)" [value]="key" />
+                                 [matTooltip]="isDisqualifying(section.id, criteriaGroup.id, key) ? 'Disqualifying' : ''"  
+                                 [disabled]="!data.editable" [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, key)" [value]="key" (click)="selectCriterion(section.id, criteriaGroup.id, key);" />
                             </mat-radio-group>
                         </td>
                         <td  class="criterion-details-cell-container">

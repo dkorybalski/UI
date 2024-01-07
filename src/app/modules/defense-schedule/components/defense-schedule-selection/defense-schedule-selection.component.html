@@ -1,6 +1,6 @@
 
 
-<div [ngClass]="{'mat-elevation-z8': user.role !== 'COORDINATOR', 'normal-border':  user.role === 'COORDINATOR'}">
+<div [ngClass]="{'mat-elevation-z8': user.role !== 'COORDINATOR' && user.role !== 'SUPERVISOR', 'normal-border':  user.role === 'COORDINATOR' || user.role === 'SUPERVISOR'}">
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="checkbox">
       <th mat-header-cell *matHeaderCellDef>Select</th>

@@ -116,7 +116,7 @@ export const projectReducer = createReducer(
         return {
             ...state,
             projects: [...state.projects!].map(project => {
-                if (project.id === action.projectId) {
+                if (String(project.id) === String(action.projectId)) {
                     return {
                         ...project,
                         criteriaMet: action.criteriaMet,

@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, retry, throwError, catchError } from "rxjs";
+import { Observable, retry, throwError, catchError, tap } from "rxjs";
 import { ChangeGradeResponse, EvaluationCards, PhaseChangeResponse } from "../models/grade.model";
 
 @Injectable({
@@ -9,9 +9,10 @@ import { ChangeGradeResponse, EvaluationCards, PhaseChangeResponse } from "../mo
 export class GradeService {
     constructor(private http: HttpClient) { }
 
-    getEvaluationCards(id: string): Observable<EvaluationCards> {
-            return this.http.get<EvaluationCards>(`/pri/project/${id}/evaluation-card`)
+    getEvaluationCards(id: string): Observable<HttpResponse<EvaluationCards>> {
+            return this.http.get<EvaluationCards>(`/pri/project/${id}/evaluation-card`, { observe: 'response' })
                 .pipe(
+                    tap(response => console.log(response.status)),
                     retry(3),
                     catchError(
                         (err: HttpErrorResponse) => throwError(() => err))
@@ -20,7 +21,7 @@ export class GradeService {
 
     changeGrade(projectId: string, evaulationCardId: string, grade: {id: string, selectedCriterion: string | null}): Observable<ChangeGradeResponse>  {
             return this.http
-                .put<ChangeGradeResponse>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
+                .patch<ChangeGradeResponse>(`/pri/project/${projectId}/evaluation-card/${evaulationCardId}`, grade)
                 .pipe(
                     retry(3),
                     catchError(

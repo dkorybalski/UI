@@ -17,6 +17,7 @@ import { ProjectDetails } from '../../models/project.model';
 import { EvaluationCards, PhaseChangeResponse } from '../../models/grade.model';
 import { GradeService } from '../../services/grade.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AreYouSureDialogComponent } from 'src/app/modules/shared/are-you-sure-dialog/are-you-sure-dialog.component';
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -42,9 +43,21 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   evaluationCards!: EvaluationCards;
   gradesShown = true;
   grade: string = '0%';
+  criteriaMet = false;
   objectKeys = Object.keys;
   selectedSemesterIndex = 0;
   selectedPhaseIndex = 0;
+  selectedCriteria = '';
+  
+  semesterMap: {[key: number]: string} = {
+    0: 'FIRST',
+    1: 'SECOND'
+  }
+  phaseMap: {[key: number]: string} = {
+    0: 'SEMESTER_PHASE',
+    1: 'DEFENSE_PHASE',
+    2: 'RETAKE_PHASE'
+  }
   
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -62,7 +75,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
       this.data = projectDetails;
       this.user = user;
-      this.evaluationCards = evaluationCards;
+      if(evaluationCards.status === 204){
+        this.gradesShown = false;
+        this._snackbar.open('Evaluation cards are locked at the moment', 'close');
+      }
+      this.evaluationCards = evaluationCards.body;
+      console.log(this.evaluationCards)
       this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
@@ -87,8 +105,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     return a;
   }
 
-  onGradeChange(grade: string){
+  onGradeChange({grade, criteriaMet, selectedCriteria}: {grade: string, criteriaMet: boolean, selectedCriteria: string}){
     this.grade = grade;
+    this.criteriaMet = criteriaMet;
+    this.selectedCriteria = selectedCriteria;
   }
 
   acceptProject(): void {
@@ -155,17 +175,42 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onTabChange(event: MatTabChangeEvent){
-    const semesterMap: {[key: number]: string} = {
-      0: 'FIRST',
-      1: 'SECOND'
+  
+  openAreYouSureDialog(action: string): void {
+    const actionMap: {[key: string]: { name: string, action: Function}} = {
+      'publish': {
+        name: 'publish evaluation cards and unlock them for students to view.',
+        action: this.publish.bind(this),
+      },
+      'retake': {
+        name: `activate retake's evaluation card`,
+        action: this.openRetakePhase.bind(this),
+      },
+      'freeze': {
+        name: `block the semester's evaluation card and activate the defense's evaluation card, evaluation cards won't be available for students to view until they are published`,
+        action: this.freezeGrading.bind(this),
+      }
     }
-    const phaseMap: {[key: number]: string} = {
-      0: 'SEMESTER_PHASE',
-      1: 'DEFENSE_PHASE',
-      2: 'RETAKE_PHASE'
-    }
-    this.grade = this.evaluationCards[semesterMap[this.selectedSemesterIndex]][phaseMap[this.selectedPhaseIndex]].grade!;
+
+    const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
+      data: { actionName: actionMap[action].name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        actionMap[action].action()
+      }
+    });
+  }
+
+  onSemesterTabChange(event: MatTabChangeEvent){
+    this.selectedSemesterIndex = event.index;
+    this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
+  }
+
+  onPhaseTabChange(event: MatTabChangeEvent){
+    this.selectedPhaseIndex = event.index;
+    this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
   }
 
   get showRemoveButton(){

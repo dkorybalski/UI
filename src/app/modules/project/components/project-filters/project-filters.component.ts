@@ -24,7 +24,6 @@ export class ProjectFiltersComponent implements OnInit, OnDestroy {
     'secondSemesterGrade',
     'criteriaMetStatus',
     'defenseDay',
-    'defenseTime',
     'evaluationPhase',
     'classroom',
     'committee',
