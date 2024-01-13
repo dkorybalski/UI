@@ -26,6 +26,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DefenseAdditonalDayFormComponent } from './components/defense-additional-day-form/defense-additional-day-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DefenseAdditonalDayFormComponent } from './components/defense-additiona
     MatInputModule,
     MatIconModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     MatNativeDateModule,
     MatSelectModule,
     MatSlideToggleModule,

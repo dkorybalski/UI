@@ -278,8 +278,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           this.router.navigate([{outlets: {modal: null}}]);
         });
       }
-
-      
     }
   }
 

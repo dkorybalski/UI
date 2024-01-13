@@ -1,0 +1,120 @@
+:host {
+    display: flex;
+}
+
+mat-radio-group {
+    display: flex;
+
+    mat-radio-button {
+        width: 70px;
+        text-align: center;
+    }
+}
+
+b {
+    font-weight: 500;
+}
+
+.criterion-details-cell-container {
+    position: relative;
+    padding: 0px !important;
+    max-width: 600px;
+
+    .all-criteria  {
+        display: grid;
+        .criterion-description {
+            display: flex;
+            padding: 10px;
+            cursor: pointer;
+            justify-content: space-between;
+            border-bottom: 1px solid #e7e7e7;
+
+            div {
+                display: flex;
+                column-gap: 10px;
+                text-align: justify;
+                max-width: 550px;
+            }
+            
+
+            p {
+                margin: 0px;
+                padding: 0px;
+                display: flex;
+                align-items: center;
+            }
+
+            mat-icon {
+                color: gray;
+            }
+
+           
+            
+        }
+
+        .criterion-description.disabled {
+            cursor: default !important;
+        }
+
+        .criterion-description:last-of-type  {
+            border-bottom: none
+
+        }
+        .selected-row {
+            background:#e2ffe2;
+        }
+    
+        .selected-row.disqualifying {
+            background: rgb(255 202 202);
+        }
+    }
+
+    .selected-criterion {
+        p {
+            padding: 10px;
+            width: 500px;
+            max-width: 500px;
+        }
+
+        span {
+            padding: 10px;
+            cursor: pointer;
+        }
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+
+        mat-icon, span {
+            color: #757575;
+            padding: 10px;
+            cursor: pointer;
+        }
+    }
+}
+
+
+.criterion-details-cell-container {
+    width: 600px;
+}
+
+
+
+mat-radio-button {
+    --mdc-radio-selected-focus-icon-color: rgb(59, 188, 59) !important;
+    --mdc-radio-selected-hover-icon-color: rgb(59, 188, 59) !important;
+    --mdc-radio-selected-icon-color: rgb(59, 188, 59) !important;
+    --mdc-radio-selected-pressed-icon-color: rgb(59, 188, 59) !important;
+    --mat-mdc-radio-checked-ripple-color: rgb(59, 188, 59) !important;
+    --mdc-radio-selected-icon-color: rgb(59, 188, 59) !important;
+}
+
+mat-radio-button.disqualifying  {
+    --mdc-radio-selected-focus-icon-color: rgb(236, 99, 99) !important;
+    --mdc-radio-selected-hover-icon-color: rgb(236, 99, 99) !important;
+    --mdc-radio-selected-icon-color: rgb(236, 99, 99) !important;
+    --mdc-radio-selected-pressed-icon-color: rgb(236, 99, 99) !important;
+    --mat-mdc-radio-ripple-color: #000;
+    --mat-mdc-radio-checked-ripple-color: rgb(236, 99, 99) !important;    
+}

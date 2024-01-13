@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { UserRoutingModule } from './user-routing.module';
 import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CommonModule } from '@angular/common';
     UserRoutingModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatSnackBarModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

@@ -1,8 +1,10 @@
-<div style="overflow-x:auto;" class="mat-elevation-z8">
+<project-filters [externalLinkColumnHeaders]="externalLinkColumnHeaders"/>
+
+<div *ngIf="!loading" style="overflow-x:auto;" class="mat-elevation-z8">
   <table mat-table [dataSource]="projects" matSort>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td class="projectNameCell" mat-cell *matCellDef="let project"> 
+      <td  class="projectNameCell" mat-cell *matCellDef="let project"> 
         <div>
           <span>{{project.name}} </span>
           <mat-icon *ngIf="isProjectAccepted(project.id)">person</mat-icon>
@@ -59,7 +61,7 @@
 
     <ng-container matColumnDef="students">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Students </th>
-      <td mat-cell *matCellDef="let project"> {{project.students}} </td>
+      <td class="studentsCell" mat-cell *matCellDef="let project"> {{project.students}} </td>
     </ng-container>
   
     <ng-container *ngFor="let externalLinkColumnHeader of externalLinkColumnHeaders; let i = index;" [matColumnDef]="externalLinkColumnHeader">
@@ -71,7 +73,7 @@
               </a>
           </div>
       </td>
-  </ng-container>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr style="cursor: pointer" (click)="navigateToDetails(project.id)" mat-row *matRowDef="let row; columns: columns; let project"></tr>
@@ -80,4 +82,6 @@
   <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons aria-label="Select page">
   </mat-paginator>
 </div>
+
 <mat-spinner *ngIf="loading"></mat-spinner>
+

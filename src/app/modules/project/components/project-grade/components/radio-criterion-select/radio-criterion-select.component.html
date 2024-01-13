@@ -1,0 +1,49 @@
+<mat-radio-group (change)="selectCriterion($event.value)" [(ngModel)]="criteriaGroup.selectedCriterion">
+    <mat-radio-button
+        *ngFor="let key of criteriaKeys"
+        [class.disqualifying]="criteriaGroup.criteria[key.id].isDisqualifying"
+        [disabled]="!editable"
+        [value]="key.id"
+    />
+</mat-radio-group>
+<div  class="criterion-details-cell-container">
+    <div *ngIf="expanded" class="all-criteria">
+        <div class="criterion-description" 
+            (click)="selectCriterion(key.id)"
+            [ngClass]="{
+                'selected-row': key.id === criteriaGroup.selectedCriterion,
+                'disqualifying': criteriaGroup.criteria[key.id].isDisqualifying,
+                'disabled': !editable 
+                }" 
+            *ngFor="let key of criteriaKeys;">
+            <div>
+                <b>{{ key.points}}:</b>
+                <p>
+                    {{ criteriaGroup.criteria[key.id].description }}
+                </p>
+            </div>
+            <mat-icon *ngIf="criteriaGroup.criteria[key.id].isDisqualifying" matTooltipPosition="left" matTooltip="Disqualifying">block</mat-icon>
+
+        </div>                       
+    </div>
+    <div class="selected-criterion" *ngIf="!expanded">
+        <p>{{  criteriaGroup.selectedCriterion ? criteriaGroup.criteria[criteriaGroup.selectedCriterion].description : 'Not selected' }}</p>
+    </div>
+    <div class="action-buttons">
+        <div>
+            <span 
+                matTooltipPosition="left"
+                matTooltip="Unselect"
+                (click)="unselectCriterion()"
+                *ngIf="criteriaGroup.selectedCriterion && editable"
+                class="material-symbols-outlined"
+            >
+                remove_selection
+            </span>
+        </div>
+
+        <mat-icon  matTooltipPosition="below" [matTooltip]="expanded ? 'Hide' : 'Expand'" (click)="expanded = !expanded">
+            {{ expanded ? 'expand_less' : 'expand_more' }}
+        </mat-icon> 
+    </div>
+</div>

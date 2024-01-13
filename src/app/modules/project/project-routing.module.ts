@@ -6,10 +6,10 @@ import { projectResolver } from './resolvers/project.resolver';
 import { supervisorAvailabilityResolver } from './resolvers/supervisors-availability.resolver';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { userResolver } from '../user/resolvers/user.resolver';
-import { studentResolver } from './resolvers/student.resolver';
-import { supervisorResolver } from './resolvers/supervisor.resolver';
 import { SupervisorAvailabilityFormComponent } from './components/supervisor-availability-form/supervisor-availability-form.component';
-import { evaulationCardsResolver } from './resolvers/grade-details.resolver';
+import { evaulationCardsResolver } from './resolvers/evaluation-cards.resolver';
+import { studentResolver } from '../user/resolvers/student.resolver';
+import { supervisorResolver } from '../user/resolvers/supervisor.resolver';
 
 const routes: Routes = [
   { 
@@ -38,7 +38,6 @@ const routes: Routes = [
   { 
     path: 'details/:id', component: ProjectDetailsComponent, 
     resolve: {
-      user: userResolver,
       projectDetails: projectResolver,
       supervisorAvailability: supervisorAvailabilityResolver,
       evaluationCards: evaulationCardsResolver

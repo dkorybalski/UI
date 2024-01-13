@@ -12,6 +12,7 @@ export interface Project {
     criteriaMet?: boolean | null;
     firstSemesterGrade?: string | null;
     secondSemesterGrade?: string | null;
+    confirmed?: boolean;
     defenseDay?: string | null;
     defenseTime?: string | null;
     evaluationPhase?: string | null;   
@@ -36,6 +37,11 @@ export interface ProjectDetails {
     externalLinks?: ExternalLink[],
     firstSemesterGrade?: string | null;
     secondSemesterGrade?: string | null;
+    defenseDay?: string | null;
+    defenseTime?: string | null;
+    evaluationPhase?: string | null;   
+    classroom?: string | null;
+    committee?: string[] | null;
 }
 
 export interface ProjectFilters {

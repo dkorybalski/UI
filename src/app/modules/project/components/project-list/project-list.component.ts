@@ -9,6 +9,7 @@ import { State } from 'src/app/app.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { changeFilters, loadProjects } from '../../state/project.actions';
 import { Project } from '../../models/project.model';
+import { ExternalLinkService } from '../../services/external-link.service';
 
 @Component({
   selector: 'project-list',
@@ -31,19 +32,20 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   constructor(
     private store: Store<State>,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private externalLinkService: ExternalLinkService,
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadProjects());
 
     combineLatest([
+      this.externalLinkService.columnHeaders$,
       this.store.select(getProjects),
       this.store.select(getFilters),
     ]).pipe(
       tap(() => this.loading = true),
       takeUntil(this.unsubscribe$)).subscribe(
-      ([projects, filters]) => {
+      ([externalLinkColumnHeaders, projects, filters]) => {
         if(projects !== undefined){
           const mappedProjects = projects.map((project) => {
             return {
@@ -52,8 +54,10 @@ export class ProjectListComponent implements OnDestroy, OnInit{
                 externalLinks: project.externalLinks
             }
           })
-
+          this.externalLinkColumnHeaders = externalLinkColumnHeaders
           this.columns = filters.columns;
+
+          console.log(this.columns)
 
           const filteredProjects = mappedProjects.slice().filter(
             project => 
@@ -67,11 +71,6 @@ export class ProjectListComponent implements OnDestroy, OnInit{
           this.projects = new MatTableDataSource<Project>(filteredProjects);
           this.projects.paginator = this.paginator;
           this.projects.sort = this.sort;
-
-          // Uncomment if we want to reset sorting after changing page
-          //this.sort.sort({ id: '', start: 'desc', disableClear: false });
-
-
           this.loading = false;
         }
       }
@@ -105,16 +104,7 @@ export class ProjectListComponent implements OnDestroy, OnInit{
   }
 
   navigateToDetails(projectId: string){
-    switch(this.page){
-      case 'PROJECT_GROUPS':
-        this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
-      break;
-      case 'GRADES':
-        this.router.navigate([{outlets: {modal: `grades/details/${projectId}`}}]) 
-
-        //this.router.navigate([`grades/details/${projectId}`]) 
-      break;
-    }
+    this.router.navigate([{outlets: {modal: `projects/details/${projectId}`}}]) 
   }
 
   ngOnDestroy(): void {

@@ -170,3 +170,19 @@
         }
     }
 }
+
+.links-and-defense-data {
+    display: flex;
+    justify-content: space-between;
+
+    .defense-data {
+        max-width: 300px;
+        p {
+            margin: 10px 0px;
+
+            span {
+                font-weight: 500;
+            }
+        }
+    }
+}

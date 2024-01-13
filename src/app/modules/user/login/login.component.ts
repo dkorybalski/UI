@@ -4,10 +4,11 @@ import { Store } from '@ngrx/store';
 import { State } from '../state/user.state';
 import { isLogged} from '../state/user.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
-import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, authenticateSuccess, loadUser } from '../state/user.actions';
+import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, authenticateFailure, authenticateSuccess, loadUser } from '../state/user.actions';
 import { UserService } from '../user.service';
 import { Actions, ofType } from '@ngrx/effects';
 import { Subject, takeUntil } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -15,19 +16,23 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy{
-  unsubscribe$ = new Subject();
-
-
   form = this.fb.group({
     login: ['', Validators.required],
     password: ['', Validators.required]
   });
 
   showForm: boolean = false;
-
   hide: boolean = true;
+  unsubscribe$ = new Subject();
 
-  constructor(private fb: FormBuilder, private store: Store<State>, private router: Router, private userService: UserService, private actions$: Actions, private route: ActivatedRoute) { }
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<State>,
+    private router: Router,
+    private _snackbar: MatSnackBar,
+    private actions$: Actions,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.store.select(isLogged).pipe(takeUntil(this.unsubscribe$)).subscribe((isLogged: boolean) => {
@@ -38,26 +43,17 @@ export class LoginComponent implements OnInit, OnDestroy{
       }
     });
 
-    this.actions$.pipe(
-      ofType(authenticateSuccess),
-      takeUntil(this.unsubscribe$),
-    ).subscribe(() => {
-      this.store.dispatch(loadUser())
-    });
+    this.actions$.pipe(ofType(authenticateSuccess), takeUntil(this.unsubscribe$))
+      .subscribe(() => this.store.dispatch(loadUser()));
 
-    this.actions$.pipe(
-      ofType(accessTokenRefreshSuccess),
-      takeUntil(this.unsubscribe$),
-    ).subscribe(() => {
-      this.store.dispatch(loadUser())
-    });
+    this.actions$.pipe(ofType(authenticateFailure), takeUntil(this.unsubscribe$),)
+      .subscribe(() => this._snackbar.open('Authentication unsuccessful', 'close'));
 
-    this.actions$.pipe(
-      ofType(accessTokenRefreshFailure),
-      takeUntil(this.unsubscribe$),
-    ).subscribe(() => {
-      this.showForm = true;
-    });
+    this.actions$.pipe(ofType(accessTokenRefreshSuccess), takeUntil(this.unsubscribe$))
+      .subscribe(() => this.store.dispatch(loadUser()));
+
+    this.actions$.pipe(ofType(accessTokenRefreshFailure), takeUntil(this.unsubscribe$))
+      .subscribe(() => this.showForm = true );
   }
 
   onSubmit(): void {

@@ -7,12 +7,4 @@ export interface Supervisor {
     id: string;
 }
 
-export interface SupervisorDTO {
-    name: string;
-    surname: string;
-    email: string;
-    indexNumber: string;
-    pesel: string;
-}
-
 

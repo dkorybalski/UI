@@ -20,26 +20,6 @@
     }
 }
 
-.tables {
-    gap: 30px;
-    display: flex;
- 
-    .project-list-container {
-        flex: 1 1 100%;
-        min-width: 0;
-        display: inline-block;
-    }
-
-    .supervisor-availability-list-container {
-        flex: 0 0 17em;
-        height: auto;
-
-        button {
-            justify-self: end;
-            cursor: pointer;
-        }
-    }
-}
 
 mat-spinner {
     width: 100px;
@@ -68,15 +48,6 @@ mat-spinner {
     display: flex;
     align-items: center;
 }
-
-.tables.full-width {
-    flex-wrap: wrap;
-
-    div {
-        flex: 100%;
-    }
-}
-
 
 @media (max-width: 1300px) {
     .tables {

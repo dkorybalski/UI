@@ -1,6 +1,6 @@
 <div>
     <div class="title-and-add-project-button">
-        <h1>{{ pageTitle }}</h1>
+        <h1>Project groups</h1>
         <div>
             <button mat-button [matMenuTriggerFor]="supervisorAvailability">Supervisor availability</button>
             <button *ngIf="showEditOrAddProjectButton"  (click)="openProjectForm()" mat-raised-button color="primary">
@@ -23,20 +23,11 @@
         </div>
        
     </div>
-    <div class="project-filters-container">
-        <project-filters [showExternalLinkColumns]="showExternalLinkColumns"></project-filters>
-        
-    </div>
-    <div [class.full-width]="mainTableFullWidth" class="tables">   
-        <div class="project-list-container">
-            <project-list 
-                [assignedProjects]="assignedProjects"
-                [acceptedProjects]="acceptedProjects" 
-                [externalLinkColumnHeaders]="externalLinkColumnHeaders"
-                [page]="page"
-                />
-
-        </div>
+    <div class="project-list-container">
+        <project-list 
+            [assignedProjects]="assignedProjects"
+            [acceptedProjects]="acceptedProjects" 
+        />
     </div>
 </div>
 

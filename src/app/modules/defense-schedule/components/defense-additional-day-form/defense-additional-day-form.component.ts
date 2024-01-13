@@ -12,7 +12,7 @@ export class DefenseAdditonalDayFormComponent {
     date: [null, Validators.required],
   })
 
-  constructor(private fb: FormBuilder, private defenseScheduleService: DefenseScheduleService){}
+  constructor(private fb: FormBuilder){}
 
   formatDate(dateStr: string): string {
     let date = new Date(dateStr);
@@ -23,13 +23,5 @@ export class DefenseAdditonalDayFormComponent {
     
     let newDateStr = `${day}.${month}.${year}`;
     return newDateStr
-  }
-
-  onSubmit(): void {
-    if (this.form.valid) {    
-      this.defenseScheduleService.additionalDay(this.formatDate(this.form.controls.date.value!)).subscribe(
-        () => window.location.reload()
-      )
-    }
   }
 }
