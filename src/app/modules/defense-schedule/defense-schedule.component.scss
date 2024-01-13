@@ -1,8 +1,13 @@
 :host {
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    
+    width: auto;
+    margin: 0 auto;   
+    .defense-container {
+        display: block;
+        width: auto;
+        margin: 0 auto;    
+        min-width: 1500px;
+    }
+
     ::ng-deep .mat-mdc-tab-body-wrapper, ::ng-deep .mat-mdc-tab-body.mat-mdc-tab-body-active  {
         padding: 0px !important;
         overflow: visible !important;
@@ -13,9 +18,13 @@
         display: flex;
         justify-content: space-between;
     }
+}
+
+mat-spinner {
+    margin: 50px auto;
+}
     
 
-}
 
 
 .committee-selection-container {
@@ -57,4 +66,22 @@ mat-tab-group {
     }
 
 
+}
+
+
+
+.submit-button {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    background: #fafafa;
+    padding: 20px 30px;
+    z-index: 999;
+
+    div {
+        display: flex;
+        column-gap: 20px;
+    }
 }

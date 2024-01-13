@@ -127,7 +127,7 @@ export class DefenseScheduleService {
     
     additionalDay(date: string): Observable<null> {
         return this.http
-            .post<null>(`/pri/schedule/defense/modify`, {date})
+            .put<null>(`/pri/schedule/config/modify`, {date})
             .pipe(
                 retry(3),
                 catchError(

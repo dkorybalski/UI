@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DefenseDateRangeSelectionComponent } from './defense-date-range-selection.component';
+import { DefenseDateRangeSelectionComponent } from '../defense-date-range-selection/defense-date-range-selection.component';
 
 describe('DefenseDateRangeSelectionComponent', () => {
   let component: DefenseDateRangeSelectionComponent;

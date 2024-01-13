@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { User } from '../user/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AreYouSureDialogComponent } from '../shared/are-you-sure-dialog/are-you-sure-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DefenseAdditonalDayFormComponent } from './components/defense-additional-day-form/defense-additional-day-form.component';
 
 @Component({
   selector: 'defense-schedule',
@@ -21,8 +23,12 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   user!: User;
   defenses!: ProjectDefense[];
   currentPhase!: string;
-
-  constructor(private defenseScheduleService: DefenseScheduleService, private store: Store<State>, private dialog: MatDialog){}
+  
+  constructor(
+    private defenseScheduleService: DefenseScheduleService,
+    private store: Store<State>,
+    private dialog: MatDialog,
+  ){}
 
   ngOnInit(): void {
     this.store.select('user').subscribe(user => {
@@ -67,6 +73,17 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
     this.defenseScheduleService.archiveDefenseSchedule().pipe(takeUntil(this.unsubscribe$)).subscribe(
       () => window.location.reload()
     )
+  }
+
+  openAdditionalDayDialog(): void {
+    const dialogRef = this.dialog.open(DefenseAdditonalDayFormComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.defenseScheduleService.additionalDay(result).pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => window.location.reload())
+      }
+    });
   }
 
   
@@ -117,6 +134,12 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
   get showArchiveDefenseScheduleButton(): boolean {
     return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
   }
+
+  get showAdditionalDayButton(): boolean {
+    return this.user?.role === 'COORDINATOR' && this.defenseAssignments !== null;
+  }
+
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);

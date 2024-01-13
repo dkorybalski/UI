@@ -1,8 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { acceptProjectSuccess, addProjectSuccess, changeFilters, loadProjectsSuccess, loadSupervisorAvailabilitySuccess, removeProjectSuccess, unacceptProjectSuccess, updateDisplayedColumns, updateGrade, updateGradingPhase, updateProjectSuccess, updateSupervisorAvailabilitySuccess } from './project.actions'
 import { initialState, ProjectState } from './project.state';
-import { act } from '@ngrx/effects';
-
 
 export const projectReducer = createReducer(
     initialState,
@@ -16,12 +14,15 @@ export const projectReducer = createReducer(
     on(addProjectSuccess, (state, action): ProjectState => {
         return {
             ...state,
-            projects: [...state.projects!, {
-                id: action.project.id,
-                name: action.project.name,
-                supervisor: action.project.supervisor,
-                accepted: action.userRole === 'COORDINATOR'
-            }]
+            projects: [
+                {
+                    id: action.project.id,
+                    name: action.project.name,
+                    supervisor: action.project.supervisor,
+                    accepted: action.userRole === 'COORDINATOR'
+                },
+                ...state.projects!
+            ]
         }
     }),
     on(updateProjectSuccess, (state, action): ProjectState => {
@@ -67,7 +68,7 @@ export const projectReducer = createReducer(
                 if (project.id === action.projectId) {
                     return {
                         ...project,
-                        accepted: true
+                        accepted: project.confirmed!
                     }
                 }
                 return project;

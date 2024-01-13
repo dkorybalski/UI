@@ -1,82 +1,50 @@
 
- <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
-    <table class="grade-table">
-        <thead>
-            <tr>
-                <th></th>
-                <th class="centered-cell">0p</th>
-                <th class="centered-cell">1p</th>
-                <th class="centered-cell">3p</th>
-                <th class="centered-cell">4p</th>
-                <th class="criterion-header">
-                    Selected criterion / Details 
-                    <button color="primary" mat-button (click)="expandAllCriteriaDetails()" cdkFocusInitial>
-                        {{ expanded ? 'Hide all' : 'Expand all' }}
+<table class="grade-table">
+    <thead>
+        <tr>
+            <th class="criterion-title-column"></th>
+            <th class="points-and-criterion-columns">
+                <div class="points">
+                    <span class="centered-cell">0p</span>
+                    <span class="centered-cell">1p</span>
+                    <span class="centered-cell">3p</span>
+                    <span class="centered-cell">4p</span>
+                </div>
+                <div class="criterion-header-and-expand-button">
+                    <p>Selected criterion / Details</p>
+                    <button color="primary" mat-button (click)="expanded = !expanded">
+                        {{ expanded ? 'Hide all' : 'Expand all'}}
                     </button>
-                </th>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let section of data.sections;">
+            <tr class="section-name-row">
+                <td><h2>{{ section.name }}</h2></td>
+                <td></td>
             </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngFor="let section of data.sections;">
-                <tr class="section-name-row">
-                    <td><h2>{{ section.name }}</h2></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <ng-container *ngFor="let criteriaGroup of section.criteriaGroups;">
-                    <tr>
-                        <td class="criteria-group-name">
-                            <h3>{{ criteriaGroup.name }}</h3>
-                        </td>
-                        <td class="centered-cell" [class.disqualifying]="isDisqualifying(section.id, criteriaGroup.id, key)" *ngFor="let key of criteriaKeys">
-                            <mat-radio-group >
-                                <mat-radio-button matTooltipPosition="above" 
-                                 [matTooltip]="isDisqualifying(section.id, criteriaGroup.id, key) ? 'Disqualifying' : ''"  
-                                 [disabled]="!data.editable" [checked]="isRadioButtonChecked(section.id, criteriaGroup.id, key)" [value]="key" (click)="selectCriterion(section.id, criteriaGroup.id, key);" />
-                            </mat-radio-group>
-                        </td>
-                        <td  class="criterion-details-cell-container">
-                            <div *ngIf="criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id]" class="all-criteria">
-                                <div class="criterion-description" 
-                                    (click)="selectCriterion(section.id, criteriaGroup.id, criterion)"
-                                    [ngClass]="{
-                                        'selected-row': criterion === getSelectedCriterion(section.id, criteriaGroup.id),
-                                        'disqualifying': isDisqualifying(section.id, criteriaGroup.id, criterion)
-                                        }" 
-                                    *ngFor="let criterion of criteriaKeys; let i = index;">
-                                    <div>
-                                        <b>{{ criteriaSymbols[i] }}:</b>
-                                        <p>
-                                          
-                                            {{ criteriaGroup.criteria[criterion].description }}
-                                        </p>
-                                    </div>
-                                    <mat-icon *ngIf="criteriaGroup.criteria[criterion].isDisqualifying" matTooltipPosition="left" matTooltip="Disqualifying">block</mat-icon>
-
-                                </div>                       
-                            </div>
-                            <div class="selected-criterion" *ngIf="!criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id]">
-                                <p>{{  getSelectedCriterion(section.id, criteriaGroup.id) ? criteriaGroup.criteria[getSelectedCriterion(section.id, criteriaGroup.id)].description : 'Not selected' }}</p>
-                            </div>
-                            <div class="action-buttons">
-                                <div *ngIf="data.editable">
-                                    <span  matTooltipPosition="left" matTooltip="Unselect" (click)="unselectCriterion(section.id, criteriaGroup.id)" *ngIf="getSelectedCriterion(section.id, criteriaGroup.id)" class="material-symbols-outlined">
-                                        remove_selection
-                                    </span>
-                                </div>
-
-                                <mat-icon  matTooltipPosition="below" [matTooltip]="criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id] ? 'Hide' : 'Expand'" (click)="criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id] = !criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id]">
-                                    {{ criterionGroupExpandedStatus[section.id + '_' + criteriaGroup.id] ? 'expand_less' : 'expand_more' }}
-                                </mat-icon> 
-                            </div>
-                        </td>
-                    </tr>            
-                </ng-container>
+            <ng-container *ngFor="let criteriaGroup of section.criteriaGroups;">
+                <tr>
+                    <td class="criteria-group-name">
+                        <h3>
+                            {{ criteriaGroup.name }}
+                            <p>Modification date: {{ criteriaGroup.modificationDate }}</p>
+                        </h3>
+                       
+                    </td>
+                    <td class="radio-buttons-and-criteria-description"> 
+                        <radio-criterion-select 
+                            [expanded]="expanded"
+                            [editable]="data.editable"
+                            [criteriaGroup]="criteriaGroup"
+                            (selectCriterionEvent)="selectCriterion(criteriaGroup.id, $event)"
+                        >
+                        </radio-criterion-select>
+                    </td>
+                </tr>            
             </ng-container>
-        </tbody>
-    </table>
- </form>
- 
+        </ng-container>
+    </tbody>
+</table>

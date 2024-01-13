@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import { User } from 'src/app/modules/user/models/user.model';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface SupervisorTimeReference {
   supervisor: string,
@@ -76,7 +77,13 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
      }
   }
 
-  constructor(private defenseScheduleService: DefenseScheduleService, private userService: UserService, private store: Store<State>){
+  constructor(
+    private defenseScheduleService: DefenseScheduleService,
+    private userService: UserService,
+    private store: Store<State>,
+    private _snackbar: MatSnackBar,
+  )
+  {
     this.userService.supervisors$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       supervisors => this.supervisors = supervisors
     )
@@ -225,7 +232,8 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
     this.defenseScheduleService.getDefenseSummary().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (file: HttpResponse<Blob>) => {
         if(file?.body){
-          saveAs(file.body!, 'summary.csv')
+          saveAs(file.body!, 'summary.csv');
+          this._snackbar.open('Summary successfully exported', 'close')
         }
       }
     )
@@ -371,20 +379,26 @@ export class DefenseCommitteeSelectionComponent implements OnChanges, OnDestroy,
   }
 
   isProjectAssigned(time: string, committeeIdentifier: string | null): boolean {
-    const defense = this.defenses.find(defense => defense.date === this.date && defense.time === time && defense.committeeIdentifier === committeeIdentifier);
+    const defense = this.defenses?.find(defense => defense.date === this.date && defense.time === time && defense.committeeIdentifier === committeeIdentifier);
     return defense !== undefined && defense.projectId !== null   
   }
 
   openRegistration(){
     this.defenseScheduleService.openRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      phase => this.currentPhase = phase.phase
+      phase => {
+        this.currentPhase = phase.phase;
+        this._snackbar.open('Registration successfully opened', 'close')
+      }
     )
   }
 
  
   closeRegistration(){
     this.defenseScheduleService.closeRegistration().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      phase => this.currentPhase = phase.phase
+      phase =>  {
+        this.currentPhase = phase.phase;
+        this._snackbar.open('Registration successfully closed', 'close')
+      }
     )
   }
 

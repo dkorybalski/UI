@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DefenseTimeSlotsSelectionComponent } from './defense-time-slots-selection.component';
+import { DefenseTimeSlotsSelectionComponent } from '../defense-time-slots-selection/defense-time-slots-selection.component';
 
 describe('DefenseTimeSlotsSelectionComponent', () => {
   let component: DefenseTimeSlotsSelectionComponent;

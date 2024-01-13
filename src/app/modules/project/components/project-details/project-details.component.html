@@ -19,17 +19,28 @@
         {{technology}}
       </mat-chip>
     </mat-chip-set>
-    <div class="link" *ngFor="let externalLink of data.externalLinks">
-      <div>
-          <a target="_blank" 
-              [href]="externalLink.url" 
-              [class.hidden]="!externalLink.url" 
-              mat-icon-button>
-              <mat-icon>link</mat-icon>
-          </a>
+    <div class="links-and-defense-data">
+      <div class="links">
+        <div class="link" *ngFor="let externalLink of data.externalLinks">
+          <div>
+              <a target="_blank" 
+                  [href]="externalLink.url" 
+                  [class.hidden]="!externalLink.url" 
+                  mat-icon-button>
+                  <mat-icon>link</mat-icon>
+              </a>
+          </div>
+          <a target="_blank" [href]="externalLink.url">{{ externalLink.name }}</a>
+        </div>  
       </div>
-      <a target="_blank" [href]="externalLink.url">{{ externalLink.name }}</a>
-    </div>  
+      <div class="defense-data">
+        <p *ngIf="data.defenseDay"><span>Defense day:</span> {{data.defenseDay}}</p>
+        <p *ngIf="data.defenseTime"><span>Defense time:</span> {{data.defenseTime}}</p>
+        <p *ngIf="data.classroom"><span>Classroom:</span> {{data.classroom}}</p>
+        <p *ngIf="data.evaluationPhase"><span>Evaluation phase</span> {{data.evaluationPhase}}</p>
+        <p *ngIf="data.committee"><span>Committee:</span> {{data.committee}}</p>
+      </div>
+    </div>
   </div>
   <div class="table">
     <table class="mat-elevation-z5" mat-table [dataSource]="members" matSort>

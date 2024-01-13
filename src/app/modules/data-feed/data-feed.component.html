@@ -2,35 +2,45 @@
 <div class="file-inputs">
   <input type="file" class="file-input" (change)="uploadStudents($event)" #studentsFileUpload>
   <div class="file-upload">
-    <button mat-mini-fab color="primary" class="upload-btn"
-    (click)="studentsFileUpload.click()" test="students-attach-button-data-feed">
+    <button
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      (click)="studentsFileUpload.click()"
+      test="students-attach-button-data-feed"
+    >
       <mat-icon>attach_file</mat-icon>
     </button>
     {{studentsFileName || "Students"}}
-
   </div>
   
   <input type="file" class="file-input" (change)="uploadSupervisors($event)" #supervisorsFileUpload>
   <div class="file-upload">
-    <button mat-mini-fab color="primary" class="upload-btn"
-    (click)="supervisorsFileUpload.click()" test="supervisors-attach-button-data-feed">
+    <button 
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      (click)="supervisorsFileUpload.click()"
+      test="supervisors-attach-button-data-feed"
+    >
       <mat-icon>attach_file</mat-icon>
     </button>
     {{supervisorsFileName || "Supervisors"}}
-
   </div>  
 
-    
   <input type="file" class="file-input" (change)="uploadCriteria($event)" #criteriaFileUpload>
   <div class="file-upload">
-    <button mat-mini-fab color="primary" class="upload-btn"
-    (click)="criteriaFileUpload.click()" test="criteria-attach-button-data-feed">
+    <button
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      (click)="criteriaFileUpload.click()"
+      test="criteria-attach-button-data-feed"
+    >
       <mat-icon>attach_file</mat-icon>
     </button>
     {{criteriaFileName || "Criteria"}}
-
   </div>  
-
   <button (click)=uploadFiles() mat-raised-button color="primary" test="submit-button-data-feed">Submit</button>
 </div>
 

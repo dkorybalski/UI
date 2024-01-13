@@ -122,22 +122,6 @@ export class ProjectService {
                 (err: HttpErrorResponse) => throwError(() => err))
         )
 
-    supervisors$: Observable<Supervisor[]> = this.http
-        .get<Supervisor[]>('/pri/user/supervisor', { withCredentials: true })
-        .pipe(
-            retry(3),
-            catchError(
-                (err: HttpErrorResponse) => throwError(() => err))
-        )
-
-     students$: Observable<Student[]> = this.http
-        .get<Student[]>('/pri/user/student')
-        .pipe(
-            retry(3),
-            catchError(
-                (err: HttpErrorResponse) => throwError(() => err))
-        )
-
     supervisorsAvailability$: Observable<SupervisorAvailability[]> = 
         this.http
             .get<SupervisorAvailability[]>('/pri/project/supervisor/availability')
@@ -146,6 +130,4 @@ export class ProjectService {
                 catchError(
                     (err: HttpErrorResponse) => throwError(() => err))
             )
-
-
 }

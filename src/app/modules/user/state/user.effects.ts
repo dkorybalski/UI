@@ -2,7 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, catchError, mergeMap } from 'rxjs/operators';
-import { accessTokenRefresh, accessTokenRefreshFailure, accessTokenRefreshSuccess, authenticate, authenticateSuccess, loadUser, loadUserFailure, loadUserSuccess } from './user.actions';
+import { 
+    accessTokenRefresh,
+    accessTokenRefreshFailure,
+    accessTokenRefreshSuccess,
+    authenticate,
+    authenticateSuccess,
+    loadUser,
+    loadUserFailure,
+    loadUserSuccess 
+} from './user.actions';
 import { UserService } from '../user.service';
 
 @Injectable()
@@ -30,9 +39,7 @@ export class UserEffects {
             ofType(authenticate),
             mergeMap((action) => this.userService.authenticate(action.login, action.password)
                 .pipe(
-                    map(() => {
-                        return authenticateSuccess()
-                    }),
+                    map(() => authenticateSuccess()),
                     catchError(error => of(loadUserFailure({ error })))
                 )
             )

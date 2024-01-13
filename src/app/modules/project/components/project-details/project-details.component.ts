@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Student } from 'src/app/modules/user/models/student.model';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Subject, takeUntil} from 'rxjs';
+import { Subject, catchError, takeUntil} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app.state';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -72,16 +72,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     document.getElementsByClassName('mat-drawer-content')[0].scrollTo(0, 0);
 
-    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, user, evaluationCards}) => {
+    this.activatedRoute.data.subscribe(({projectDetails, supervisorAvailability, evaluationCards}) => {
       this.data = projectDetails;
-      this.user = user;
-      if(evaluationCards.status === 204){
-        this.gradesShown = false;
-        this._snackbar.open('Evaluation cards are locked at the moment', 'close');
-      }
-      this.evaluationCards = evaluationCards.body;
-      console.log(this.evaluationCards)
-      this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
       this.members = new MatTableDataSource<Student>([
         {...this.data?.supervisor!, 
           role: 'SUPERVISOR', 
@@ -89,6 +81,16 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         },
         ...this.data?.students!  
       ])
+
+      if(evaluationCards.status === 204){
+        this.gradesShown = false;
+        this._snackbar.open('Evaluation cards are locked at the moment', 'close');
+      } else {
+        this.evaluationCards = evaluationCards.body;
+      }
+
+      this.gradesShown = this.evaluationCards !== undefined && this.evaluationCards !== null;
+     
       let projectSupervisorAvailability = supervisorAvailability.find(
         (availability: SupervisorAvailability) => availability.supervisor.indexNumber === this.data.supervisor?.indexNumber
       )
@@ -99,10 +101,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.selectedSemesterIndex = this.selectedSemester;
       this.selectedPhaseIndex = this.selectedPhase;
     })
-  }
 
-  keepOrder = (a: any, b: any) => {
-    return a;
+    this.store.select('user').pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
+      this.user = user;
+    });
   }
 
   onGradeChange({grade, criteriaMet, selectedCriteria}: {grade: string, criteriaMet: boolean, selectedCriteria: string}){
@@ -125,7 +127,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
             return member
           }
         ))
-
+        this._snackbar.open('Project successfully accepted', 'close');
     });
   }
 
@@ -151,7 +153,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
             return member
           }
         ))
-
+        this._snackbar.open('Project successfully unaccepted', 'close');
     })
   }
 
@@ -168,14 +170,13 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       if(result){
         this.store.dispatch(removeProject({projectId: this.data.id!}))
         this.actions$.pipe(ofType(removeProjectSuccess),takeUntil(this.unsubscribe$),).subscribe(() => {
-          this.router.navigate ([`projects`]) 
+          this.router.navigate([{outlets: {modal: null}}]);
           this._snackbar.open('Project successfully removed', 'close');
         })
       }
     });
   }
 
-  
   openAreYouSureDialog(action: string): void {
     const actionMap: {[key: string]: { name: string, action: Function}} = {
       'publish': {
@@ -213,90 +214,24 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.grade = this.evaluationCards[this.semesterMap[this.selectedSemesterIndex]][this.phaseMap[this.selectedPhaseIndex]].grade!;
   }
 
-  get showRemoveButton(){
-    if(
-      (this.user.role === 'PROJECT_ADMIN' && 
-       this.user.acceptedProjects.includes(this.data.id!) &&
-       !this.data.accepted
-      )
-      ||
-      (this.user.role === 'COORDINATOR')
-    ){
-      return true
-    } else {
-      return false
-    }
-  }
-
-  get showEditButton(){
-    if(
-      (this.user.role === 'PROJECT_ADMIN' && 
-       this.user.acceptedProjects.includes(this.data.id!)
-      )
-      ||
-      (this.user.role === 'COORDINATOR')
-      ||
-      ((this.user.role === 'SUPERVISOR') &&
-      this.user.acceptedProjects.includes(this.data.id!))
-    ){
-      return true
-    } else {
-      return false
-    }
-  }
-  
-  
- 
-  get showAcceptButton(){
-   if(
-      (this.user.role === 'STUDENT' && 
-      this.user.acceptedProjects.length === 0 && 
-      this.user.projects.includes(this.data.id!))
-      ||
-      ((this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR') &&
-      !this.user.acceptedProjects.includes(this.data.id!) &&
-      this.user.projects.includes(this.data.id!) &&
-      this.data.confirmed &&
-      !this.maxAvailabilityFilled)
-    ){
-      return true
-    } else {
-      return false
-    }
-  }
-
-  get showUnacceptButton(){
-    return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!)
-  }
-
-  get showFreezeGradingButton(){
-    return this.user.role === 'COORDINATOR' && this.data.freezeButtonShown
-  }
-
-  get showOpenRetakePhaseButton(){
-    return this.user.role === 'COORDINATOR' && this.data.retakeButtonShown
-  }
-
-  get showPublishButton(){
-    return this.user.role === 'COORDINATOR' && this.data.publishButtonShown
-  }
-
   freezeGrading(){
-    this.gradeService.freezeGrading(this.data.id!).pipe(takeUntil(this.unsubscribe$))
-      .subscribe((response: PhaseChangeResponse) => {
-        this.data.freezeButtonShown = false;
-        this.data.publishButtonShown = true;
-        this.evaluationCards = response.evaluationCards;
-        this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
-        this.selectedSemesterIndex = this.selectedSemester;
-        this.selectedPhaseIndex = this.selectedPhase;
-      }
+    this.gradeService.freezeGrading(this.data.id!).pipe(takeUntil(this.unsubscribe$),).subscribe(
+        (response: PhaseChangeResponse) => {
+          this._snackbar.open('Successful freeze', 'close');
+          this.data.freezeButtonShown = false;
+          this.data.publishButtonShown = true;
+          this.evaluationCards = response.evaluationCards;
+          this.store.dispatch(updateGradingPhase({projectId: this.data.id!, phase: response.phase }))
+          this.selectedSemesterIndex = this.selectedSemester;
+          this.selectedPhaseIndex = this.selectedPhase;
+        }
     );
   }
 
   openRetakePhase(){
     this.gradeService.openRetakePhase(this.data.id!).pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: PhaseChangeResponse) => {
+        this._snackbar.open('Successful retake phase opening', 'close');
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
@@ -310,6 +245,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   publish(){
     this.gradeService.publish(this.data.id!).pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: PhaseChangeResponse) => {
+        this._snackbar.open('Successful publishing', 'close');
         this.data.retakeButtonShown = false;
         this.data.publishButtonShown = false;
         this.evaluationCards = response.evaluationCards;
@@ -319,7 +255,6 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
   getEvaluationCardsTranslations(key: string): string{
     const translations: {[key: string]: string} = {
@@ -375,6 +310,72 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
           this.user.role === 'SUPERVISOR'
   }
   
+  get showUnacceptButton(){
+    return this.user.role === 'STUDENT' && this.user.acceptedProjects.includes(this.data.id!) && !this.data.accepted
+  }
+
+  get showFreezeGradingButton(){
+    return this.data.freezeButtonShown
+  }
+
+  get showOpenRetakePhaseButton(){
+    return this.data.retakeButtonShown
+  }
+
+  get showPublishButton(){
+    return this.data.publishButtonShown
+  }
+
+  get showEditButton(){
+    if(
+      (this.user.role === 'PROJECT_ADMIN' && 
+       this.user.acceptedProjects.includes(this.data.id!)
+      )
+      ||
+      (this.user.role === 'COORDINATOR')
+      ||
+      ((this.user.role === 'SUPERVISOR') &&
+      this.user.acceptedProjects.includes(this.data.id!))
+    ){
+      return true
+    } else {
+      return false
+    }
+  }
+
+  get showAcceptButton(){
+    if(
+      (this.user.role === 'STUDENT' && 
+      this.user.acceptedProjects.length === 0 && 
+      this.user.projects.includes(this.data.id!))
+      ||
+      ((this.user.role === 'SUPERVISOR' || this.user.role === 'COORDINATOR') &&
+      !this.user.acceptedProjects.includes(this.data.id!) &&
+      this.user.projects.includes(this.data.id!) &&
+      this.data.confirmed &&
+      !this.maxAvailabilityFilled)
+     ){
+       return true
+     } else {
+       return false
+     }
+  }
+  
+  get showRemoveButton(){
+    if(
+      (this.user.role === 'PROJECT_ADMIN' && 
+       this.user.acceptedProjects.includes(this.data.id!) &&
+       !this.data.accepted
+      )
+      ||
+      (this.user.role === 'COORDINATOR')
+    ){
+      return true
+    } else {
+      return false
+    }
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
     this.unsubscribe$.complete()

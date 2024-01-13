@@ -1,6 +1,9 @@
 :host {
     max-width: calc(100% - 300px);
 
+    mat-spinner {
+        margin: 50px auto;
+    }
         
     .centered-header {
         ::ng-deep .mat-sort-header-container {
@@ -49,13 +52,16 @@
     }
 
     .mat-column-supervisorName {
-        text-wrap: nowrap;
+        white-space: nowrap;
     }
 
     td {
         padding: 16px;
     }
 
+    .studentsCell {
+        min-width: 300px;
+    }
 
     .projectNameCell {
         min-width: 350px;
@@ -66,7 +72,10 @@
 
             mat-icon {
                 color: #3f51b5;
+                width: 50px;
+                display: contents;
             }
         }
+        
     }
 }

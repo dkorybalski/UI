@@ -17,6 +17,10 @@
     }
 }
 
+.table-and-actions-container {
+    position: absolute;
+}
+
 .normal-border {
     border: 1px solid #aeaeae
 }
@@ -90,4 +94,25 @@ tr {
 
 .mat-column-students {
     flex: 1;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    background: white;
+    padding: 20px 30px;
+    z-index: 999;
+    align-items: center;
+
+    h2 {
+        margin: 0px;
+    }
+
+    div {
+        display: flex;
+        column-gap: 20px;
+    }
 }
