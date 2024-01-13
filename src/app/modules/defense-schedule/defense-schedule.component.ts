@@ -41,7 +41,7 @@ export class DefenseScheduleComponent implements OnInit, OnDestroy {
         )
     
         this.defenseScheduleService.getSupervisorsStatistics().pipe(takeUntil(this.unsubscribe$)).subscribe(
-          statistics => this.statistics = statistics
+          statistics => this.statistics = statistics ?  statistics : []
         )
     
         this.defenseScheduleService.getChairpersonAssignmentAggregated().pipe(takeUntil(this.unsubscribe$)).subscribe(
