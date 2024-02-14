@@ -10,10 +10,12 @@ COPY . .
 RUN npm run build
 
 FROM nginx:latest
-RUN rm -rf /usr/share/nginx/html/* 
-COPY nginx-test.conf /etc/nginx/nginx.conf
+ARG NGINX_CONF
+RUN rm -rf /usr/share/nginx/html/*
+COPY $NGINX_CONF /etc/nginx/nginx.conf
 COPY --from=builder /app/dist/pri /usr/share/nginx/html
 
 EXPOSE 80
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
