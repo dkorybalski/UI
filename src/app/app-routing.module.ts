@@ -6,7 +6,7 @@ import { CoordinatorGuard } from './modules/user/coordinator.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
