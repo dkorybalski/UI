@@ -7,6 +7,7 @@ import {
     accessTokenRefreshFailure,
     accessTokenRefreshSuccess,
     authenticate,
+    authenticateFailure,
     authenticateSuccess,
     loadUser,
     loadUserFailure,
@@ -40,7 +41,7 @@ export class UserEffects {
             mergeMap((action) => this.userService.authenticate(action.login, action.password)
                 .pipe(
                     map(() => authenticateSuccess()),
-                    catchError(error => of(loadUserFailure({ error })))
+                    catchError(error => of(authenticateFailure({ error })))
                 )
             )
         )
