@@ -1,0 +1,83 @@
+:host {
+  max-width: calc(100% - 300px);
+
+  mat-spinner {
+    margin: 50px auto;
+  }
+
+  .centered-header {
+    ::ng-deep .mat-sort-header-container {
+      justify-content: center;
+      margin-left: 18px;
+    }
+  }
+
+  .ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+  }
+
+  .ellipse.accepted {
+    background: #92e882;
+  }
+
+  .centered-cell {
+    text-align: center;
+  }
+
+
+  th {
+    white-space: nowrap;
+  }
+
+  .link {
+    display: flex;
+    justify-content: center;
+
+    a {
+      mat-icon {
+        color: #4050b5;
+      }
+    }
+  }
+
+  .link-header {
+    text-align: center;
+  }
+
+  .mat-column-name {
+    flex: 0 0 300px;
+  }
+
+  .mat-column-supervisorName {
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 16px;
+  }
+
+  .studentsCell {
+    min-width: 300px;
+  }
+
+  .diplomaNameCell {
+    min-width: 350px;
+
+    div {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+
+      mat-icon {
+        color: #3f51b5;
+        width: 50px;
+        display: contents;
+      }
+    }
+
+  }
+}

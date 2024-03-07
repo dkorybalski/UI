@@ -5,4 +5,3 @@ export interface Student {
   role?: string;
   accepted?: boolean;
 }
- 

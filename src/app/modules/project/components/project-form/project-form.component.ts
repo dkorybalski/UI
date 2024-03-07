@@ -1,19 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Student } from 'src/app/modules/user/models/student.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserState } from 'src/app/modules/user/state/user.state';
-import { Supervisor } from 'src/app/modules/user/models/supervisor.model';
-import { State } from 'src/app/app.state';
-import { Store } from '@ngrx/store';
-import { addProject, addProjectSuccess, updateProject, updateProjectSuccess } from '../../state/project.actions';
-import { Actions, ofType } from '@ngrx/effects';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ExternalLink } from '../../models/external-link.model';
-import { ProjectDetails } from '../../models/project.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AbstractControl, FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
+import {map, Observable, startWith, Subject, takeUntil} from 'rxjs';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Student} from 'src/app/modules/user/models/student.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UserState} from 'src/app/modules/user/state/user.state';
+import {Supervisor} from 'src/app/modules/user/models/supervisor.model';
+import {State} from 'src/app/app.state';
+import {Store} from '@ngrx/store';
+import {addProject, addProjectSuccess, updateProject, updateProjectSuccess} from '../../state/project.actions';
+import {Actions, ofType} from '@ngrx/effects';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ExternalLink} from '../../models/external-link.model';
+import {ProjectDetails} from '../../models/project.model';
 
 @Component({
   selector: 'project-form',
@@ -86,7 +86,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       } else {
         if(user.role !== 'COORDINATOR'){
           this.projectForm.controls.projectAdmin.setValue(this.user.indexNumber);
-        
+
         }
 
         if(user.role !== 'COORDINATOR'){
@@ -116,18 +116,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const filteredValue = value.toLowerCase()
     return this.students.filter(student =>
       (
-        student.name.toLowerCase().includes(filteredValue) || 
-        student.email.toLowerCase().includes(filteredValue) || 
+        student.name.toLowerCase().includes(filteredValue) ||
+        student.email.toLowerCase().includes(filteredValue) ||
         student.indexNumber.toLowerCase().includes(filteredValue)
-      ) 
+      )
       &&
       this.selectedMembers.findIndex(member => member.indexNumber === student.indexNumber) === -1
       &&
       student.indexNumber !== this.user.indexNumber
       &&
       (
-        !this.projectDetails 
-          ? !student.accepted 
+        !this.projectDetails
+          ? !student.accepted
           : (!student.accepted ||
               (this.projectDetails.students.findIndex(pdStudent => pdStudent.indexNumber === student.indexNumber) !== -1)
             )
@@ -188,9 +188,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   navigateBack(): void {
     if(this.comingFromDetailsPage){
-      this.router.navigate([{outlets: { modal: `projects/details/${this.projectDetails!.id}` }}]) 
+      this.router.navigate([{outlets: {modal: `projects/details/${this.projectDetails!.id}`}}])
     } else {
-      this.router.navigate([{outlets: { modal: null }}]) 
+      this.router.navigate([{outlets: {modal: null}}])
     }
   }
 
@@ -204,23 +204,23 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
 
   get showSupervisorField() {
-    return this.projectDetails?.accepted 
+    return this.projectDetails?.accepted
       ? this.user.role === 'COORDINATOR'
       : true
   }
 
   get showProjectAdminField() {
-    return this.user.role === 'COORDINATOR' || 
+    return this.user.role === 'COORDINATOR' ||
       (
-        this.projectDetails && 
-        (this.projectDetails?.accepted 
+        this.projectDetails &&
+        (this.projectDetails?.accepted
           ? (this.user.role === 'SUPERVISOR')
           : this.projectDetails)
       )
   }
 
   get showMembersField() {
-    return this.projectDetails?.accepted 
+    return this.projectDetails?.accepted
       ? this.user.role === 'COORDINATOR'
       : true
   }
@@ -238,7 +238,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.projectForm.valid) {    
+    if (this.projectForm.valid) {
       let projectDetails: ProjectDetails = {
         id: this.projectDetails?.id,
         name: this.projectForm.controls.name.value!,
@@ -247,7 +247,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           name: control.controls.name.value,
           indexNumber: control.controls.indexNumber.value,
           email: control.controls.email.value,
-          role: control.controls.role.value
+          role: control.controls.role.value,
         }}),
         externalLinks: this.externalLinks.controls.map((control: any) => { return {
           id: control.controls.id.value,

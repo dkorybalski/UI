@@ -11,7 +11,7 @@
         overflow-y: hidden !important;
     }
 
-        
+
     .project-details {
         display: flex;
         justify-content: space-between;
@@ -27,7 +27,7 @@
     }
 
     ::ng-deep .mat-mdc-tab-disabled {
-        display: none !important;  
+      display: none !important;
     }
 
     ::ng-deep .mat-mdc-standard-chip {
@@ -46,8 +46,8 @@
         color: rgba(0, 0, 0, 0.87);
     }
 
-    
-    .ellipse {
+
+  .ellipse {
         width: 15px;
         height: 15px;
         border-radius: 50%;
@@ -87,7 +87,7 @@
     }
 
     td {
-        white-space: nowrap; 
+      white-space: nowrap;
 
 
     }
@@ -147,8 +147,8 @@
         a {
             text-decoration: none;
             color: black;
-        
-            mat-icon {
+
+          mat-icon {
                 color: #4050b5;
             }
         }

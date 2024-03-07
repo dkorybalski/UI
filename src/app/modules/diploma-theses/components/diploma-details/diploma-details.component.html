@@ -1,0 +1,41 @@
+<div class="back" (click)="navigateBack()">
+  <mat-icon>arrow_back</mat-icon>
+  Back
+</div>
+<h2 mat-dialog-title>
+  Diploma these details
+</h2>
+
+<div class="fieldContainer">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Diploma title (english)</mat-label>
+      <input matInput [value]="diploma.titleEn" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Diploma title (polish)</mat-label>
+      <input matInput [value]="diploma.titlePl" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>General description</mat-label>
+      <textarea matInput [value]="diploma.description" [readonly]="true"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Chapters</mat-label>
+      <textarea matInput [value]="diploma.chapters" [readonly]="true"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Student</mat-label>
+      <input matInput [value]="diploma.studentName" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Project</mat-label>
+      <input matInput [value]="diploma.projectName" [readonly]="true">
+    </mat-form-field>
+  </div>
+</div>
