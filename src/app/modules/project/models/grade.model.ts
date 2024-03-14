@@ -40,7 +40,7 @@ export interface PhaseChangeResponse {
     evaluationCards:  EvaluationCards;
 }
 
-export interface ChangeGradeResponse { 
+export interface ChangeGradeResponse {
     grade: string;
     criteriaMet: boolean;
 }

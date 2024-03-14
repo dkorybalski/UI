@@ -43,14 +43,20 @@ import {SharedModule} from '../shared/shared.module';
 import {
   RadioCriterionSelectComponent
 } from './components/project-grade/components/radio-criterion-select/radio-criterion-select.component';
-import {DiplomaFormComponent} from '../diploma-theses/components/diploma-form/diploma-form.component'
+import {
+  DiplomaChapterFormComponent
+} from '../diploma-theses/components/diploma-chapter-form/diploma-chapter-form.component'
 import {DiplomaEffects} from '../diploma-theses/state/diploma.effects'
+import {
+  DiplomaProjectFormComponent
+} from "../diploma-theses/components/diploma-project-form/diploma-project-form.component";
 
 @NgModule({
   declarations: [
     ProjectListComponent,
     ProjectFormComponent,
-    DiplomaFormComponent,
+    DiplomaChapterFormComponent,
+    DiplomaProjectFormComponent,
     ProjectDetailsComponent,
     ProjectFiltersComponent,
     ProjectComponent,
@@ -90,4 +96,5 @@ import {DiplomaEffects} from '../diploma-theses/state/diploma.effects'
     SharedModule
   ]
 })
-export class ProjectModule { }
+export class ProjectModule {
+}

@@ -1,9 +1,9 @@
 <div class="back" (click)="navigateBack()">
   <mat-icon>arrow_back</mat-icon>
-  Project Details
+  Back
 </div>
 <h2 mat-dialog-title>
-  Diploma these
+  Project diploma
 </h2>
 <form [formGroup]="diplomaForm" (ngSubmit)="onSubmit()">
   <div class="fieldContainer">
@@ -25,22 +25,6 @@
         <textarea matInput formControlName="diplomaDescription"></textarea>
         <mat-error
           *ngIf="diplomaForm.controls.diplomaDescription.invalid">{{getErrorMessage('diplomaDescription')}}</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Chapters</mat-label>
-        <textarea matInput formControlName="diplomaChapters"></textarea>
-        <mat-error
-          *ngIf="diplomaForm.controls.diplomaChapters.invalid">{{getErrorMessage('diplomaChapters')}}</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Student</mat-label>
-        <mat-select formControlName="student">
-          <mat-option [value]="student.name">
-            {{ student.name }}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">

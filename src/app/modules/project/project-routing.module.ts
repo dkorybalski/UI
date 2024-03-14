@@ -12,7 +12,12 @@ import {
 import {evaulationCardsResolver} from './resolvers/evaluation-cards.resolver'
 import {studentResolver} from '../user/resolvers/student.resolver'
 import {supervisorResolver} from '../user/resolvers/supervisor.resolver'
-import {DiplomaFormComponent} from '../diploma-theses/components/diploma-form/diploma-form.component'
+import {
+  DiplomaChapterFormComponent
+} from '../diploma-theses/components/diploma-chapter-form/diploma-chapter-form.component'
+import {
+  DiplomaProjectFormComponent
+} from "../diploma-theses/components/diploma-project-form/diploma-project-form.component";
 
 const routes: Routes = [
   {
@@ -35,8 +40,12 @@ const routes: Routes = [
     },
   },
   {
+    path: 'diploma-chapter/form',
+    component: DiplomaChapterFormComponent
+  },
+  {
     path: 'diploma/form',
-    component: DiplomaFormComponent
+    component: DiplomaProjectFormComponent
   },
   {
     path: 'availability',

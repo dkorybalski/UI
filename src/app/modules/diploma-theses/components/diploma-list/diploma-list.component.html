@@ -4,7 +4,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
       <td class="diplomaNameCell" mat-cell *matCellDef="let diploma">
         <div>
-          <span>{{diploma.titleEn}} </span>
+          <span>{{diploma.diploma.titlePl}}</span>
         </div>
       </td>
     </ng-container>
@@ -13,22 +13,22 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Project</th>
       <td class="diplomaNameCell" mat-cell *matCellDef="let diploma">
         <div>
-          <span>{{diploma.projectName}} </span>
+          <span>{{diploma.project.name}}</span>
         </div>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="studentName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Student</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Handed diploma theses</th>
       <td class="diplomaNameCell" mat-cell *matCellDef="let diploma">
         <div>
-          <span>{{diploma.studentName}} </span>
+          <span>{{diploma.studentDiplomasCount}}/{{diploma.studentsCount}}</span>
         </div>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr style="cursor: pointer" (click)="navigateToDetails(diploma)" mat-row
+    <tr style="cursor: pointer" (click)="navigateToProjectDetails(diploma)" mat-row
         *matRowDef="let row; columns: columns; let diploma"></tr>
   </table>
 

@@ -8,6 +8,9 @@ import {
   loadDiplomasSuccess,
   updateDiploma,
   updateDiplomaFailure,
+  updateDiplomaProject,
+  updateDiplomaProjectFailure,
+  updateDiplomaProjectSuccess,
   updateDiplomaSuccess
 } from './diploma.actions'
 import {DiplomaService} from '../diploma.service'
@@ -40,6 +43,18 @@ export class DiplomaEffects {
         .pipe(
           map(() => updateDiplomaSuccess({addOrUpdateDiploma: action.addOrUpdateDiploma})),
           catchError(error => of(updateDiplomaFailure({error})))
+        )
+      )
+    )
+  )
+
+  updateDiplomaProject$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(updateDiplomaProject),
+      mergeMap((action) => this.diplomaService.updateDiplomaProject(action.addOrUpdateDiplomaProject)
+        .pipe(
+          map(() => updateDiplomaProjectSuccess({addOrUpdateDiplomaProject: action.addOrUpdateDiplomaProject})),
+          catchError(error => of(updateDiplomaProjectFailure({error})))
         )
       )
     )

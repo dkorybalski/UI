@@ -26,7 +26,7 @@ import {EvaluationCards, PhaseChangeResponse} from '../../models/grade.model'
 import {GradeService} from '../../services/grade.service'
 import {MatTabChangeEvent} from '@angular/material/tabs'
 import {AreYouSureDialogComponent} from 'src/app/modules/shared/are-you-sure-dialog/are-you-sure-dialog.component'
-import {Diploma} from '../../../diploma-theses/models/diploma.model'
+import {Diploma, DiplomaChapter} from '../../../diploma-theses/models/diploma.model'
 import {DiplomaService} from '../../../diploma-theses/diploma.service'
 
 enum ROLE {
@@ -45,7 +45,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   members!: MatTableDataSource<Student>
   selection = new SelectionModel<Student>(false, [])
   selectedItem = <Student>{}
-  columns = ['name', 'email', 'role', 'status', 'accepted']
+  columns = ['name', 'email', 'role', 'status', 'diplomaStatus']
   unsubscribe$ = new Subject()
   maxAvailabilityFilled: boolean = false
   data!: ProjectDetails
@@ -68,7 +68,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     1: 'DEFENSE_PHASE',
     2: 'RETAKE_PHASE'
   }
-  diplomas: Diploma[] = []
+  diplomaChapters: DiplomaChapter[] = []
+  diploma: Diploma | undefined
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -119,9 +120,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.selectedSemesterIndex = this.selectedSemester
       this.selectedPhaseIndex = this.selectedPhase
 
-      this.diplomaService.getDiplomasForProject(projectDetails.projectId).subscribe(
-        (diplomas: Diploma[]) => {
-          this.diplomas = diplomas
+      this.diplomaService.getDiplomaProject(projectDetails.projectId).subscribe(
+        (diploma: Diploma | undefined) => {
+          this.diploma = diploma
+          if (diploma !== undefined) {
+            this.diplomaChapters = diploma.chapters
+          }
         }
       )
     })
@@ -129,6 +133,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.store.select('user').pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
       this.user = user
     })
+
+    if (this.isCoordinator()) {
+      this.columns = ['name', 'email', 'role', 'status', 'diplomaStatus']
+    } else {
+      this.columns = ['name', 'email', 'role', 'status']
+    }
   }
 
   onGradeChange({
@@ -172,6 +182,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   isSupervisor(member: Student) {
     return member.indexNumber === this.data.supervisor.indexNumber
+  }
+
+  isCoordinator() {
+    return this.user.role.includes("COORDINATOR")
+  }
+
+  isStudent() {
+    return this.user.role.includes("STUDENT") ||
+      this.user.role.includes("PROJECT_ADMIN")
   }
 
   unacceptProject(): void {
@@ -236,7 +255,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     }
 
     const dialogRef = this.dialog.open(AreYouSureDialogComponent, {
-      data: { actionName: actionMap[action].name },
+      data: {actionName: actionMap[action].name},
     })
 
     dialogRef.afterClosed().subscribe(result => {
@@ -432,23 +451,42 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete()
   }
 
-  addDiplomaThese(student: Student): void {
-    let diploma = this.diplomas.find(it => it.studentIndex === student.indexNumber)
+  existDiplomaChapterForStudent(student: Student): boolean {
+    return this.diplomaChapters.some(it =>
+      it.studentIndex === student.indexNumber
+    )
+  }
 
+  existDiplomaChapter(): boolean {
+    return this.diplomaChapters.some(it =>
+      it.studentIndex === this.user.indexNumber
+    )
+  }
+
+  openDiplomaProjectForm() {
     this.router.navigate([{outlets: {modal: `projects/diploma/form`}}],
       {
         state: {
-          diploma: diploma,
-          student: student,
+          diploma: this.diploma,
           projectId: this.data.id,
           projectName: this.data.name
         }
       })
   }
 
-  existDiploma(student: Student): boolean {
-    console.log(this.diplomas)
-    return this.diplomas.some(it =>
-      it.studentIndex === student.indexNumber)
+  addOrEditDiplomaChapter() {
+    let diploma = this.diplomaChapters.find(it =>
+      it.studentIndex === this.user.indexNumber
+    )
+
+    this.router.navigate([{outlets: {modal: `projects/diploma-chapter/form`}}],
+      {
+        state: {
+          diploma: diploma,
+          student: this.user,
+          projectId: this.data.id,
+          projectName: this.data.name
+        }
+      })
   }
 }

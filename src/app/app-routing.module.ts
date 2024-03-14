@@ -32,12 +32,12 @@ const routes: Routes = [
   {
     path: 'diploma-theses',
     loadChildren: () => import('./modules/diploma-theses/diploma.module').then(m => m.DiplomaModule),
-    canActivate: [UserGuard]
+    canActivate: [CoordinatorGuard]
   },
   {
     path: 'diploma-theses',
     loadChildren: () => import('./modules/diploma-theses/diploma.module').then(m => m.DiplomaModule),
-    canActivate: [UserGuard],
+    canActivate: [CoordinatorGuard],
     outlet: 'modal',
   },
   {

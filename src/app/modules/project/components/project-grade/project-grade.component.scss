@@ -1,7 +1,8 @@
 :host {
     position: relative;
-    form { 
-        padding: 0px 30px; 
+
+  form {
+    padding: 0px 30px;
     }
     overflow: hidden;
 }
@@ -18,7 +19,7 @@
 
 .grade-table {
     border-collapse: collapse;
-    margin-top: 50px;    
+  margin-top: 50px;
     width: 100%;
     overflow: hidden;
 
@@ -57,9 +58,8 @@
             text-align: left
         }
 
-      
 
-        th span {
+  th span {
             display: block;
             width: 70px;
         }

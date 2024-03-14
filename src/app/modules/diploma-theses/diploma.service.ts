@@ -1,7 +1,7 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {catchError, delay, Observable, of, retry, throwError} from 'rxjs'
-import {AddOrUpdateDiploma, Diploma} from './models/diploma.model'
+import {AddOrUpdateDiploma, AddOrUpdateDiplomaProject, Diploma} from './models/diploma.model'
 
 @Injectable({
   providedIn: 'root'
@@ -25,31 +25,13 @@ export class DiplomaService {
       titleEn: 'Modularity effect 1',
       titlePl: 'Efekt modularny 1',
       description: 'To jest opis pracy..',
-      chapters: 'Rozdział 1. Test\nRozdział 2. Test',
-      studentIndex: 'string',
-      studentName: 'Adam Nowak',
-      projectId: 21,
-      projectName: 'Software engineering'
-    },
-    {
-      titleEn: 'Modularity effect 2',
-      titlePl: 'Efekt modularny 2',
-      description: 'To jest opis pracy..',
-      chapters: 'Rozdział 1. Test\nRozdział 2. Test',
-      studentIndex: 'mw',
-      studentName: 'Jan Nowak',
-      projectId: 21,
-      projectName: 'Network engineering'
-    },
-    {
-      titleEn: 'Modularity effect 3',
-      titlePl: 'Efekt modularny 3',
-      description: 'To jest opis pracy..',
-      chapters: 'Rozdział 1. Test\nRozdział 2. Test',
-      studentIndex: 'string',
-      studentName: 'Henryk Nowak',
-      projectId: 21,
-      projectName: 'Software engineering'
+      projectId: 1,
+      projectName: 'Software engineering',
+      chapters: [{
+        name: "Rozdział 1",
+        description: "To jest opis rozdziału",
+        studentIndex: "student1"
+      }]
     }
   ]
 
@@ -66,8 +48,18 @@ export class DiplomaService {
       )
   }
 
-  getDiplomasForProject(projectId: number): Observable<Diploma[]> {
-    return of(this.mockedDiplomas)
+  getDiplomaProject(projectId: number): Observable<Diploma | undefined> {
+    return of(this.mockedDiplomas[0])
       .pipe(delay(20))
+  }
+
+  updateDiplomaProject(addOrUpdateDiplomaProject: AddOrUpdateDiplomaProject): Observable<AddOrUpdateDiplomaProject> {
+    return this.http
+      .put<AddOrUpdateDiplomaProject>(`/pri/diplomas`, addOrUpdateDiplomaProject)
+      .pipe(
+        retry(3),
+        catchError(
+          (err: HttpErrorResponse) => throwError(() => err))
+      )
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {FormBuilder, Validators} from '@angular/forms'
 import {Subject, takeUntil} from 'rxjs'
-import {ActivatedRoute, Router} from '@angular/router'
+import {Router} from '@angular/router'
 import {AddOrUpdateDiploma, Diploma} from '../../models/diploma.model'
 import {Actions, ofType} from '@ngrx/effects'
 import {Store} from '@ngrx/store'
@@ -11,16 +11,14 @@ import {updateDiploma, updateDiplomaFailure, updateDiplomaSuccess} from '../../s
 import {Student} from '../../../user/models/student.model'
 
 @Component({
-  selector: 'diploma-form',
-  templateUrl: './diploma-form.component.html',
-  styleUrls: ['./diploma-form.component.scss']
+  selector: 'diploma-chapter-form',
+  templateUrl: './diploma-chapter-form.component.html',
+  styleUrls: ['./diploma-chapter-form.component.scss']
 })
-export class DiplomaFormComponent implements OnInit, OnDestroy {
+export class DiplomaChapterFormComponent implements OnInit, OnDestroy {
   diplomaForm = this.fb.group({
-    titleEn: ['', Validators.required],
-    titlePl: ['', Validators.required],
-    diplomaDescription: ['', Validators.required],
-    diplomaChapters: ['', Validators.required],
+    chapterTitle: ['', Validators.required],
+    chapterDescription: ['', Validators.required],
     student: ['', Validators.required],
     project: ['', Validators.required]
   })
@@ -32,7 +30,6 @@ export class DiplomaFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
     private actions$: Actions,
@@ -45,14 +42,13 @@ export class DiplomaFormComponent implements OnInit, OnDestroy {
     this.diploma = history.state.diploma
     this.projectId = history.state.projectId
     this.projectName = history.state.projectName
+
     this.diplomaForm.controls.student.setValue(this.student.name)
     this.diplomaForm.controls.project.setValue(this.projectName)
 
     if (this.diploma) {
-      this.diplomaForm.controls.titlePl.setValue(this.diploma.titlePl)
-      this.diplomaForm.controls.titleEn.setValue(this.diploma.titleEn)
-      this.diplomaForm.controls.diplomaDescription.setValue(this.diploma.description)
-      this.diplomaForm.controls.diplomaChapters.setValue(this.diploma.chapters)
+      this.diplomaForm.controls.chapterDescription.setValue(this.diploma.description)
+      this.diplomaForm.controls.chapterTitle.setValue(this.diploma.description)
     }
   }
 
@@ -72,10 +68,10 @@ export class DiplomaFormComponent implements OnInit, OnDestroy {
       return
     }
     let addOrUpdateDiploma: AddOrUpdateDiploma = {
-      titleEn: this.diplomaForm.controls.titleEn.value!,
-      titlePl: this.diplomaForm.controls.titlePl.value!,
-      description: this.diplomaForm.controls.diplomaDescription.value!,
-      chapters: this.diplomaForm.controls.diplomaChapters.value!,
+      titleEn: '',
+      titlePl: '',
+      description: this.diplomaForm.controls.chapterTitle.value!,
+      chapters: this.diplomaForm.controls.chapterDescription.value!,
       studentIndex: this.student.indexNumber,
       projectId: this.projectId
     }
@@ -83,12 +79,12 @@ export class DiplomaFormComponent implements OnInit, OnDestroy {
     this.store.dispatch(updateDiploma({addOrUpdateDiploma: addOrUpdateDiploma}))
     this.actions$.pipe(ofType(updateDiplomaSuccess), takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this._snackbar.open('Diploma successfully updated', 'close')
+        this._snackbar.open('Diploma chapter successfully updated', 'close')
         this.router.navigate([{outlets: {modal: null}}])
       })
     this.actions$.pipe(ofType(updateDiplomaFailure), takeUntil(this.unsubscribe$))
       .subscribe(value => {
-        this._snackbar.open('Diploma failure updated', 'close')
+        this._snackbar.open('Diploma chaoter failure updated', 'close')
       })
   }
 
