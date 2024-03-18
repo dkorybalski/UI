@@ -7,10 +7,10 @@ import {
   loadDiplomasFailure,
   loadDiplomasSuccess,
   updateDiploma,
+  updateDiplomaChapter,
+  updateDiplomaChapterFailure,
+  updateDiplomaChapterSuccess,
   updateDiplomaFailure,
-  updateDiplomaProject,
-  updateDiplomaProjectFailure,
-  updateDiplomaProjectSuccess,
   updateDiplomaSuccess
 } from './diploma.actions'
 import {DiplomaService} from '../diploma.service'
@@ -48,13 +48,13 @@ export class DiplomaEffects {
     )
   )
 
-  updateDiplomaProject$ = createEffect(() => this.actions$
+  updateDiplomaChapter$ = createEffect(() => this.actions$
     .pipe(
-      ofType(updateDiplomaProject),
-      mergeMap((action) => this.diplomaService.updateDiplomaProject(action.addOrUpdateDiplomaProject)
+      ofType(updateDiplomaChapter),
+      mergeMap((action) => this.diplomaService.updateDiplomaChapter(action.addOrUpdateDiplomaChapter)
         .pipe(
-          map(() => updateDiplomaProjectSuccess({addOrUpdateDiplomaProject: action.addOrUpdateDiplomaProject})),
-          catchError(error => of(updateDiplomaProjectFailure({error})))
+          map(() => updateDiplomaChapterSuccess({addOrUpdateDiplomaChapter: action.addOrUpdateDiplomaChapter})),
+          catchError(error => of(updateDiplomaChapterFailure({error})))
         )
       )
     )

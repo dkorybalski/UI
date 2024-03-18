@@ -13,10 +13,10 @@
     </button>
     {{studentsFileName || "Students"}}
   </div>
-  
+
   <input type="file" class="file-input" (change)="uploadSupervisors($event)" #supervisorsFileUpload>
   <div class="file-upload">
-    <button 
+    <button
       mat-mini-fab
       color="primary"
       class="upload-btn"
@@ -26,7 +26,7 @@
       <mat-icon>attach_file</mat-icon>
     </button>
     {{supervisorsFileName || "Supervisors"}}
-  </div>  
+  </div>
 
   <input type="file" class="file-input" (change)="uploadCriteria($event)" #criteriaFileUpload>
   <div class="file-upload">
@@ -40,7 +40,7 @@
       <mat-icon>attach_file</mat-icon>
     </button>
     {{criteriaFileName || "Criteria"}}
-  </div>  
+  </div>
   <button (click)=uploadFiles() mat-raised-button color="primary" test="submit-button-data-feed">Submit</button>
 </div>
 
@@ -49,6 +49,7 @@
   <button (click)=exportStudents() mat-raised-button color="primary">Students</button>
   <button (click)=exportCriteria() mat-raised-button color="primary">Criteria</button>
   <button (click)=exportGrades() mat-raised-button color="primary">Grades</button>
+  <button (click)=exportDiplomas() mat-raised-button color="primary">Diplomas</button>
 </div>
 
-   
+

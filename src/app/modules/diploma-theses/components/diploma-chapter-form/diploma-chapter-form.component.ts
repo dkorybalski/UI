@@ -2,12 +2,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core'
 import {FormBuilder, Validators} from '@angular/forms'
 import {Subject, takeUntil} from 'rxjs'
 import {Router} from '@angular/router'
-import {AddOrUpdateDiploma, Diploma} from '../../models/diploma.model'
+import {AddOrUpdateDiplomaChapter, Diploma} from '../../models/diploma.model'
 import {Actions, ofType} from '@ngrx/effects'
 import {Store} from '@ngrx/store'
 import {State} from '../../../../app.state'
 import {MatSnackBar} from '@angular/material/snack-bar'
-import {updateDiploma, updateDiplomaFailure, updateDiplomaSuccess} from '../../state/diploma.actions'
+import {
+  updateDiplomaChapter,
+  updateDiplomaChapterFailure,
+  updateDiplomaChapterSuccess
+} from '../../state/diploma.actions'
 import {Student} from '../../../user/models/student.model'
 
 @Component({
@@ -67,24 +71,22 @@ export class DiplomaChapterFormComponent implements OnInit, OnDestroy {
     if (this.diplomaForm.invalid) {
       return
     }
-    let addOrUpdateDiploma: AddOrUpdateDiploma = {
-      titleEn: '',
-      titlePl: '',
+    let addOrUpdateDiplomaChapter: AddOrUpdateDiplomaChapter = {
+      title: this.diplomaForm.controls.chapterTitle.value!,
       description: this.diplomaForm.controls.chapterTitle.value!,
-      chapters: this.diplomaForm.controls.chapterDescription.value!,
       studentIndex: this.student.indexNumber,
       projectId: this.projectId
     }
 
-    this.store.dispatch(updateDiploma({addOrUpdateDiploma: addOrUpdateDiploma}))
-    this.actions$.pipe(ofType(updateDiplomaSuccess), takeUntil(this.unsubscribe$))
+    this.store.dispatch(updateDiplomaChapter({addOrUpdateDiplomaChapter: addOrUpdateDiplomaChapter}))
+    this.actions$.pipe(ofType(updateDiplomaChapterSuccess), takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this._snackbar.open('Diploma chapter successfully updated', 'close')
         this.router.navigate([{outlets: {modal: null}}])
       })
-    this.actions$.pipe(ofType(updateDiplomaFailure), takeUntil(this.unsubscribe$))
+    this.actions$.pipe(ofType(updateDiplomaChapterFailure), takeUntil(this.unsubscribe$))
       .subscribe(value => {
-        this._snackbar.open('Diploma chaoter failure updated', 'close')
+        this._snackbar.open('Diploma chapter failure updated', 'close')
       })
   }
 

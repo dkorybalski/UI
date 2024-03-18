@@ -120,7 +120,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       this.selectedSemesterIndex = this.selectedSemester
       this.selectedPhaseIndex = this.selectedPhase
 
-      this.diplomaService.getDiplomaProject(projectDetails.projectId).subscribe(
+      this.diplomaService.getDiplomaByProjectId(projectDetails.id).subscribe(
         (diploma: Diploma | undefined) => {
           this.diploma = diploma
           if (diploma !== undefined) {
@@ -488,5 +488,16 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
           projectName: this.data.name
         }
       })
+  }
+
+  getStudentName(studentIndex: string): String {
+    let student = this.members.data.find(it =>
+      it.indexNumber === studentIndex
+    )
+    if (student === undefined) {
+      return "NO_DATA"
+    } else {
+      return student.name
+    }
   }
 }

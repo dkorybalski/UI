@@ -55,11 +55,10 @@ export class DiplomaListComponent implements OnDestroy, OnInit {
     )
   }
 
-  navigateToProjectDetails(diploma: DiplomaWithProject) {
-    console.log(diploma)
-    this.router.navigate([{outlets: {modal: `diploma-theses/projects/details/` + diploma.diploma.projectId}}],
+  navigateToProjectDetails(diplomaWithProject: DiplomaWithProject) {
+    this.router.navigate([{outlets: {modal: `diploma-theses/projects/details/` + diplomaWithProject.diploma.projectId}}],
       {
-        state: {diploma: diploma}
+        state: {diplomaWithProject: diplomaWithProject}
       })
   }
 

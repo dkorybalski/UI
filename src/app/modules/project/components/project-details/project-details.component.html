@@ -137,15 +137,15 @@
             <div class="table-cell" *ngFor="let chapter of diploma?.chapters">
               <div style="margin-top: 40px">
                 <div class="container-name-value" style="margin-top: 5px">
-                  <div class="font-big">{{ chapter.name }} (Jędrzej Biesek)</div>
+                  <div class="font-big">{{getStudentName(chapter.studentIndex)}}:</div>
                 </div>
                 <div class="container-name-value" style="margin-top: 5px">
                   <div style="margin-right: 10px;">Chapter:</div>
-                  <div>{{ chapter.name }}</div>
+                  <div>{{ chapter.title }}</div>
                 </div>
                 <div class="container-name-value" style="margin-top: 5px">
                   <div style="margin-right: 10px;">Chapter description:</div>
-                  <div>{{ chapter.name }}</div>
+                  <div>{{ chapter.description }}</div>
                 </div>
               </div>
             </div>

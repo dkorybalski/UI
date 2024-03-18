@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { DataFeedService } from './data-feed.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, takeUntil } from 'rxjs';
-import { saveAs } from 'file-saver';
-import { HttpResponse } from '@angular/common/http';
+import {Component, OnDestroy} from '@angular/core';
+import {DataFeedService} from './data-feed.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Subject, takeUntil} from 'rxjs';
+import {saveAs} from 'file-saver';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-data-feed',
@@ -29,7 +29,7 @@ export class DataFeedComponent implements OnDestroy {
           this.studentsFile.append("data", file);
       }
   }
-  
+
   uploadSupervisors(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -98,7 +98,7 @@ export class DataFeedComponent implements OnDestroy {
       }
     )
   }
-    
+
   exportGrades(){
     this.dataFeedService.exportGrades().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (file: HttpResponse<Blob>) => {
@@ -107,6 +107,10 @@ export class DataFeedComponent implements OnDestroy {
         }
       }
     )
+  }
+
+  exportDiplomas() {
+    console.log("EXPORTING DIPLOMAS")
   }
 
   ngOnDestroy(): void {

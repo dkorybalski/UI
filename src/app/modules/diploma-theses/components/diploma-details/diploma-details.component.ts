@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {Router} from '@angular/router'
-import {Diploma} from '../../models/diploma.model'
+import {DiplomaWithProject} from '../../models/diploma.model'
 
 @Component({
   selector: 'diploma-details',
@@ -8,7 +8,7 @@ import {Diploma} from '../../models/diploma.model'
   styleUrls: ['./diploma-details.component.scss']
 })
 export class DiplomaDetailsComponent implements OnInit, OnDestroy {
-  diploma!: Diploma
+  diplomaWithProject!: DiplomaWithProject
 
   constructor(
     private router: Router,
@@ -16,7 +16,7 @@ export class DiplomaDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.diploma = history.state.diploma
+    this.diplomaWithProject = history.state.diploma
   }
 
   navigateBack(): void {

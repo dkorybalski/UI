@@ -5,7 +5,6 @@ export interface Diploma {
   titlePl: string
   description: string
   projectId: number
-  projectName: string
   chapters: DiplomaChapter[]
 }
 
@@ -20,20 +19,18 @@ export interface AddOrUpdateDiploma {
   titleEn: string
   titlePl: string
   description: string
-  chapters: string
   projectId: number
-  studentIndex: string
 }
 
-export interface AddOrUpdateDiplomaProject {
-  titleEn: string
-  titlePl: string
+export interface AddOrUpdateDiplomaChapter {
+  title: string
   description: string
+  studentIndex: string
   projectId: number
 }
 
 export interface DiplomaChapter {
-  name: string
+  title: string
   description: string
   studentIndex: string
 }
