@@ -73,7 +73,7 @@ export class DiplomaChapterFormComponent implements OnInit, OnDestroy {
     }
     let addOrUpdateDiplomaChapter: AddOrUpdateDiplomaChapter = {
       title: this.diplomaForm.controls.chapterTitle.value!,
-      description: this.diplomaForm.controls.chapterTitle.value!,
+      description: this.diplomaForm.controls.chapterDescription.value!,
       studentIndex: this.student.indexNumber,
       projectId: this.projectId
     }
@@ -82,7 +82,7 @@ export class DiplomaChapterFormComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofType(updateDiplomaChapterSuccess), takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this._snackbar.open('Diploma chapter successfully updated', 'close')
-        this.router.navigate([{outlets: {modal: null}}])
+        this.router.navigate([{outlets: {modal: `projects/details/${this.projectId}`}}])
       })
     this.actions$.pipe(ofType(updateDiplomaChapterFailure), takeUntil(this.unsubscribe$))
       .subscribe(value => {

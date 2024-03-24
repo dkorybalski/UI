@@ -110,7 +110,13 @@ export class DataFeedComponent implements OnDestroy {
   }
 
   exportDiplomas() {
-    console.log("EXPORTING DIPLOMAS")
+    this.dataFeedService.exportDiplomas().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (file: HttpResponse<Blob>) => {
+        if (file?.body) {
+          saveAs(file.body!, 'diplomas.txt')
+        }
+      }
+    )
   }
 
   ngOnDestroy(): void {

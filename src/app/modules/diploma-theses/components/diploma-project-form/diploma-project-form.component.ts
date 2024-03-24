@@ -77,7 +77,7 @@ export class DiplomaProjectFormComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofType(updateDiplomaSuccess), takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this._snackbar.open('Diploma successfully updated', 'close')
-        this.router.navigate([{outlets: {modal: null}}])
+        this.router.navigate([{outlets: {modal: `projects/details/${this.projectId}`}}])
       })
     this.actions$.pipe(ofType(updateDiplomaFailure), takeUntil(this.unsubscribe$))
       .subscribe(value => {
