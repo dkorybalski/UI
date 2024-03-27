@@ -111,6 +111,9 @@
       <button *ngIf="showUnacceptButton" (click)="unacceptProject()" mat-raised-button color="primary" cdkFocusInitial>
         Unaccept project
       </button>
+      <button *ngIf="showExportDiplomaButton" (click)=exportDiplomas() mat-raised-button color="primary">Export project
+        diploma
+      </button>
     </div>
   </div>
 </div>
@@ -118,7 +121,7 @@
 <mat-tab-group class="mat-elevation-z8" [ngStyle]="{ 'margin-bottom.px': 50 }">
   <mat-tab label="Project Diploma">
     <div class="diploma-container">
-      <div *ngIf="isStudent()" class="button-container">
+      <div class="button-container">
         <button (click)="openDiplomaProjectForm()" color="primary" mat-button cdkFocusInitial>Edit project diploma
         </button>
       </div>

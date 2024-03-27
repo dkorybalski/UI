@@ -28,6 +28,9 @@ import {MatTabChangeEvent} from '@angular/material/tabs'
 import {AreYouSureDialogComponent} from 'src/app/modules/shared/are-you-sure-dialog/are-you-sure-dialog.component'
 import {Diploma, DiplomaChapter} from '../../../diploma-theses/models/diploma.model'
 import {DiplomaService} from '../../../diploma-theses/diploma.service'
+import {HttpResponse} from "@angular/common/http";
+import {saveAs} from "file-saver";
+import {DataFeedService} from "../../../data-feed/data-feed.service";
 
 enum ROLE {
   FRONTEND = 'front-end',
@@ -79,7 +82,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private _snackbar: MatSnackBar,
     private gradeService: GradeService,
-    private diplomaService: DiplomaService
+    private diplomaService: DiplomaService,
+    private dataFeedService: DataFeedService
   ) {
   }
 
@@ -446,6 +450,19 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  get showExportDiplomaButton() {
+    if (
+      (this.user.role === 'COORDINATOR')
+      ||
+      ((this.user.role === 'SUPERVISOR') &&
+        this.user.acceptedProjects.includes(this.data.id!))
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next(null)
     this.unsubscribe$.complete()
@@ -499,5 +516,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     } else {
       return student.name
     }
+  }
+
+  exportDiplomas() {
+    this.dataFeedService.exportDiplomas().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (file: HttpResponse<Blob>) => {
+        if (file?.body) {
+          saveAs(file.body!, 'diplomas.txt')
+        }
+      }
+    )
   }
 }
