@@ -1,189 +1,208 @@
 
-
 :host {
-    display: grid;
-    column-gap: 50px;
-    height: 100%;
-    margin: 0 auto;
-    max-width: 1300px;
+  display: grid;
+  column-gap: 50px;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 1300px;
 
-    ::ng-deep .mat-mdc-tab-body-content {
-        overflow-y: hidden !important;
-    }
+  ::ng-deep .mat-mdc-tab-body-content {
+    overflow-y: hidden !important;
+  }
 
 
-    .project-details {
-        display: flex;
-        justify-content: space-between;
-        column-gap: 35px;margin-bottom: 50px;
-    }
+  .project-details {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 35px;
+    margin-bottom: 50px;
+  }
 
-    .grade-title {
-        text-align: center;
-    }
+  .grade-title {
+    text-align: center;
+  }
 
-    p {
-        text-align: justify;
-    }
+  p {
+    text-align: justify;
+  }
 
-    ::ng-deep .mat-mdc-tab-disabled {
-      display: none !important;
-    }
+  ::ng-deep .mat-mdc-tab-disabled {
+    display: none !important;
+  }
 
-    ::ng-deep .mat-mdc-standard-chip {
-        background-color: #dde2ff !important;
-    }
+  ::ng-deep .mat-mdc-standard-chip {
+    background-color: #dde2ff !important;
+  }
 
-    ::ng-deep .mat-mdc-chip-action-label {
-        color: #4758b8 !important;
-    }
+  ::ng-deep .mat-mdc-chip-action-label {
+    color: #4758b8 !important;
+  }
 
-    h3, h2 {
-        margin: 0px;
-    }
+  h3, h2 {
+    margin: 0px;
+  }
 
-    p {
-        color: rgba(0, 0, 0, 0.87);
-    }
+  p {
+    color: rgba(0, 0, 0, 0.87);
+  }
 
 
   .ellipse {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: #ff6a6a;
-        margin: 0 auto;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+  }
+
+  .ellipse.accepted {
+    background: #92e882;
+  }
+
+  .back {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+
+  .criteriaMet {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  .cellWithIcon {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+
+    mat-icon {
+      color: #3f51b5;
+      height: 20px;
+      width: 20px;
+      font-size: 20px;
     }
+  }
 
-    .ellipse.accepted {
-        background: #92e882;
+  td {
+    white-space: nowrap;
+
+
+  }
+
+  .table {
+    margin-top: 34px;
+  }
+
+  .chips {
+    margin: 22px 0px 10px 0px;
+  }
+
+  mat-dialog-content {
+    display: grid;
+    max-width: 800px;
+    grid-gap: 10px
+  }
+
+  ::ng-deep .mdc-tab {
+    border-right: 2px solid #e7e7e7 !important;
+  }
+
+  ::ng-deep .mdc-tab-indicator__content {
+    border-color: #e7e7e7 !important;
+    opacity: 1 !important;
+  }
+
+  ::ng-deep .mdc-tab-indicator--active .mdc-tab-indicator__content {
+    border-color: var(--mdc-tab-indicator-active-indicator-color, #3f51b5) !important;
+  }
+
+
+  .ellipse {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6a6a;
+    margin: 0 auto;
+  }
+
+  .ellipse.accepted {
+    background: #92e882;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 15px;
+    margin-top: 20px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      mat-icon {
+        color: #4050b5;
+      }
     }
+  }
 
-    .back {
-        display: flex;
-        align-items: center;
-        column-gap: 10px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        width: fit-content;
+  .grade-info {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    background: #fafafa;
+    padding: 20px 30px;
+    z-index: 999;
+
+    div {
+      display: flex;
+      column-gap: 20px;
     }
-
-    .criteriaMet {
-        display: flex;
-        align-items: center;
-        column-gap: 10px;
-    }
-
-    .cellWithIcon {
-        display: flex;
-        align-items: center;
-        column-gap: 10px;
-        mat-icon{
-            color: #3f51b5;
-            height: 20px;
-            width: 20px;
-            font-size: 20px;
-        }
-    }
-
-    td {
-      white-space: nowrap;
-
-
-    }
-
-    .table {
-        margin-top: 34px;
-    }
-
-    .chips {
-        margin: 22px 0px  10px 0px;
-    }
-
-    mat-dialog-content {
-        display: grid;
-        max-width: 800px;
-        grid-gap: 10px
-    }
-
-    ::ng-deep .mdc-tab {
-        border-right: 2px solid #e7e7e7 !important;
-    }
-
-    ::ng-deep .mdc-tab-indicator__content {
-        border-color:  #e7e7e7 !important;
-        opacity: 1 !important;
-    }
-
-    ::ng-deep .mdc-tab-indicator--active .mdc-tab-indicator__content {
-        border-color: var(--mdc-tab-indicator-active-indicator-color, #3f51b5) !important;
-    }
-
-
-
-    .ellipse {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: #ff6a6a;
-        margin: 0 auto;
-    }
-
-    .ellipse.accepted {
-        background: #92e882;
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: flex-end;
-        column-gap: 15px;
-        margin-top: 20px;
-    }
-
-    .link {
-        display: flex;
-        align-items: center;
-
-        a {
-            text-decoration: none;
-            color: black;
-
-          mat-icon {
-                color: #4050b5;
-            }
-        }
-    }
-
-    .grade-info {
-        display: flex;
-        justify-content: space-between;
-        position: sticky;
-        left: 0;
-        bottom: 0;
-        background: #fafafa;
-        padding: 20px 30px;
-        z-index: 999;
-
-        div {
-            display: flex;
-            column-gap: 20px;
-        }
-    }
+  }
 }
 
 .links-and-defense-data {
-    display: flex;
-    justify-content: space-between;
-    min-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  min-width: 600px;
 
-    .defense-data {
-        max-width: 300px;
-        p {
-            margin: 10px 0px;
+  .defense-data {
+    max-width: 300px;
 
-            span {
-                font-weight: 500;
-            }
-        }
+    p {
+      margin: 10px 0px;
+
+      span {
+        font-weight: 500;
+      }
     }
+  }
+}
+
+.diploma-container {
+  padding: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.font-big {
+  font-size: 18px;
+}
+
+.container-name-value {
+  display: flex;
+  align-items: center;
 }

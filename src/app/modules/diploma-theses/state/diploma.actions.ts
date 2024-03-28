@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store'
-import {AddOrUpdateDiploma, Diploma} from '../models/diploma.model'
+import {AddOrUpdateDiploma, AddOrUpdateDiplomaChapter, Diploma} from '../models/diploma.model'
 
 export const loadDiplomas = createAction(
   '[DiplomaList] Load'
@@ -27,5 +27,20 @@ export const updateDiplomaSuccess = createAction(
 
 export const updateDiplomaFailure = createAction(
   '[DiplomaForm API] Update Fail',
+  props<{ error: string }>()
+)
+
+export const updateDiplomaChapter = createAction(
+  '[DiplomaChapterForm] Update',
+  props<{ addOrUpdateDiplomaChapter: AddOrUpdateDiplomaChapter }>()
+)
+
+export const updateDiplomaChapterSuccess = createAction(
+  '[DiplomaChapterForm API] Update Success',
+  props<{ addOrUpdateDiplomaChapter: AddOrUpdateDiplomaChapter }>()
+)
+
+export const updateDiplomaChapterFailure = createAction(
+  '[DiplomaChapterForm API] Update Fail',
   props<{ error: string }>()
 )

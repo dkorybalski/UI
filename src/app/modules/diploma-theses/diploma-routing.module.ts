@@ -1,12 +1,20 @@
 import {NgModule} from '@angular/core'
 import {RouterModule, Routes} from '@angular/router'
 import {DiplomaComponent} from './diploma.component'
-import {DiplomaDetailsComponent} from './components/diploma-details/diploma-details.component'
+import {ProjectDetailsComponent} from "../project/components/project-details/project-details.component";
+import {projectResolver} from "../project/resolvers/project.resolver";
+import {supervisorAvailabilityResolver} from "../project/resolvers/supervisors-availability.resolver";
+import {evaulationCardsResolver} from "../project/resolvers/evaluation-cards.resolver";
 
 const routes: Routes = [
   {
-    path: 'details',
-    component: DiplomaDetailsComponent
+    path: 'projects/details/:id',
+    component: ProjectDetailsComponent,
+    resolve: {
+      projectDetails: projectResolver,
+      supervisorAvailability: supervisorAvailabilityResolver,
+      evaluationCards: evaulationCardsResolver
+    },
   },
   {
     path: '',

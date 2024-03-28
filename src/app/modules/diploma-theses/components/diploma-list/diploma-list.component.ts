@@ -7,8 +7,11 @@ import {Store} from '@ngrx/store'
 import {getDiplomas} from '../../state/diploma.selectors'
 import {State} from 'src/app/app.state'
 import {loadDiplomas} from '../../state/diploma.actions'
-import {Diploma} from '../../models/diploma.model'
+import {Diploma, DiplomaWithProject} from '../../models/diploma.model'
 import {Router} from '@angular/router'
+import {getProjects} from "../../../project/state/project.selectors";
+import {loadProjects} from "../../../project/state/project.actions";
+import {Project} from "../../../project/models/project.model";
 
 @Component({
   selector: 'diploma-list',
@@ -24,7 +27,7 @@ export class DiplomaListComponent implements OnDestroy, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator
   @ViewChild(MatSort) sort!: MatSort
   columns = ['titleEn', 'projectName', 'studentName']
-  diplomas!: MatTableDataSource<Diploma>
+  diplomas!: MatTableDataSource<DiplomaWithProject>
   unsubscribe$ = new Subject()
   loading = true
 
@@ -36,29 +39,45 @@ export class DiplomaListComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadDiplomas())
+    this.store.dispatch(loadProjects())
     combineLatest([
       this.store.select(getDiplomas),
+      this.store.select(getProjects)
     ]).pipe(
       tap(() => this.loading = true),
       takeUntil(this.unsubscribe$)).subscribe(
-      ([diplomas]) => {
-        if (diplomas !== undefined) {
-          console.log(diplomas)
-          this.diplomas = new MatTableDataSource<Diploma>(diplomas)
+      ([diplomas, projects]) => {
+        if (diplomas !== undefined && projects !== undefined) {
+          this.diplomas = new MatTableDataSource<DiplomaWithProject>(this.merge(diplomas, projects))
           this.diplomas.paginator = this.paginator
         }
       }
     )
   }
 
-  navigateToDetails(diploma: Diploma) {
-    this.router.navigate([{outlets: {modal: `diploma-theses/details`}}],
+  navigateToProjectDetails(diplomaWithProject: DiplomaWithProject) {
+    this.router.navigate([{outlets: {modal: `diploma-theses/projects/details/` + diplomaWithProject.diploma.projectId}}],
       {
-        state: {diploma: diploma}
+        state: {diplomaWithProject: diplomaWithProject}
       })
   }
 
   ngOnDestroy(): void {
 
+  }
+
+  private merge(diplomas: Diploma[], projects: Project[]): DiplomaWithProject[] {
+    const diplomaWithProjects: DiplomaWithProject[] = [];
+
+    diplomas.forEach(diploma => {
+      const project = projects.find(proj => parseInt(proj.id!) === diploma.projectId);
+      if (project) {
+        const studentsCount = project.students!.split(',').length
+        const studentDiplomasCount = diploma.chapters.length
+        diplomaWithProjects.push({diploma, project, studentDiplomasCount, studentsCount});
+      }
+    });
+
+    return diplomaWithProjects;
   }
 }

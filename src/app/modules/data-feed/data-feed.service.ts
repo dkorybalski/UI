@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable, retry, throwError, catchError } from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {catchError, Observable, retry, throwError} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -81,4 +81,14 @@ export class DataFeedService {
                     (err: HttpErrorResponse) => throwError(() => err))
             )
     }
+
+  exportDiplomas(): Observable<any> {
+    return this.http
+      .get<HttpResponse<Blob>>(`/pri/project-diplomas/export`, this.setHttpHeadersForFile())
+      .pipe(
+        retry(3),
+        catchError(
+          (err: HttpErrorResponse) => throwError(() => err))
+      )
+  }
 }

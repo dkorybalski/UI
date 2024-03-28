@@ -1,0 +1,49 @@
+<div class="back" (click)="navigateBack()">
+  <mat-icon>arrow_back</mat-icon>
+  Project Details
+</div>
+<h2 mat-dialog-title>
+  Diploma chapter
+</h2>
+<form [formGroup]="diplomaForm" (ngSubmit)="onSubmit()">
+  <div class="fieldContainer">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Chapter title</mat-label>
+        <textarea matInput formControlName="chapterTitle"></textarea>
+        <mat-error
+          *ngIf="diplomaForm.controls.chapterTitle.invalid">{{getErrorMessage('chapterTitle')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Chapter description</mat-label>
+        <textarea matInput formControlName="chapterDescription"></textarea>
+        <mat-error
+          *ngIf="diplomaForm.controls.chapterDescription.invalid">{{getErrorMessage('chapterDescription')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Student</mat-label>
+        <mat-select formControlName="student">
+          <mat-option [value]="student.name">
+            {{ student.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Project</mat-label>
+        <mat-select formControlName="project">
+          <mat-option [value]="projectName">
+            {{ projectName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="buttons-container">
+        <button color="primary" type="submit" mat-raised-button [disabled]="!diplomaForm.valid" cdkFocusInitial>Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
